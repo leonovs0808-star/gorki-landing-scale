@@ -1,329 +1,516 @@
 <!-- BLOCK 01: Введение — pixel-perfect copy of vision-quest-revamp.lovable.app -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
 <style>
-/* ══════════════════════════════════════
-   RESET — beat Tilda's own CSS
-══════════════════════════════════════ */
-#msh-sidebar,#msh-sidebar *,
-#msh-s1,#msh-s1 *,
-#msh-prog,#msh-prog * {
-  font-family:'Inter',-apple-system,sans-serif;
-  box-sizing:border-box;
-  -webkit-font-smoothing:antialiased;
+/* ─── FORCE DARK BACKGROUND on Tilda page ─── */
+body, .t-body, .t-page {
+  background:#08110E !important;
 }
 
-/* ══════════════════════════════════════
+/* ─── GLOBAL NAMESPACE RESET ─── */
+#msh-wrap,#msh-wrap *,
+#msh-sidebar,#msh-sidebar *,
+#msh-prog,#msh-prog * {
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif !important;
+  box-sizing:border-box;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* ─── TILDA RESET: prevent Tilda styles bleeding in ─── */
+#msh-wrap { all:initial; display:block; }
+#msh-wrap p, #msh-wrap h1, #msh-wrap h2, #msh-wrap span,
+#msh-wrap div, #msh-wrap button, #msh-wrap nav, #msh-wrap aside {
+  margin:0; padding:0; border:0; font-size:100%; vertical-align:baseline;
+}
+
+/* ══════════════════════════════════════════
    PROGRESS BAR
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #msh-prog {
   position:fixed;top:0;left:0;right:0;height:4px;
-  z-index:10001;pointer-events:none;
+  z-index:99999;pointer-events:none;
+  background:transparent;
 }
 #msh-prog-fill {
   height:100%;width:0%;
   background:#42BD8A;
+  box-shadow:0 0 8px rgba(66,189,138,0.6);
   transition:width .12s linear;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    SIDEBAR
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 #msh-sidebar {
-  position:fixed;left:0;top:0;
-  width:256px;height:100vh;
-  background:rgba(8,17,14,0.96);
+  position:fixed;left:0;top:0;bottom:0;
+  width:256px;
+  background:rgba(8,17,14,0.95);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
-  border-right:1px solid rgba(35,47,43,0.7);
-  z-index:10000;
+  border-right:1px solid rgba(35,47,43,0.4);
+  z-index:9999;
   display:flex;flex-direction:column;
-  transition:width .3s ease;
+  transition:width .3s cubic-bezier(.4,0,.2,1),transform .3s cubic-bezier(.4,0,.2,1);
   overflow:hidden;
+  font-family:'Inter',sans-serif !important;
 }
-#msh-sidebar.msh-col { width:56px; }
 
-/* Header */
+/* Collapsed state */
+#msh-sidebar.msh-col { width:0; }
+
+/* ── Sidebar Header ── */
 .msh-sb-hd {
   display:flex;align-items:center;justify-content:space-between;
-  padding:22px 16px 18px;
-  border-bottom:1px solid rgba(35,47,43,0.7);
-  min-height:62px;flex-shrink:0;
+  padding:16px;
+  border-bottom:1px solid rgba(35,47,43,0.3);
+  flex-shrink:0;
+  min-height:60px;
 }
+.msh-sb-ttl-wrap { flex:1; }
 .msh-sb-ttl {
-  font-size:12px;font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;
+  font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
   color:rgba(237,237,237,0.8);
-  white-space:nowrap;transition:opacity .2s;
+  white-space:nowrap;
+  display:block;
 }
-#msh-sidebar.msh-col .msh-sb-ttl { opacity:0;pointer-events:none; }
-
+.msh-sb-ttl-bar {
+  margin-top:4px;
+  height:1.5px;width:24px;
+  background:rgba(66,189,138,0.4);
+  border-radius:9999px;
+}
 .msh-sb-tog {
   background:none;border:none;
-  color:rgba(237,237,237,0.5);
-  cursor:pointer;padding:4px;flex-shrink:0;
+  color:rgba(129,152,144,0.8);
+  cursor:pointer;
+  padding:4px;
+  border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  transition:color .2s;
+  transition:color .2s,background .2s;
+  flex-shrink:0;
+  margin-left:8px;
 }
-.msh-sb-tog:hover { color:#42BD8A; }
+.msh-sb-tog:hover { color:#EDEDED;background:rgba(66,189,138,0.08); }
 
-/* Nav list */
+/* ── Sidebar Nav ── */
 .msh-sb-nav {
-  flex:1;overflow-y:auto;padding:8px 0;
-  scrollbar-width:none;position:relative;
+  flex:1;overflow-y:auto;
+  padding:16px 0;
+  scrollbar-width:none;
 }
 .msh-sb-nav::-webkit-scrollbar { display:none; }
 
-/* Vertical connector line through all icons */
-.msh-sb-nav::before {
-  content:'';
-  position:absolute;
-  left:28px;
-  top:28px;bottom:28px;
-  width:1.5px;
-  background:#232F2B;
-  z-index:0;
-}
-#msh-sidebar.msh-col .msh-sb-nav::before { display:none; }
-
+/* Nav item (button) */
 .msh-ni {
-  display:flex;align-items:center;gap:12px;
-  padding:9px 14px;cursor:pointer;
-  transition:background .15s;
   position:relative;
+  display:flex;align-items:center;gap:12px;
+  padding:0 14px;
+  cursor:pointer;
+  background:none;border:none;
+  width:100%;text-align:left;
+  transition:background .15s;
 }
-.msh-ni:hover { background:rgba(66,189,138,0.06); }
+.msh-ni:hover { background:rgba(66,189,138,0.05); }
 
+/* Connector line (per item, from JS) */
+.msh-ni-line {
+  position:absolute;
+  left:28px; /* center of 30px icon + 14px padding = 14+15=29, close enough */
+  top:36px;
+  width:1.5px;
+  background:rgba(35,47,43,1);
+  /* height set by JS per item */
+  z-index:0;
+  transition:background .5s;
+}
+
+/* Icon circle */
 .msh-ni-ico {
-  width:30px;height:30px;border-radius:50%;
-  border:1.5px solid rgba(66,189,138,0.25);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .25s;
-  color:rgba(237,237,237,0.3);
-  background:#08110E;
   position:relative;z-index:1;
+  width:31px;height:31px;border-radius:50%;
+  border:1.5px solid rgba(66,189,138,0.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all .3s;
+  color:rgba(129,152,144,0.5);
+  background:#08110E;
+  margin:8px 0;
 }
 .msh-ni-ico.msh-act {
-  background:#42BD8A;border-color:#42BD8A;color:#08110E;
+  background:#42BD8A;
+  border-color:#42BD8A;
+  color:#08110E;
 }
 .msh-ni-ico.msh-done {
-  border-color:#42BD8A;color:#42BD8A;background:#08110E;
+  background:#08110E;
+  border-color:rgba(66,189,138,0.4);
+  color:rgba(66,189,138,0.6);
+}
+.msh-ni-ico.msh-lock {
+  border-color:rgba(66,189,138,0.15);
+  color:rgba(129,152,144,0.35);
 }
 
+/* Label */
 .msh-ni-lbl {
+  display:flex;flex-direction:column;
+  min-width:0;
+  padding:9px 0;
   white-space:nowrap;overflow:hidden;
-  transition:opacity .2s;min-width:0;
 }
-#msh-sidebar.msh-col .msh-ni-lbl { opacity:0;pointer-events:none; }
 .msh-ni-num {
-  font-size:10px;color:rgba(237,237,237,0.35);
-  display:block;line-height:1;font-weight:500;
+  font-size:10px;
+  font-family:'Inter',sans-serif !important;
+  color:rgba(129,152,144,0.5);
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  line-height:1;
+  font-weight:400;
+  display:block;
 }
 .msh-ni-name {
-  font-size:13px;color:rgba(237,237,237,0.6);
-  display:block;line-height:1.35;margin-top:2px;font-weight:500;
+  font-size:13px;
+  font-family:'Inter',sans-serif !important;
+  color:rgba(129,152,144,0.7);
+  line-height:1.3;
+  margin-top:3px;
+  font-weight:400;
+  display:block;
+  transition:color .3s;
 }
-.msh-ni.msh-cur .msh-ni-name { color:#EDEDED;font-weight:600; }
+.msh-ni.msh-cur .msh-ni-name {
+  color:#EDEDED;
+  font-weight:600;
+}
 
 /* Footer counter */
 .msh-sb-ft {
-  padding:14px 16px;
-  border-top:1px solid rgba(35,47,43,0.7);
+  padding:12px 16px;
+  border-top:1px solid rgba(35,47,43,0.3);
   flex-shrink:0;
 }
 .msh-sb-cnt {
-  font-size:12px;color:rgba(237,237,237,0.3);
-  white-space:nowrap;overflow:hidden;
+  font-size:12px;
+  color:rgba(129,152,144,0.4);
+  white-space:nowrap;
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
+   MOBILE TOGGLE BUTTON
+══════════════════════════════════════════ */
+#msh-mob-tog {
+  position:fixed;
+  top:16px;left:16px;
+  z-index:9998;
+  width:40px;height:40px;
+  background:rgba(8,17,14,0.8);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(35,47,43,0.5);
+  border-radius:12px;
+  display:none; /* shown on mobile by media query */
+  align-items:center;justify-content:center;
+  cursor:pointer;
+  color:#819890;
+  transition:color .2s,background .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+#msh-mob-tog:hover { color:#EDEDED;background:rgba(35,47,43,0.6); }
+
+/* Mobile overlay */
+#msh-overlay {
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:9998;
+  backdrop-filter:blur(2px);
+}
+
+/* ══════════════════════════════════════════
    HERO SECTION
-══════════════════════════════════════ */
-#msh-s1 {
+══════════════════════════════════════════ */
+#msh-wrap {
   background:#08110E;
-  padding:110px 64px 90px 316px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
   position:relative;
   overflow:hidden;
-  min-height:100vh;
-  display:flex;align-items:center;
 }
 
-/* Decorative background blobs */
+#msh-s1 {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:112px 64px 80px calc(256px + 60px); /* sidebar + content gap */
+  position:relative;
+  min-height:100vh;
+}
+
+/* bg blobs */
 #msh-s1::before {
   content:'';
   position:absolute;
-  width:600px;height:600px;
-  background:radial-gradient(circle,rgba(66,189,138,0.07) 0%,transparent 65%);
-  top:-150px;right:-50px;
-  pointer-events:none;
+  width:500px;height:500px;
+  background:rgba(66,189,138,0.05);
+  filter:blur(80px);
   border-radius:50%;
+  bottom:-80px;left:256px;
+  pointer-events:none;
 }
 #msh-s1::after {
   content:'';
   position:absolute;
-  width:450px;height:450px;
-  background:radial-gradient(circle,rgba(66,189,138,0.05) 0%,transparent 65%);
-  bottom:-80px;left:260px;
-  pointer-events:none;
+  width:400px;height:400px;
+  background:rgba(66,189,138,0.03);
+  filter:blur(80px);
   border-radius:50%;
+  top:-100px;right:0;
+  pointer-events:none;
 }
 
 .msh-hero-inner {
-  max-width:900px;width:100%;
-  display:flex;flex-direction:column;
-  align-items:center;text-align:center;
   position:relative;z-index:1;
+  max-width:860px;
+  width:100%;
+  display:flex;flex-direction:column;
+  align-items:center;
+  text-align:center;
 }
 
-/* Meta badge */
+/* ── Meta Badge ── */
 .msh-badge {
   display:inline-flex;align-items:center;
-  background:rgba(66,189,138,0.05);
   border:1px solid rgba(66,189,138,0.2);
   border-radius:9999px;
-  padding:8px 20px;
+  padding:10px 20px;
   margin-bottom:40px;
-  flex-wrap:wrap;justify-content:center;gap:0;
+  backdrop-filter:blur(4px);
+  gap:0;
+}
+.msh-badge-item {
+  display:inline-flex;align-items:center;gap:6px;
 }
 .msh-badge-date {
   font-size:13px;font-weight:600;
   color:#42BD8A;
   text-transform:uppercase;
-  letter-spacing:.11em;
-  display:flex;align-items:center;gap:6px;
+  letter-spacing:.12em;
+  line-height:1;
 }
 .msh-badge-sep {
-  width:1px;height:14px;
+  display:inline-block;
+  width:1px;height:16px;
   background:rgba(66,189,138,0.2);
-  margin:0 14px;flex-shrink:0;
+  margin:0 14px;
+  flex-shrink:0;
 }
-.msh-badge-meta {
-  font-size:13px;color:#819890;
-  display:flex;align-items:center;gap:6px;font-weight:500;
+.msh-badge-muted {
+  font-size:13px;
+  color:#819890;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  display:inline-flex;align-items:center;gap:6px;
 }
 
-/* Title */
+/* ── H1 ── */
 .msh-h1 {
-  font-size:clamp(38px,5.5vw,72px);
-  font-weight:800;line-height:1.05;
+  font-size:clamp(36px,5.2vw,72px);
+  font-weight:800;
+  line-height:1.05;
   color:#EDEDED;
-  margin:0 0 20px;
+  margin:0 0 28px;
   letter-spacing:-.02em;
+  font-family:'Inter',sans-serif !important;
 }
-.msh-h1 .msh-ac { color:#42BD8A; }
-.msh-h1 .msh-ul {
-  color:#42BD8A;
-  text-decoration:underline;
-  text-decoration-color:#42BD8A;
-  text-underline-offset:5px;
-  text-decoration-thickness:3px;
+.msh-h1 .msh-green { color:#42BD8A; }
+.msh-h1 .msh-underline-wrap {
+  position:relative;
+  display:inline-block;
+}
+.msh-h1 .msh-underline-bar {
+  position:absolute;
+  left:0;right:0;
+  bottom:-6px;
+  height:4px;
+  background:#42BD8A;
+  border-radius:9999px;
 }
 
-/* Subtitle */
+/* ── Subtitle ── */
 .msh-sub {
-  font-size:18px;color:#819890;
-  margin:0;font-weight:400;line-height:1.6;
+  font-size:20px;
+  color:#819890;
+  margin:0 0 40px;
+  font-weight:400;
+  line-height:1.6;
+  max-width:640px;
+  font-family:'Inter',sans-serif !important;
 }
 
-/* Divider */
+/* ── Divider ── */
 .msh-div {
   width:100%;height:1px;
-  background:#232F2B;
-  margin:36px 0;
+  background:rgba(35,47,43,0.5);
+  margin-bottom:56px;
+  flex-shrink:0;
 }
 
-/* Stats row — open grid, no box */
+/* ── Stats ── */
 .msh-stats {
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:0;width:100%;margin-bottom:44px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0;
+  width:100%;
+  margin-bottom:0;
 }
 .msh-stat {
-  padding:24px 16px;text-align:center;
-  border-right:1px solid #232F2B;
+  padding:8px 24px;
+  text-align:center;
+  position:relative;
 }
-.msh-stat:last-child { border-right:none; }
+/* Vertical dividers */
+.msh-stat:nth-child(2)::before {
+  content:'';
+  position:absolute;left:0;
+  top:25%;bottom:25%;
+  width:1px;
+  background:rgba(35,47,43,0.8);
+}
+.msh-stat:nth-child(2)::after {
+  content:'';
+  position:absolute;right:0;
+  top:25%;bottom:25%;
+  width:1px;
+  background:rgba(35,47,43,0.8);
+}
 .msh-stat-n {
-  font-size:clamp(36px,4.5vw,60px);
-  font-weight:700;color:#42BD8A;
-  line-height:1;display:block;margin-bottom:8px;
+  font-size:clamp(40px,5vw,60px);
+  font-weight:700;
+  color:#42BD8A;
+  line-height:1;
+  display:block;
+  margin-bottom:8px;
+  font-family:'Inter',sans-serif !important;
+  text-shadow:0 0 20px rgba(66,189,138,0.3);
 }
 .msh-stat-l {
-  font-size:13px;color:#819890;
-  text-transform:uppercase;letter-spacing:.1em;
-  display:block;line-height:1.4;font-weight:500;
+  font-size:11px;
+  color:#819890;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  display:block;
+  line-height:1.4;
+  font-weight:400;
+  font-family:'Inter',sans-serif !important;
 }
 
-/* CTA button — dark gradient like Lovable */
+/* ── CTA Button ── */
+.msh-btn-wrap {
+  display:flex;justify-content:center;
+  padding:64px 0;
+  width:100%;
+}
 .msh-btn {
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,#1e5240,#2d8a62,#3a7a6a);
-  color:#fff;border:none;border-radius:9999px;
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,#225946 0%,#35976E 50%,#3F8367 100%);
+  color:#fff;border:none;
+  border-radius:9999px;
   padding:18px 40px;
-  font-size:17px;font-weight:600;
+  font-size:18px;font-weight:600;
   cursor:pointer;
-  font-family:'Inter',-apple-system,sans-serif;
+  font-family:'Inter',sans-serif !important;
   letter-spacing:.01em;
-  transition:transform .2s,box-shadow .2s;
+  transition:transform .3s,box-shadow .3s;
   animation:msh-pulse 2.5s ease-in-out infinite;
-  box-shadow:0 4px 20px rgba(42,140,100,0.3);
+  box-shadow:0 4px 24px rgba(66,189,138,0.25);
+  min-height:60px;
+  text-decoration:none;
 }
 .msh-btn:hover {
   transform:scale(1.05);
-  box-shadow:0 8px 32px rgba(42,140,100,0.45);
+  box-shadow:0 8px 40px rgba(66,189,138,0.4);
   animation:none;
+  color:#fff;
 }
 @keyframes msh-pulse {
-  0%,100% { box-shadow:0 4px 20px rgba(42,140,100,0.3); }
-  50%      { box-shadow:0 4px 32px rgba(42,140,100,0.55); }
+  0%,100% { box-shadow:0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow:0 4px 40px rgba(66,189,138,0.45),0 0 0 8px rgba(66,189,138,0.06); }
 }
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════
    RESPONSIVE
-══════════════════════════════════════ */
+══════════════════════════════════════════ */
 @media (max-width:1024px) {
-  #msh-s1 { padding:90px 40px 70px 296px; }
+  #msh-s1 { padding:100px 48px 60px calc(256px + 40px); }
 }
+
 @media (max-width:768px) {
-  #msh-sidebar { width:52px; }
-  #msh-sidebar .msh-sb-ttl,
-  #msh-sidebar .msh-ni-lbl,
-  #msh-sidebar .msh-sb-cnt { opacity:0;pointer-events:none; }
-  #msh-s1 { padding:60px 20px 60px 68px; }
-  .msh-stats { grid-template-columns:1fr; }
-  .msh-stat { border-right:none;border-bottom:1px solid #232F2B; }
-  .msh-stat:last-child { border-bottom:none; }
-  .msh-badge { padding:6px 14px; }
-  .msh-h1 { font-size:clamp(32px,7vw,48px); }
+  #msh-sidebar { transform:translateX(-100%); width:256px; }
+  #msh-sidebar.msh-mob-open { transform:translateX(0); }
+  #msh-mob-tog { display:flex; }
+  #msh-s1 { padding:80px 24px 60px 24px; }
+  .msh-hero-inner { text-align:center; }
+  .msh-stats { grid-template-columns:1fr 1fr 1fr; gap:0; }
+  .msh-btn-wrap { padding:40px 0; }
+  .msh-sub { font-size:17px; }
 }
-@media (max-width:480px) {
-  #msh-s1 { padding:50px 16px 50px 62px; }
-  .msh-badge-sep { margin:0 8px; }
-  .msh-hero-inner { text-align:left;align-items:flex-start; }
-  .msh-badge { justify-content:flex-start; }
+
+@media (max-width:540px) {
+  #msh-s1 { padding:80px 20px 40px 20px; }
+  .msh-h1 { font-size:clamp(30px,8vw,44px); }
+  .msh-badge { padding:8px 14px; flex-wrap:wrap; gap:6px; justify-content:center; }
+  .msh-badge-sep { display:none; }
+  .msh-stats { grid-template-columns:1fr; }
+  .msh-stat:nth-child(2)::before,
+  .msh-stat:nth-child(2)::after { display:none; }
+  .msh-stat {
+    padding:16px 0;
+    border-bottom:1px solid rgba(35,47,43,0.6);
+  }
+  .msh-stat:last-child { border-bottom:none; }
 }
 </style>
 
-<!-- PROGRESS BAR (moved to body by JS) -->
+<!-- Mobile toggle -->
+<button id="msh-mob-tog" onclick="mshMobToggle()" aria-label="Меню">
+  <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+    <path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- Mobile overlay -->
+<div id="msh-overlay" onclick="mshMobClose()"></div>
+
+<!-- PROGRESS BAR -->
 <div id="msh-prog"><div id="msh-prog-fill"></div></div>
 
-<!-- SIDEBAR (moved to body by JS) -->
+<!-- SIDEBAR -->
 <aside id="msh-sidebar">
   <div class="msh-sb-hd">
-    <span class="msh-sb-ttl">Содержание</span>
+    <div class="msh-sb-ttl-wrap">
+      <span class="msh-sb-ttl">Содержание</span>
+      <div class="msh-sb-ttl-bar"></div>
+    </div>
     <button class="msh-sb-tog" onclick="mshToggle()" title="Свернуть">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.8"
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 11L5 7L9 3" stroke="currentColor" stroke-width="1.6"
           stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
   </div>
+
   <nav class="msh-sb-nav" id="msh-nav">
     <div class="msh-ni msh-cur" data-s="1" onclick="mshGo(1)">
       <div class="msh-ni-ico msh-act" id="msh-ico-1">
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-          <polygon points="1,0.5 8.5,4.5 1,8.5" fill="currentColor"/>
+        <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+          <polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -332,11 +519,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="2" onclick="mshGo(2)">
-      <div class="msh-ni-ico" id="msh-ico-2">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-2">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -345,11 +531,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="3" onclick="mshGo(3)">
-      <div class="msh-ni-ico" id="msh-ico-3">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-3">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -358,11 +543,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="4" onclick="mshGo(4)">
-      <div class="msh-ni-ico" id="msh-ico-4">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-4">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -371,11 +555,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="5" onclick="mshGo(5)">
-      <div class="msh-ni-ico" id="msh-ico-5">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-5">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -384,11 +567,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="6" onclick="mshGo(6)">
-      <div class="msh-ni-ico" id="msh-ico-6">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-6">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -397,11 +579,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="7" onclick="mshGo(7)">
-      <div class="msh-ni-ico" id="msh-ico-7">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-7">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -410,11 +591,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="8" onclick="mshGo(8)">
-      <div class="msh-ni-ico" id="msh-ico-8">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-8">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -423,11 +603,10 @@
       </div>
     </div>
     <div class="msh-ni" data-s="9" onclick="mshGo(9)">
-      <div class="msh-ni-ico" id="msh-ico-9">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <rect x="1.5" y="4.2" width="7" height="5" rx="1.2"
-            stroke="currentColor" stroke-width="1.2"/>
-          <path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/>
+      <div class="msh-ni-ico msh-lock" id="msh-ico-9">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+          <rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
       <div class="msh-ni-lbl">
@@ -436,57 +615,73 @@
       </div>
     </div>
   </nav>
+
   <div class="msh-sb-ft">
     <div class="msh-sb-cnt" id="msh-cnt">1 / 9</div>
   </div>
 </aside>
 
-<!-- HERO -->
-<div id="msh-s1" data-msh-sec="1">
-  <div class="msh-hero-inner">
+<!-- HERO WRAPPER -->
+<div id="msh-wrap">
+  <div id="msh-s1" data-msh-sec="1">
+    <div class="msh-hero-inner">
 
-    <div class="msh-badge">
-      <span class="msh-badge-date">📅 17–19 апреля</span>
-      <span class="msh-badge-sep"></span>
-      <span class="msh-badge-meta">📍 в Доброграде</span>
-      <span class="msh-badge-sep"></span>
-      <span class="msh-badge-meta">⏱ 12 мин</span>
+      <!-- Meta badge -->
+      <div class="msh-badge">
+        <span class="msh-badge-item">
+          <span class="msh-badge-date">17–19 апреля</span>
+        </span>
+        <span class="msh-badge-sep"></span>
+        <span class="msh-badge-item msh-badge-muted">в Доброграде</span>
+        <span class="msh-badge-sep"></span>
+        <span class="msh-badge-item msh-badge-muted">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          12 мин
+        </span>
+      </div>
+
+      <!-- H1 -->
+      <h1 class="msh-h1">
+        Стратегия <span class="msh-green">масштабирования</span>,<br>
+        которая работает даже на<br>
+        <span class="msh-underline-wrap">падающем рынке<span class="msh-underline-bar"></span></span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="msh-sub">Аналитический материал международной школы бизнеса «Горки»</p>
+
+      <!-- Divider -->
+      <div class="msh-div"></div>
+
+      <!-- Stats -->
+      <div class="msh-stats">
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st1">35 лет</span>
+          <span class="msh-stat-l">Опыт «Асконы»</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st2">6</span>
+          <span class="msh-stat-l">Смен модели</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st3">топ-88+</span>
+          <span class="msh-stat-l">Техкомпаний мира</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="msh-btn-wrap">
+        <button class="msh-btn" onclick="mshScrollTo(2)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
     </div>
-
-    <h1 class="msh-h1">
-      Стратегия <span class="msh-ac">масштабирования</span>,<br>
-      которая работает даже на<br>
-      <span class="msh-ul">падающем рынке</span>
-    </h1>
-
-    <p class="msh-sub">
-      Аналитический материал международной школы бизнеса «Горки»
-    </p>
-
-    <div class="msh-div"></div>
-
-    <div class="msh-stats">
-      <div class="msh-stat">
-        <span class="msh-stat-n" id="msh-st1">0 лет</span>
-        <span class="msh-stat-l">Опыт «Асконы»</span>
-      </div>
-      <div class="msh-stat">
-        <span class="msh-stat-n" id="msh-st2">0</span>
-        <span class="msh-stat-l">Смен модели</span>
-      </div>
-      <div class="msh-stat">
-        <span class="msh-stat-n" id="msh-st3">топ-0</span>
-        <span class="msh-stat-l">Техкомпаний мира</span>
-      </div>
-    </div>
-
-    <button class="msh-btn" onclick="mshScrollTo(2)">
-      Читать дальше
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <path d="M9 13.5L3.5 7.5H14.5L9 13.5Z" fill="currentColor"/>
-      </svg>
-    </button>
-
   </div>
 </div>
 
@@ -495,56 +690,107 @@
   'use strict';
 
   var TOTAL = 9;
-  var PLAY = '<svg width="9" height="9" viewBox="0 0 9 9" fill="none"><polygon points="1,0.5 8.5,4.5 1,8.5" fill="currentColor"/></svg>';
-  var DONE = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="#42BD8A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  var LOCK = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="1.5" y="4.2" width="7" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.2V3a2 2 0 014 0v1.2" stroke="currentColor" stroke-width="1.2"/></svg>';
+  var PLAY = '<svg width="8" height="10" viewBox="0 0 8 10" fill="none"><polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/></svg>';
+  var DONE = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.5l2.5 2.5 4.5-4.5" stroke="#42BD8A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var LOCK = '<svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>';
 
-  /* ── Move sidebar & progress to <body> to fix Tilda's CSS transform bug ── */
+  /* ── Fix Tilda's CSS transform bug: move fixed elements to <body> ── */
   function fixFixed() {
-    var sb = document.getElementById('msh-sidebar');
-    var pb = document.getElementById('msh-prog');
-    if (sb && sb.parentNode !== document.body) document.body.appendChild(sb);
-    if (pb && pb.parentNode !== document.body) document.body.appendChild(pb);
+    ['msh-sidebar','msh-prog','msh-mob-tog','msh-overlay'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.parentNode !== document.body) {
+        document.body.appendChild(el);
+      }
+    });
+    /* Force dark body background */
+    document.body.style.background = '#08110E';
+    document.documentElement.style.background = '#08110E';
   }
 
-  /* ── Public API ── */
+  /* ── Connector lines (drawn per nav item) ── */
+  function buildConnectors() {
+    var items = document.querySelectorAll('#msh-nav .msh-ni');
+    items.forEach(function(ni, idx) {
+      /* Remove old lines */
+      var old = ni.querySelectorAll('.msh-ni-line');
+      old.forEach(function(o){ o.remove(); });
+      /* Add line if not last */
+      if (idx < items.length - 1) {
+        var line = document.createElement('div');
+        line.className = 'msh-ni-line';
+        /* Height = full item height - icon top offset */
+        ni.style.position = 'relative';
+        line.style.cssText = 'position:absolute;left:28px;top:47px;width:1.5px;bottom:0;background:rgba(35,47,43,1);z-index:0;';
+        ni.appendChild(line);
+      }
+    });
+  }
+
+  /* ── Public API (accessible from other Tilda blocks) ── */
   window.mshScrollTo = function(n) {
     var el = document.querySelector('[data-msh-sec="'+n+'"]');
-    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+    if (el) {
+      el.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
   };
   window.mshUnlock = function(n) { window.mshScrollTo(n + 1); };
-  window.mshGo = function(n) { window.mshScrollTo(n); };
+  window.mshGo    = function(n) { window.mshScrollTo(n); };
   window.mshToggle = function() {
     var sb = document.getElementById('msh-sidebar');
-    if (sb) sb.classList.toggle('msh-col');
+    if (!sb) return;
+    if (window.innerWidth <= 768) {
+      mshMobToggle();
+    } else {
+      sb.classList.toggle('msh-col');
+    }
+  };
+  window.mshMobToggle = function() {
+    var sb  = document.getElementById('msh-sidebar');
+    var ov  = document.getElementById('msh-overlay');
+    if (!sb) return;
+    var open = sb.classList.toggle('msh-mob-open');
+    if (ov) {
+      ov.style.display = open ? 'block' : 'none';
+    }
+  };
+  window.mshMobClose = function() {
+    var sb = document.getElementById('msh-sidebar');
+    var ov = document.getElementById('msh-overlay');
+    if (sb) sb.classList.remove('msh-mob-open');
+    if (ov) ov.style.display = 'none';
   };
 
   /* ── Sidebar active state ── */
   function setActive(cur) {
-    document.querySelectorAll('#msh-nav .msh-ni').forEach(function(ni) {
+    var items = document.querySelectorAll('#msh-nav .msh-ni');
+    items.forEach(function(ni) {
       var s = parseInt(ni.getAttribute('data-s'), 10);
       var ic = ni.querySelector('.msh-ni-ico');
       ni.classList.remove('msh-cur');
       if (!ic) return;
       if (s < cur) {
-        ic.className = 'msh-ni-ico msh-done'; ic.innerHTML = DONE;
+        ic.className = 'msh-ni-ico msh-done';
+        ic.innerHTML = DONE;
       } else if (s === cur) {
         ni.classList.add('msh-cur');
-        ic.className = 'msh-ni-ico msh-act'; ic.innerHTML = PLAY;
+        ic.className = 'msh-ni-ico msh-act';
+        ic.innerHTML = PLAY;
       } else {
-        ic.className = 'msh-ni-ico'; ic.innerHTML = LOCK;
+        ic.className = 'msh-ni-ico msh-lock';
+        ic.innerHTML = LOCK;
       }
     });
     var c = document.getElementById('msh-cnt');
     if (c) c.textContent = cur + ' / ' + TOTAL;
   }
 
-  /* ── Scroll handler ── */
+  /* ── Scroll progress + active section ── */
   window.addEventListener('scroll', function() {
     var fill = document.getElementById('msh-prog-fill');
     if (fill) {
-      var s = window.scrollY, t = document.body.scrollHeight - window.innerHeight;
-      fill.style.width = (t > 0 ? Math.min(Math.round(s / t * 100), 100) : 0) + '%';
+      var scrolled = window.scrollY;
+      var total    = document.body.scrollHeight - window.innerHeight;
+      fill.style.width = (total > 0 ? Math.min(100, Math.round(scrolled / total * 100)) : 0) + '%';
     }
     var cur = 1;
     for (var i = 1; i <= TOTAL; i++) {
@@ -552,29 +798,62 @@
       if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.45) cur = i;
     }
     setActive(cur);
-  }, { passive: true });
+  }, { passive:true });
 
   /* ── Counter animation ── */
-  function count(el, to, pre, suf, dur) {
+  function countUp(elId, target, prefix, suffix, duration) {
+    var el = document.getElementById(elId);
     if (!el) return;
-    var t0 = Date.now();
+    var start = Date.now();
     var id = setInterval(function() {
-      var p = Math.min((Date.now() - t0) / dur, 1);
-      var e = 1 - Math.pow(1 - p, 3);
-      el.textContent = (pre||'') + Math.round(e * to) + (suf||'');
-      if (p >= 1) clearInterval(id);
+      var progress = Math.min((Date.now() - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3); /* ease-out cubic */
+      var val = Math.round(eased * target);
+      el.textContent = (prefix||'') + val + (suffix||'');
+      if (progress >= 1) clearInterval(id);
     }, 16);
+  }
+
+  /* ── Intersection Observer for counter trigger ── */
+  function initCounters() {
+    var s1 = document.getElementById('msh-s1');
+    if (!s1) return;
+    /* Reset to 0 first */
+    var st1 = document.getElementById('msh-st1');
+    var st2 = document.getElementById('msh-st2');
+    var st3 = document.getElementById('msh-st3');
+    if (st1) st1.textContent = '0 лет';
+    if (st2) st2.textContent = '0';
+    if (st3) st3.textContent = 'топ-0+';
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          setTimeout(function() {
+            countUp('msh-st1', 35, '',     ' лет', 1400);
+            countUp('msh-st2', 6,  '',     '',      1000);
+            countUp('msh-st3', 88, 'топ-', '+',     1600);
+          }, 200);
+          observer.disconnect();
+        }
+      }, { threshold: 0.3 });
+      observer.observe(s1);
+    } else {
+      /* Fallback */
+      setTimeout(function() {
+        countUp('msh-st1', 35, '',     ' лет', 1400);
+        countUp('msh-st2', 6,  '',     '',      1000);
+        countUp('msh-st3', 88, 'топ-', '+',     1600);
+      }, 600);
+    }
   }
 
   /* ── Init ── */
   function init() {
     fixFixed();
+    buildConnectors();
     setActive(1);
-    setTimeout(function() {
-      count(document.getElementById('msh-st1'), 35, '',      ' лет', 1300);
-      count(document.getElementById('msh-st2'), 6,  '',      '',      1000);
-      count(document.getElementById('msh-st3'), 100,'топ-',  '+',     1500);
-    }, 500);
+    initCounters();
   }
 
   if (document.readyState === 'loading') {
@@ -582,6 +861,10 @@
   } else {
     init();
   }
+
+  /* Retry fixFixed after Tilda may add transforms */
+  setTimeout(fixFixed, 300);
+  setTimeout(fixFixed, 1000);
 
 })();
 </script>
