@@ -263,10 +263,13 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
 /* Hero content wrapper */
 .msh-inner {
   position: relative !important; z-index: 1 !important;
-  max-width: 1000px !important; width: 100% !important;
+  max-width: 920px !important; width: 100% !important;
   display: flex !important; flex-direction: column !important;
   align-items: center !important; text-align: center !important;
 }
+/* Forced line break after "масштабирования," — matches Lovable's natural wrap */
+.msh-h1-br { display: block !important; }
+@media (max-width: 900px) { .msh-h1-br { display: none !important; } }
 
 /* ══════════════════════════════════════════════════════
    6. META BADGE
@@ -622,7 +625,7 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
       </div>
 
       <!-- H1 -->
-      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>, которая работает даже на <span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
+      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>,<br class="msh-h1-br"> которая работает даже на <span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
 
       <!-- Subtitle -->
       <p class="msh-sub">Аналитический материал международной школы бизнеса «Горки»</p>
