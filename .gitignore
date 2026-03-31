@@ -1,0 +1,8 @@
+.DS_Store
+.claude/
+.history/
+.playwright-mcp/
+.vscode/
+extracted/
+*.jpeg
+*.png

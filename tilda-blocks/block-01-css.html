@@ -1,0 +1,198 @@
+<!-- БЛОК 1: CSS-стили -->
+<style>
+/* Load Tailwind CSS via @import — Tilda strips <link> tags but cannot strip @import inside <style> */
+@import url('https://scale.gorkybusiness.school/assets/index-e29d3z3F.css');
+/* Fonts: load from Tilda CDN */
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff2") format("woff2"),local("TildaSans"),local("Tilda Sans");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff2") format("woff2"),local("TildaSans-Medium");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-SemiBold.woff2") format("woff2"),local("TildaSans-SemiBold");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff2") format("woff2"),local("TildaSans-Bold");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-ExtraBold.woff2") format("woff2"),local("TildaSans-ExtraBold");font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url("https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff2") format("woff2"),local("TildaSans-Black");font-weight:900;font-style:normal;font-display:swap}
+
+/* Fix Tilda wrappers */
+.r.t-rec{padding:0!important;margin:0!important}
+.t123{padding:0!important;margin:0!important}
+.t-body{background-color:hsl(160,55%,5%)!important}
+.r.t-rec+.r.t-rec{margin-top:-1px!important}
+
+/* Fix SVG dividers */
+svg[viewBox*="1440"]{display:block!important;width:100%!important;height:auto!important;line-height:0!important;margin:-1px 0!important;padding:0!important;vertical-align:bottom!important}
+
+/* Make content visible — opacity only via CSS, transform via JS */
+html{scroll-behavior:smooth;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;height:auto!important}
+body{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;height:auto!important;position:static!important}
+/* MOBILE SCROLL FIX: ensure touch scrolling works on all wrappers */
+.t-rec,.t123,.t-body,.t-records,#allrecords{overflow:visible!important;touch-action:pan-y pan-x!important;-webkit-overflow-scrolling:touch!important;height:auto!important}
+/* Zero Block artboard: don't let it block page scroll */
+.t396__artboard{touch-action:pan-y!important}
+/* Prevent invisible elements from capturing touches */
+.pointer-events-none,[class*="pointer-events-none"]{pointer-events:none!important}
+.t123 *:not(.marquiz__container *):not([id*="marquiz"] *):not(.marquiz__wrapper *),
+.r.t-rec *:not(.marquiz__container *):not([id*="marquiz"] *):not(.marquiz__wrapper *),
+section *:not(.marquiz__container *):not([id*="marquiz"] *):not(.marquiz__wrapper *),
+nav *,
+footer *,
+[id]:not([id*="marquiz"]) > *{opacity:1!important}
+
+/* FAQ accordion */
+#faq button[data-state] svg{transition:transform .3s ease}
+#faq button[data-state="open"] svg{transform:rotate(180deg)}
+
+/* Review carousel */
+[data-carousel-slide]{animation:fadeIn .3s ease-in}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+[data-carousel-dot]{height:4px;border-radius:9999px;transition:all .3s ease;cursor:pointer;border:none;padding:0}
+/* Carousel dots spacing fixed via JS in block-07 */
+
+/* FIX 1: Override Tilda's global link color (orange/yellow) */
+section a, section a:visited,
+nav a, nav a:visited,
+footer a, footer a:visited,
+.t123 a, .t123 a:visited,
+.r.t-rec a, .r.t-rec a:visited {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+section a:hover, nav a:hover, footer a:hover,
+.t123 a:hover, .r.t-rec a:hover {
+  color: inherit !important;
+  opacity: 0.8;
+}
+
+/* FIX 2: dot patterns hidden via JS in block-07 */
+
+/* FIX 3: Green left border on quote blocks - force color */
+.border-l-4.border-primary {
+  border-left: 4px solid hsl(160, 60%, 42%) !important;
+}
+.border-l-4.border-primary.pl-5 {
+  padding-left: 1.25rem !important;
+  border-left: 4px solid hsl(160, 60%, 42%) !important;
+}
+/* Also fix the "Что происходит" section quote */
+p.border-l-4.border-primary {
+  border-left: 4px solid hsl(160, 60%, 42%) !important;
+}
+
+/* FIX 4: Program tree section — full responsive layout */
+/* Desktop container */
+#program [class*="hidden"][class*="md:flex"][class*="relative"] {
+  display: flex !important;
+  position: relative !important;
+  min-height: 500px !important;
+  align-items: stretch !important;
+}
+/* Tree image container */
+#program [class*="hidden"][class*="md:flex"] > [class*="shrink-0"] {
+  width: 45% !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  position: relative !important;
+}
+#program [class*="hidden"][class*="md:flex"] > [class*="shrink-0"] img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+/* Strategy blocks */
+#program [class*="hidden"][class*="md:flex"] > .absolute {
+  position: absolute !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Mobile: JS handles layout switching */
+
+
+/* ===== TABLET: reduce sizes (768-1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #program [class*="hidden"][class*="md:flex"][class*="relative"] {
+    min-height: 400px !important;
+  }
+  #program [class*="hidden"][class*="md:flex"] > [class*="shrink-0"] {
+    width: 40% !important;
+  }
+  #program [class*="hidden"][class*="md:flex"] h3 {
+    font-size: 1rem !important;
+  }
+  #program [class*="hidden"][class*="md:flex"] .flex.flex-wrap span,
+  #program [class*="hidden"][class*="md:flex"] .flex.flex-wrap div {
+    font-size: 0.8rem !important;
+    padding: 0.3rem 0.8rem !important;
+  }
+}
+
+/* FIX 5: Progress bars - override inline width:0px */
+.h-full.rounded-full.bg-gradient-to-r[style*="width: 0px"],
+.h-full.rounded-full.bg-gradient-to-r[style*="width:0px"] {
+  width: var(--bar-pct) !important;
+  transition: width 1s ease-out;
+}
+
+/* FIX 6: Marquiz — DON'T override internals, just ensure container is visible */
+[data-marquiz-id] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* FIX 7: Speaker photo cards — rounded border + aspect ratio */
+/* Target by section #speakers → photo container divs */
+#speakers .rounded-2xl {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  border: 1px solid hsl(155, 25%, 85%) !important;
+}
+#speakers img[alt] {
+  border-radius: 0 !important;
+}
+/* Speaker card container — limit width on tablet/mobile */
+@media (max-width: 1023px) {
+  #speakers .flex-col > div > div:first-child {
+    width: 60% !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+  }
+}
+@media (max-width: 640px) {
+  #speakers .flex-col > div > div:first-child {
+    width: 80% !important;
+    max-width: 250px !important;
+  }
+}
+
+/* FIX 8: MBA Robot SVG animation */
+svg[viewBox="0 0 400 320"] g[style*="transform-origin"] {
+  animation: robotBob 3s ease-in-out infinite;
+}
+svg[viewBox="0 0 400 320"] g[style*="transform-origin"]:nth-of-type(2) {
+  animation: robotBob 3s ease-in-out infinite 0.5s;
+}
+svg[viewBox="0 0 400 320"] g[style*="transform-origin"]:nth-of-type(3) {
+  animation: robotBob 3s ease-in-out infinite 1s;
+}
+/* Head wobble */
+svg[viewBox="0 0 400 320"] > g:first-of-type {
+  animation: headWobble 4s ease-in-out infinite;
+  transform-origin: 200px 80px;
+}
+/* Shadow pulse */
+svg[viewBox="0 0 400 320"] ellipse {
+  animation: shadowPulse 3s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes robotBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes headWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+@keyframes shadowPulse {
+  0%, 100% { transform: scaleX(1); opacity: 0.2; }
+  50% { transform: scaleX(0.85); opacity: 0.15; }
+}
+</style>
