@@ -232,7 +232,7 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
   flex-direction: column !important;
   justify-content: center !important;
   /* Left offset: sidebar(256) + inner gap(64) = 320px */
-  padding: 100px 80px 40px 320px !important;
+  padding: 112px 48px 80px 320px !important;
   position: relative !important;
   box-sizing: border-box !important;
   background: transparent !important;
@@ -263,7 +263,7 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
 /* Hero content wrapper */
 .msh-inner {
   position: relative !important; z-index: 1 !important;
-  max-width: 840px !important; width: 100% !important;
+  max-width: 1000px !important; width: 100% !important;
   display: flex !important; flex-direction: column !important;
   align-items: center !important; text-align: center !important;
 }
@@ -340,6 +340,7 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
   color: #EDEDED !important;
   background: transparent !important;
   font-size: inherit !important; font-weight: inherit !important;
+  text-decoration: none !important;
 }
 .msh-h1-ul-bar {
   position: absolute !important;
@@ -479,30 +480,42 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
 /* ══════════════════════════════════════════════════════
    12. RESPONSIVE
 ══════════════════════════════════════════════════════ */
-@media (max-width: 1100px) {
-  #msh-s1 { padding: 100px 60px 40px 300px !important; }
+@media (max-width: 1200px) {
+  #msh-s1 { padding: 112px 48px 80px 310px !important; }
+}
+@media (max-width: 1024px) {
+  #msh-s1 { padding: 100px 40px 60px 296px !important; }
+  .msh-h1 { font-size: clamp(34px, 4.8vw, 60px) !important; }
 }
 @media (max-width: 900px) {
-  #msh-s1 { padding: 100px 40px 40px 290px !important; }
+  #msh-s1 { padding: 100px 32px 60px 288px !important; }
+  .msh-h1 { font-size: clamp(32px, 5vw, 52px) !important; }
 }
 @media (max-width: 768px) {
-  #msh-sidebar { transform: translateX(-256px) !important; }
+  #msh-sidebar { transform: translateX(-256px) !important; transition: transform .3s ease !important; }
   #msh-sidebar.msh-mob-open { transform: translateX(0) !important; }
   #msh-mob-btn { display: flex !important; }
-  #msh-s1 { padding: 80px 24px 40px 24px !important; }
+  #msh-s1 { padding: 80px 32px 60px 32px !important; }
+  .msh-inner { max-width: 100% !important; }
+  .msh-h1 { font-size: clamp(32px, 6.5vw, 52px) !important; }
+  .msh-sub { font-size: 18px !important; }
   .msh-stats { grid-template-columns: 1fr 1fr 1fr !important; }
-  .msh-btn-row { padding: 40px 0 !important; }
+  .msh-btn-row { padding: 48px 0 !important; }
+  .msh-stat-n { font-size: clamp(32px, 5vw, 48px) !important; }
 }
 @media (max-width: 520px) {
   #msh-s1 { padding: 72px 20px 40px 20px !important; }
-  .msh-h1 { font-size: clamp(28px, 9vw, 44px) !important; letter-spacing: -.01em !important; }
-  .msh-sub { font-size: 16px !important; }
-  .msh-badge { padding: 8px 14px !important; flex-wrap: wrap !important; gap: 4px !important; justify-content: center !important; }
+  .msh-h1 { font-size: clamp(26px, 8.5vw, 40px) !important; letter-spacing: -.01em !important; }
+  .msh-sub { font-size: 15px !important; margin: 0 0 32px !important; }
+  .msh-badge { padding: 8px 14px !important; flex-wrap: wrap !important; gap: 6px !important; justify-content: center !important; }
   .msh-bdg-sep { display: none !important; }
   .msh-stats { grid-template-columns: 1fr !important; }
   .msh-stat + .msh-stat::before { display: none !important; }
   .msh-stat { padding: 16px 0 !important; border-bottom: 1px solid rgba(35,47,43,0.5) !important; }
   .msh-stat:last-child { border-bottom: none !important; }
+  .msh-btn-row { padding: 32px 0 !important; }
+  .msh-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .msh-div { margin: 0 0 40px !important; }
 }
 </style>
 
@@ -609,7 +622,7 @@ html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
       </div>
 
       <!-- H1 -->
-      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>,<br>которая работает даже на<br><span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
+      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>, которая работает даже на <span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
 
       <!-- Subtitle -->
       <p class="msh-sub">Аналитический материал международной школы бизнеса «Горки»</p>
