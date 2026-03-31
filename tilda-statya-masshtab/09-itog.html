@@ -1,0 +1,147 @@
+<!-- BLOCK 09: Итог (LIGHT) -->
+<style>
+#msh-s9{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#e8f5ee;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s9 *{box-sizing:border-box}
+#msh-s9 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#1a2e22;margin-bottom:14px;
+}
+#msh-s9 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:28px 0 12px;color:#fff;
+}
+#msh-s9 p{
+  font-size:16px;line-height:1.8;color:#2d4a35;
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s9 .msh-ac{color:#1a8c45}
+/* checklist */
+.msh-checklist{
+  list-style:none;padding:0;margin:24px 0;max-width:680px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.msh-checklist li{
+  display:flex;align-items:flex-start;gap:14px;
+  background:#fff;border:1px solid rgba(26,140,69,.18);border-radius:10px;
+  padding:16px 18px;
+}
+.msh-check-icon{
+  width:24px;height:24px;border-radius:50%;background:#1a8c45;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.msh-check-icon svg{width:13px;height:13px}
+.msh-check-text{font-size:15px;color:#1a2e22;line-height:1.6;font-weight:500}
+/* CTA box */
+.msh-cta-box{
+  background:#1a2e22;border-radius:16px;padding:36px 40px;
+  max-width:720px;margin:36px 0 28px;
+  box-shadow:0 8px 32px rgba(10,26,17,.18);
+}
+.msh-cta-box h3{
+  font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;margin:0 0 12px;
+}
+.msh-cta-box p{
+  font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:20px;max-width:560px;
+}
+.msh-cta-box .msh-cta-btn{
+  display:inline-flex;align-items:center;gap:8px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:15px 30px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  text-decoration:none;transition:transform .2s,box-shadow .2s;
+}
+.msh-cta-box .msh-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.4)}
+.msh-cta-meta{
+  font-size:13px;color:rgba(255,255,255,.4);margin-top:14px;
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.msh-cta-meta span{display:flex;align-items:center;gap:5px}
+/* footer */
+.msh-footer{
+  font-size:13px;color:rgba(26,46,34,.45);margin-top:36px;
+  padding-top:20px;border-top:1px solid rgba(26,140,69,.15);
+  max-width:720px;
+}
+@media(max-width:900px){
+  #msh-s9{padding:52px 20px 40px 68px}
+  .msh-cta-box{padding:24px 20px}
+}
+</style>
+
+<div id="msh-s9" data-msh-sec="9">
+  <h2>Как всё <span class="msh-ac">собирается вместе</span></h2>
+
+  <ul class="msh-checklist">
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Масштабирование — это эволюция бизнес-модели, а не «больше того же самого»</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Любая модель конечна — вопрос только в том, когда и в каком состоянии вы встретите её потолок</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Контекст: необходимо понимать, в каком мире (страна, отрасль, глобальные циклы) вы строите стратегию</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Личность: кто вы как предприниматель, зачем вам этот бизнес, и в чём ваша суперсила (главген)</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Дело: как устроена ваша нынешняя модель, какие активы работают, и где реальный потолок роста</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">На пересечении Контекста, Личности и Дела — Точка максимального потенциала и следующий виток</span>
+    </li>
+  </ul>
+
+  <div class="msh-cta-box">
+    <h3>Что дальше</h3>
+    <p>Интенсив «Масштаб» — три дня глубокой работы с методологией «Горок» в Доброграде. Вы пройдёте все три элемента на своём бизнесе, найдёте точку потенциала и сформируете стратегию следующего витка вместе с командой экспертов и другими собственниками.</p>
+    <a href="#" class="msh-cta-btn">Оставить заявку →</a>
+    <div class="msh-cta-meta">
+      <span>📅 17–19 апреля</span>
+      <span>📍 Доброград</span>
+      <span>👥 Ограниченное число мест</span>
+    </div>
+  </div>
+
+  <div class="msh-footer">© Школа бизнеса «Горки» · Методология масштабирования</div>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s9');
+    if(!el) return;
+    var u = getU();
+    if(u < 9){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>

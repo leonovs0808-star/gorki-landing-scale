@@ -1,0 +1,403 @@
+<!-- BLOCK 01: Введение + Sidebar + Global JS -->
+<style>
+/* ===== SIDEBAR ===== */
+#msh-sidebar{
+  position:fixed;left:0;top:0;width:250px;height:100vh;
+  background:#0d1f17;z-index:9999;display:flex;flex-direction:column;
+  transition:width .3s ease;overflow:hidden;
+}
+#msh-sidebar.msh-col{width:56px}
+.msh-sb-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 16px 16px;border-bottom:1px solid rgba(62,207,110,.15);
+  min-height:58px;
+}
+.msh-sb-title{
+  color:#3ecf6e;font-size:11px;font-weight:700;letter-spacing:2px;
+  white-space:nowrap;opacity:1;transition:opacity .2s;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+#msh-sidebar.msh-col .msh-sb-title{opacity:0;pointer-events:none}
+.msh-sb-toggle{
+  background:none;border:1px solid rgba(62,207,110,.3);border-radius:6px;
+  color:#3ecf6e;width:28px;height:28px;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;
+  font-size:14px;
+}
+.msh-sb-toggle:hover{background:rgba(62,207,110,.1)}
+.msh-sb-nav{flex:1;overflow-y:auto;padding:12px 0;scrollbar-width:thin;scrollbar-color:#3ecf6e22 transparent}
+.msh-sb-nav::-webkit-scrollbar{width:3px}
+.msh-sb-nav::-webkit-scrollbar-thumb{background:#3ecf6e44;border-radius:3px}
+.msh-nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 16px;
+  cursor:pointer;transition:background .2s;border-left:3px solid transparent;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.msh-nav-item:hover{background:rgba(62,207,110,.07)}
+.msh-nav-item.msh-cur{background:rgba(62,207,110,.12);border-left-color:#3ecf6e}
+.msh-nav-item.msh-lk-nav{opacity:.45}
+.msh-nav-icon{
+  width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(62,207,110,.35);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .2s;
+}
+.msh-nav-item.msh-cur .msh-nav-icon,
+.msh-nav-item .msh-nav-icon.msh-act{
+  background:#3ecf6e;border-color:#3ecf6e;
+}
+.msh-nav-item .msh-nav-icon.msh-done{
+  background:rgba(62,207,110,.15);border-color:#3ecf6e;
+}
+.msh-nav-icon svg{width:13px;height:13px}
+.msh-nav-label{white-space:nowrap;overflow:hidden;transition:opacity .2s;min-width:0}
+#msh-sidebar.msh-col .msh-nav-label{opacity:0;pointer-events:none}
+.msh-nav-num{font-size:10px;color:#3ecf6e;font-weight:700;display:block;line-height:1}
+.msh-nav-name{font-size:12px;color:rgba(255,255,255,.7);display:block;line-height:1.3;margin-top:2px}
+.msh-sb-foot{
+  padding:14px 16px;border-top:1px solid rgba(62,207,110,.15);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.msh-sb-counter{font-size:12px;color:rgba(255,255,255,.45);white-space:nowrap;overflow:hidden}
+/* ===== PROGRESS BAR ===== */
+#msh-progress{
+  position:fixed;top:0;left:250px;right:0;height:3px;
+  background:rgba(62,207,110,.15);z-index:9998;transition:left .3s;
+}
+#msh-progress-fill{height:100%;background:#3ecf6e;width:0%;transition:width .1s}
+#msh-sidebar.msh-col~#msh-progress{left:56px}
+/* ===== SECTION 1 ===== */
+#msh-s1{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#0a1a11;min-height:100vh;
+}
+#msh-s1 *{box-sizing:border-box}
+.msh-meta-badge{
+  display:inline-flex;align-items:center;gap:16px;
+  background:rgba(62,207,110,.1);border:1px solid rgba(62,207,110,.25);
+  border-radius:50px;padding:8px 18px;font-size:13px;color:rgba(255,255,255,.7);
+  margin-bottom:28px;flex-wrap:wrap;
+}
+#msh-s1 h1{
+  font-size:clamp(28px,4.5vw,56px);font-weight:800;line-height:1.1;
+  color:#fff;margin-bottom:16px;max-width:800px;
+}
+#msh-s1 .msh-ac{color:#3ecf6e}
+#msh-s1 .msh-subtitle{
+  font-size:16px;color:rgba(255,255,255,.55);margin-bottom:32px;
+  font-style:italic;
+}
+.msh-divider{height:1px;background:linear-gradient(90deg,#3ecf6e44,transparent);margin:32px 0;max-width:720px}
+.msh-stats-row{
+  display:flex;gap:0;border:1px solid rgba(62,207,110,.2);border-radius:12px;
+  overflow:hidden;max-width:520px;margin-bottom:36px;
+}
+.msh-stat-item{
+  flex:1;padding:20px 24px;text-align:center;border-right:1px solid rgba(62,207,110,.2);
+}
+.msh-stat-item:last-child{border-right:none}
+.msh-stat-num{
+  font-size:clamp(28px,4vw,40px);font-weight:800;color:#3ecf6e;line-height:1;
+  display:block;margin-bottom:4px;
+}
+.msh-stat-lbl{font-size:12px;color:rgba(255,255,255,.5);line-height:1.3}
+#msh-s1 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:transform .2s,box-shadow .2s;
+}
+#msh-s1 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+@media(max-width:900px){
+  #msh-s1{padding:52px 20px 40px 68px}
+  .msh-stats-row{flex-direction:column;max-width:300px}
+  .msh-stat-item{border-right:none;border-bottom:1px solid rgba(62,207,110,.2)}
+  .msh-stat-item:last-child{border-bottom:none}
+}
+</style>
+
+<!-- SIDEBAR -->
+<div id="msh-sidebar">
+  <div class="msh-sb-head">
+    <span class="msh-sb-title">СОДЕРЖАНИЕ</span>
+    <button class="msh-sb-toggle" onclick="mshToggleSb()">☰</button>
+  </div>
+  <nav class="msh-sb-nav" id="msh-nav">
+    <div class="msh-nav-item msh-cur" onclick="mshGoSec(1)" data-sec="1">
+      <div class="msh-nav-icon msh-act">
+        <svg viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="#0a1a11"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">01</span>
+        <span class="msh-nav-name">Введение</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(2)" data-sec="2">
+      <div class="msh-nav-icon" id="msh-ni-2">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">02</span>
+        <span class="msh-nav-name">Масштабирование</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(3)" data-sec="3">
+      <div class="msh-nav-icon" id="msh-ni-3">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">03</span>
+        <span class="msh-nav-name">Почему сейчас</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(4)" data-sec="4">
+      <div class="msh-nav-icon" id="msh-ni-4">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">04</span>
+        <span class="msh-nav-name">Ошибки</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(5)" data-sec="5">
+      <div class="msh-nav-icon" id="msh-ni-5">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">05</span>
+        <span class="msh-nav-name">Точка потенциала</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(6)" data-sec="6">
+      <div class="msh-nav-icon" id="msh-ni-6">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">06</span>
+        <span class="msh-nav-name">Контекст</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(7)" data-sec="7">
+      <div class="msh-nav-icon" id="msh-ni-7">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">07</span>
+        <span class="msh-nav-name">Личность</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(8)" data-sec="8">
+      <div class="msh-nav-icon" id="msh-ni-8">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">08</span>
+        <span class="msh-nav-name">Дело</span>
+      </div>
+    </div>
+    <div class="msh-nav-item msh-lk-nav" onclick="mshGoSec(9)" data-sec="9">
+      <div class="msh-nav-icon" id="msh-ni-9">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>
+      </div>
+      <div class="msh-nav-label">
+        <span class="msh-nav-num">09</span>
+        <span class="msh-nav-name">Итог</span>
+      </div>
+    </div>
+  </nav>
+  <div class="msh-sb-foot">
+    <div class="msh-sb-counter" id="msh-counter">1 / 9</div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="msh-progress"><div id="msh-progress-fill"></div></div>
+
+<!-- HERO SECTION -->
+<div id="msh-s1" data-msh-sec="1">
+  <div class="msh-meta-badge">
+    <span>📅 17–19 апреля</span>
+    <span>📍 в Доброграде</span>
+    <span>⏱ 12 мин</span>
+  </div>
+  <h1>Стратегия <span class="msh-ac">масштабирования</span>, которая работает даже на <span class="msh-ac">падающем рынке</span></h1>
+  <p class="msh-subtitle">Аналитический материал международной школы бизнеса «Горки»</p>
+  <div class="msh-divider"></div>
+  <div class="msh-stats-row">
+    <div class="msh-stat-item">
+      <span class="msh-stat-num" id="msh-st1">0</span>
+      <span class="msh-stat-lbl">лет методологии</span>
+    </div>
+    <div class="msh-stat-item">
+      <span class="msh-stat-num" id="msh-st2">0</span>
+      <span class="msh-stat-lbl">смен бизнес-модели у «Асконы»</span>
+    </div>
+    <div class="msh-stat-item">
+      <span class="msh-stat-num" id="msh-st3">0</span>
+      <span class="msh-stat-lbl">компаний в выборке</span>
+    </div>
+  </div>
+  <button class="msh-btn" onclick="mshUnlock(1)">Читать дальше ▼</button>
+</div>
+
+<!-- GLOBAL JS -->
+<script>
+(function(){
+  'use strict';
+
+  /* ── helpers ── */
+  var LOCK_SVG = '<svg viewBox="0 0 16 16" fill="none"><rect x="4" y="7" width="8" height="6" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="rgba(255,255,255,.5)" stroke-width="1.3"/></svg>';
+  var DONE_SVG = '<svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6" stroke="#3ecf6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var PLAY_SVG = '<svg viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="#0a1a11"/></svg>';
+
+  function getUnlocked(){
+    return parseInt(localStorage.getItem('msh_unlocked') || '1', 10);
+  }
+
+  /* ── sidebar update ── */
+  function mshUpdateSidebar(unlocked){
+    var items = document.querySelectorAll('#msh-nav .msh-nav-item');
+    items.forEach(function(item){
+      var sec = parseInt(item.getAttribute('data-sec'), 10);
+      var icon = item.querySelector('.msh-nav-icon');
+      if(!icon) return;
+      if(sec < unlocked){
+        item.classList.remove('msh-lk-nav','msh-cur');
+        icon.classList.add('msh-done');
+        icon.classList.remove('msh-act');
+        icon.innerHTML = DONE_SVG;
+      } else if(sec === unlocked){
+        item.classList.remove('msh-lk-nav');
+        item.classList.add('msh-cur');
+        icon.classList.add('msh-act');
+        icon.classList.remove('msh-done');
+        icon.innerHTML = PLAY_SVG;
+      } else {
+        item.classList.add('msh-lk-nav');
+        item.classList.remove('msh-cur','msh-done','msh-act');
+        icon.classList.remove('msh-done','msh-act');
+        icon.innerHTML = LOCK_SVG;
+      }
+    });
+    var counter = document.getElementById('msh-counter');
+    if(counter) counter.textContent = unlocked + ' / 9';
+  }
+
+  /* ── apply locks to sections ── */
+  function mshApplyLocks(){
+    var unlocked = getUnlocked();
+    var sections = document.querySelectorAll('[data-msh-sec]');
+    sections.forEach(function(sec){
+      var n = parseInt(sec.getAttribute('data-msh-sec'), 10);
+      if(n > unlocked){
+        sec.style.filter = 'blur(5px)';
+        sec.style.opacity = '0.35';
+        sec.style.pointerEvents = 'none';
+        sec.style.userSelect = 'none';
+      } else {
+        sec.style.filter = '';
+        sec.style.opacity = '';
+        sec.style.pointerEvents = '';
+        sec.style.userSelect = '';
+      }
+    });
+    mshUpdateSidebar(unlocked);
+  }
+
+  /* ── public API ── */
+  window.mshUnlock = function(n){
+    var current = getUnlocked();
+    var next = n + 1;
+    if(next > current){
+      localStorage.setItem('msh_unlocked', next);
+    }
+    mshApplyLocks();
+    // try scroll to next section
+    var nextSec = document.querySelector('[data-msh-sec="' + next + '"]');
+    if(nextSec){
+      setTimeout(function(){ nextSec.scrollIntoView({behavior:'smooth', block:'start'}); }, 120);
+    }
+  };
+
+  window.mshGoSec = function(n){
+    var unlocked = getUnlocked();
+    if(n > unlocked) return;
+    var el = document.querySelector('[data-msh-sec="' + n + '"]');
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+
+  window.mshToggleSb = function(){
+    var sb = document.getElementById('msh-sidebar');
+    if(sb) sb.classList.toggle('msh-col');
+    var pb = document.getElementById('msh-progress');
+    if(pb){
+      pb.style.left = (sb && sb.classList.contains('msh-col')) ? '56px' : '250px';
+    }
+  };
+
+  /* ── scroll: progress + active nav ── */
+  window.addEventListener('scroll', function(){
+    var fill = document.getElementById('msh-progress-fill');
+    if(fill){
+      var scrolled = window.scrollY;
+      var total = document.body.scrollHeight - window.innerHeight;
+      fill.style.width = (total > 0 ? Math.round((scrolled/total)*100) : 0) + '%';
+    }
+    // update active nav by visibility
+    var sections = document.querySelectorAll('[data-msh-sec]');
+    var current = 1;
+    sections.forEach(function(sec){
+      var rect = sec.getBoundingClientRect();
+      if(rect.top <= window.innerHeight * 0.4) current = parseInt(sec.getAttribute('data-msh-sec'), 10);
+    });
+    var items = document.querySelectorAll('#msh-nav .msh-nav-item');
+    items.forEach(function(item){
+      var sec = parseInt(item.getAttribute('data-sec'), 10);
+      var unlocked = getUnlocked();
+      if(sec < unlocked){
+        item.classList.remove('msh-cur');
+      } else if(sec === current && sec <= unlocked){
+        item.classList.add('msh-cur');
+        item.classList.remove('msh-lk-nav');
+      } else if(sec <= unlocked){
+        item.classList.remove('msh-cur');
+      }
+    });
+  }, {passive: true});
+
+  /* ── counter animation ── */
+  function animateCounter(el, target, prefix, suffix, duration){
+    if(!el) return;
+    var start = 0; var step = target / (duration / 16);
+    var t = setInterval(function(){
+      start = Math.min(start + step, target);
+      el.textContent = prefix + Math.round(start) + suffix;
+      if(start >= target) clearInterval(t);
+    }, 16);
+  }
+
+  /* ── storage event (cross-block) ── */
+  window.addEventListener('storage', function(e){
+    if(e.key === 'msh_unlocked') mshApplyLocks();
+  });
+
+  /* ── setInterval re-check ── */
+  var _lastUnlocked = getUnlocked();
+  setInterval(function(){
+    var u = getUnlocked();
+    if(u !== _lastUnlocked){ _lastUnlocked = u; mshApplyLocks(); }
+  }, 300);
+
+  /* ── init ── */
+  document.addEventListener('DOMContentLoaded', function(){
+    mshApplyLocks();
+    animateCounter(document.getElementById('msh-st1'), 35, '', ' лет', 1200);
+    animateCounter(document.getElementById('msh-st2'), 6, '', ' смен', 900);
+    animateCounter(document.getElementById('msh-st3'), 100, 'топ-', '+', 1400);
+  });
+  // also run immediately in case DOM already ready
+  if(document.readyState !== 'loading'){
+    mshApplyLocks();
+    animateCounter(document.getElementById('msh-st1'), 35, '', ' лет', 1200);
+    animateCounter(document.getElementById('msh-st2'), 6, '', ' смен', 900);
+    animateCounter(document.getElementById('msh-st3'), 100, 'топ-', '+', 1400);
+  }
+})();
+</script>

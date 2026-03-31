@@ -1,0 +1,107 @@
+<!-- BLOCK 04: Как найти правильный виток? (DARK) -->
+<style>
+#msh-s4{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#0a1a11;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s4 *{box-sizing:border-box}
+#msh-s4 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#fff;margin-bottom:14px;
+}
+#msh-s4 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#fff;
+}
+#msh-s4 p{
+  font-size:16px;line-height:1.8;color:rgba(255,255,255,.72);
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s4 .msh-ac{color:#3ecf6e}
+.msh-errors-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  max-width:760px;margin:24px 0;
+}
+#msh-s4 .msh-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,80,80,.2);
+  border-radius:12px;padding:22px;
+}
+#msh-s4 .msh-card .msh-card-num{
+  font-size:12px;font-weight:700;color:rgba(255,100,100,.7);
+  letter-spacing:1px;display:block;margin-bottom:10px;
+}
+#msh-s4 .msh-card .msh-card-title{
+  font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3;
+}
+#msh-s4 .msh-card .msh-card-text{
+  font-size:14px;line-height:1.7;color:rgba(255,255,255,.6);
+}
+#msh-s4 .msh-pq{
+  border-left:3px solid #3ecf6e;padding:16px 22px;margin:28px 0;
+  font-size:17px;font-style:italic;background:rgba(62,207,110,.06);
+  border-radius:0 8px 8px 0;max-width:720px;color:rgba(255,255,255,.9);
+  line-height:1.6;font-weight:600;font-style:normal;
+}
+#msh-s4 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s4 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+@media(max-width:900px){
+  #msh-s4{padding:52px 20px 40px 68px}
+  .msh-errors-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div id="msh-s4" data-msh-sec="4">
+  <h2>Как найти <span class="msh-ac">правильный</span> виток?</h2>
+
+  <p>Когда текущая модель начинает давать сбои, предприниматели, как правило, реагируют одним из трёх стандартных способов. Все три — ошибочны. Не потому что плохие идеи, а потому что за ними нет методологии.</p>
+
+  <div class="msh-errors-grid">
+    <div class="msh-card">
+      <span class="msh-card-num">01</span>
+      <div class="msh-card-title">Копирование чужой модели</div>
+      <p class="msh-card-text">«У конкурента получилось — скопируем». Проблема в том, что у конкурента другая история, другие активы, другие связи и другой контекст. Модель без ДНК не работает.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-num">02</span>
+      <div class="msh-card-title">Бегство в модную нишу</div>
+      <p class="msh-card-text">«Все говорят про ИИ — пойдём туда». Ниша выбирается по хайпу, а не по соответствию возможностям компании. Результат: входят десятки игроков, выживают единицы — и не новички.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-num">03</span>
+      <div class="msh-card-title">Панический разворот</div>
+      <p class="msh-card-text">Модель буксует → нарастает стресс → принимается решение «обнулить всё и начать с чистого листа». Обнуляются не только проблемы — обнуляются и накопленные преимущества.</p>
+    </div>
+  </div>
+
+  <div class="msh-pq">Что объединяет все три? Решение принимается без методологии выбора бизнес-модели.</div>
+
+  <p>Правильный поиск следующего витка требует одновременно трёх элементов: понимания <span class="msh-ac">контекста</span> (в каком мире вы строите стратегию), понимания <span class="msh-ac">личности</span> основателя (кто вы и зачем вам бизнес), и понимания самого <span class="msh-ac">дела</span> (как устроена текущая модель и где её потолок).</p>
+  <p>Отсутствие любого из трёх элементов ведёт к тому, что стратегия работает «по случайности» или не работает вовсе. Школа «Горки» разработала методологию, которая позволяет найти точку пересечения всех трёх — и именно там лежит следующий виток.</p>
+
+  <button class="msh-btn" onclick="mshUnlock(4)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s4');
+    if(!el) return;
+    var u = getU();
+    if(u < 4){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>

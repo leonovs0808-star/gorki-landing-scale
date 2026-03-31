@@ -1,0 +1,197 @@
+<!-- BLOCK 08: Дело (DARK) -->
+<style>
+#msh-s8{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#0a1a11;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s8 *{box-sizing:border-box}
+#msh-s8 .msh-sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2.5px;color:#3ecf6e;
+  text-transform:uppercase;margin-bottom:12px;display:block;
+}
+#msh-s8 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#fff;margin-bottom:14px;
+}
+#msh-s8 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#fff;
+}
+#msh-s8 p{
+  font-size:16px;line-height:1.8;color:rgba(255,255,255,.72);
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s8 .msh-ac{color:#3ecf6e}
+.msh-criteria-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  max-width:760px;margin:20px 0;
+}
+#msh-s8 .msh-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(62,207,110,.18);
+  border-radius:12px;padding:22px;
+}
+#msh-s8 .msh-card .msh-card-emoji{font-size:26px;display:block;margin-bottom:10px}
+#msh-s8 .msh-card .msh-card-num{
+  font-size:11px;font-weight:700;color:#3ecf6e;letter-spacing:1px;
+  display:block;margin-bottom:6px;
+}
+#msh-s8 .msh-card .msh-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
+#msh-s8 .msh-card .msh-card-text{font-size:14px;line-height:1.7;color:rgba(255,255,255,.6)}
+/* timeline */
+.msh-timeline{
+  position:relative;padding-left:28px;max-width:640px;margin:20px 0;
+}
+.msh-timeline::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;
+  width:2px;background:linear-gradient(to bottom,#3ecf6e,rgba(62,207,110,.15));
+}
+.msh-tl-item{
+  position:relative;padding:0 0 28px 24px;
+}
+.msh-tl-item:last-child{padding-bottom:0}
+.msh-tl-dot{
+  position:absolute;left:-20px;top:6px;width:16px;height:16px;
+  border-radius:50%;background:#0a1a11;border:2px solid #3ecf6e;
+  display:flex;align-items:center;justify-content:center;font-size:9px;
+}
+.msh-tl-dot.msh-tl-current{background:#3ecf6e}
+.msh-tl-year{font-size:11px;font-weight:700;color:#3ecf6e;margin-bottom:3px;letter-spacing:.5px}
+.msh-tl-emoji{font-size:16px;margin-right:6px}
+.msh-tl-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+.msh-tl-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.5}
+/* formula box */
+.msh-formula-box{
+  background:rgba(62,207,110,.08);border:1px solid rgba(62,207,110,.3);
+  border-radius:12px;padding:24px 28px;max-width:720px;margin:28px 0;
+}
+.msh-formula-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;color:#3ecf6e;
+  text-transform:uppercase;margin-bottom:14px;display:block;
+}
+.msh-formula-text{
+  font-size:clamp(14px,1.8vw,17px);color:#fff;font-weight:600;
+  line-height:1.8;
+}
+.msh-formula-text .msh-formula-part{
+  display:inline-block;background:rgba(62,207,110,.15);border-radius:4px;
+  padding:2px 8px;margin:2px 0;color:#3ecf6e;
+}
+.msh-formula-text .msh-formula-eq{color:rgba(255,255,255,.5);margin:0 6px;font-weight:400}
+#msh-s8 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s8 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+@media(max-width:900px){
+  #msh-s8{padding:52px 20px 40px 68px}
+  .msh-criteria-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div id="msh-s8" data-msh-sec="8">
+  <span class="msh-sec-label">Элемент 3</span>
+  <h2><span class="msh-ac">Дело:</span> как устроена ваша модель и где её потолок</h2>
+
+  <h3>Три критерия <span class="msh-ac">правильного витка</span></h3>
+
+  <div class="msh-criteria-grid">
+    <div class="msh-card">
+      <span class="msh-card-emoji">🧬</span>
+      <span class="msh-card-num">01</span>
+      <div class="msh-card-title">Строится на главгене</div>
+      <p class="msh-card-text">Следующий виток должен опираться на ту же суперсилу основателя. Если нет — это не масштабирование, а смена бизнеса.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-emoji">🧱</span>
+      <span class="msh-card-num">02</span>
+      <div class="msh-card-title">Надстраивается, не обнуляет</div>
+      <p class="msh-card-text">Работающие активы, репутация, команда, клиентская база — всё это должно стать фундаментом, а не жертвой перехода.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-emoji">⏰</span>
+      <span class="msh-card-num">03</span>
+      <div class="msh-card-title">Делается вовремя</div>
+      <p class="msh-card-text">Переход в момент кризиса — это вынужденная смена на невыгодных условиях. Переход с запасом — это выбор позиции из силы.</p>
+    </div>
+  </div>
+
+  <h3>Эволюция «Асконы»: <span class="msh-ac">6 смен</span> бизнес-модели</h3>
+
+  <div class="msh-timeline">
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">1990-е</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🛏️</span>Торговля матрасами</div>
+      <div class="msh-tl-desc">Старт в дистрибуции — перепродажа импортных и отечественных матрасов. Первая бизнес-модель, работавшая на дефиците рынка.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2000-е</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏭</span>Производство</div>
+      <div class="msh-tl-desc">Переход от торговли к собственному производству. Вертикальная интеграция первого уровня — контроль над качеством и себестоимостью.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2005+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏪</span>Ритейлер с вертикальной интеграцией</div>
+      <div class="msh-tl-desc">Открытие собственных магазинов. Производитель + продавец под одной крышей — новая экономика модели.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2010+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🌐</span>Федеральная сеть</div>
+      <div class="msh-tl-desc">Географическое масштабирование по всей стране. Трансформация в федерального игрока с унифицированными стандартами.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2015+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏢</span>Мульти-индустриальный холдинг</div>
+      <div class="msh-tl-desc">Расширение за рамки матрасов. Диверсификация в смежные категории товаров для дома и сна.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot msh-tl-current"></div>
+      <div class="msh-tl-year">2020+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">💤</span>Экосистема здорового сна</div>
+      <div class="msh-tl-desc">Переход от продажи товаров к управлению здоровьем через сон. Экосистема сервисов, продуктов и знаний вокруг темы восстановления.</div>
+    </div>
+  </div>
+
+  <h3>Формула <span class="msh-ac">следующего витка</span></h3>
+
+  <div class="msh-formula-box">
+    <span class="msh-formula-label">Методология «Горок»</span>
+    <div class="msh-formula-text">
+      <span class="msh-formula-part">Суперсила (главген)</span>
+      <span class="msh-formula-eq">+</span>
+      <span class="msh-formula-part">Активы (что уже работает)</span>
+      <span class="msh-formula-eq">+</span>
+      <span class="msh-formula-part">Контекст (куда движется мир)</span>
+      <span class="msh-formula-eq">=</span>
+      <span class="msh-formula-part" style="background:rgba(62,207,110,.25)">Виток (направление роста)</span>
+    </div>
+  </div>
+
+  <button class="msh-btn" onclick="mshUnlock(8)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s8');
+    if(!el) return;
+    var u = getU();
+    if(u < 8){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>

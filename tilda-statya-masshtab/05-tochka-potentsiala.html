@@ -1,0 +1,145 @@
+<!-- BLOCK 05: Точка максимального потенциала (LIGHT) -->
+<style>
+#msh-s5{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#e8f5ee;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s5 *{box-sizing:border-box}
+#msh-s5 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#1a2e22;margin-bottom:14px;
+}
+#msh-s5 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#1a2e22;
+}
+#msh-s5 p{
+  font-size:16px;line-height:1.8;color:#2d4a35;
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s5 .msh-ac{color:#1a8c45}
+/* VENN DIAGRAM */
+.msh-venn-wrap{
+  position:relative;width:340px;height:300px;margin:32px 0 20px;
+  flex-shrink:0;
+}
+.msh-venn-circle{
+  position:absolute;width:180px;height:180px;border-radius:50%;
+  opacity:0.45;
+}
+.msh-venn-kontekst{
+  background:#1a8c45;left:0;top:60px;
+}
+.msh-venn-delo{
+  background:#0d5c2e;right:0;top:60px;
+}
+.msh-venn-lichnost{
+  background:#2ab85a;left:50%;transform:translateX(-50%);top:0;
+}
+.msh-venn-labels{position:absolute;inset:0;pointer-events:none}
+.msh-venn-lbl{
+  position:absolute;font-size:13px;font-weight:700;color:#1a2e22;
+  text-align:center;line-height:1.2;
+}
+.msh-venn-lbl-k{left:10px;top:130px}
+.msh-venn-lbl-d{right:10px;top:130px}
+.msh-venn-lbl-l{left:50%;transform:translateX(-50%);top:10px}
+.msh-venn-center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:72px;height:72px;border-radius:50%;
+  background:#1a8c45;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:10px;font-weight:700;color:#fff;
+  line-height:1.2;padding:6px;z-index:2;
+  box-shadow:0 0 0 3px #e8f5ee, 0 4px 16px rgba(26,140,69,.4);
+}
+/* 3 concept cards */
+.msh-concept-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  max-width:760px;margin:28px 0;
+}
+#msh-s5 .msh-card{
+  background:#fff;border:1px solid rgba(26,140,69,.2);border-radius:12px;padding:22px;
+}
+#msh-s5 .msh-card .msh-card-icon{font-size:24px;display:block;margin-bottom:10px}
+#msh-s5 .msh-card .msh-card-title{font-size:15px;font-weight:700;color:#1a2e22;margin-bottom:8px}
+#msh-s5 .msh-card .msh-card-text{font-size:14px;line-height:1.7;color:#3d5a47}
+#msh-s5 .msh-pq{
+  border-left:3px solid #1a8c45;padding:16px 22px;margin:24px 0;
+  font-size:16px;font-style:italic;background:rgba(26,140,69,.07);
+  border-radius:0 8px 8px 0;max-width:720px;color:#1a2e22;line-height:1.6;
+}
+#msh-s5 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#1a8c45;
+  color:#fff;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s5 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,140,69,.3)}
+@media(max-width:900px){
+  #msh-s5{padding:52px 20px 40px 68px}
+  .msh-concept-grid{grid-template-columns:1fr}
+  .msh-venn-wrap{width:280px;height:260px}
+  .msh-venn-circle{width:150px;height:150px}
+}
+</style>
+
+<div id="msh-s5" data-msh-sec="5">
+  <h2>Точка максимального <span class="msh-ac">потенциала</span></h2>
+
+  <p>За 35 лет работы с российским и международным бизнесом методология «Горок» была верифицирована на десятках компаний в разных отраслях. Вывод однозначный: устойчивый следующий виток всегда находится на пересечении трёх элементов.</p>
+
+  <!-- Venn diagram -->
+  <div class="msh-venn-wrap" role="img" aria-label="Диаграмма Венна: Контекст, Личность, Дело — в центре Точка потенциала">
+    <div class="msh-venn-circle msh-venn-kontekst"></div>
+    <div class="msh-venn-circle msh-venn-delo"></div>
+    <div class="msh-venn-circle msh-venn-lichnost"></div>
+    <div class="msh-venn-labels">
+      <span class="msh-venn-lbl msh-venn-lbl-k">Контекст</span>
+      <span class="msh-venn-lbl msh-venn-lbl-d">Дело</span>
+      <span class="msh-venn-lbl msh-venn-lbl-l">Личность</span>
+    </div>
+    <div class="msh-venn-center">Точка потенциала</div>
+  </div>
+
+  <div class="msh-concept-grid">
+    <div class="msh-card">
+      <span class="msh-card-icon">🌍</span>
+      <div class="msh-card-title">Контекст</div>
+      <p class="msh-card-text">В каком мире, стране и отрасли вы строите стратегию. Какие силы действуют снаружи вашего бизнеса и куда движется среда.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-icon">👤</span>
+      <div class="msh-card-title">Личность</div>
+      <p class="msh-card-text">Кто вы как предприниматель. Зачем вам бизнес. Какова ваша суперсила и как она проявляется в том, что вы строите.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-icon">⚙️</span>
+      <div class="msh-card-title">Дело</div>
+      <p class="msh-card-text">Как устроена ваша бизнес-модель сегодня. Где её реальный потолок. Какие активы уже работают и могут стать фундаментом для следующего витка.</p>
+    </div>
+  </div>
+
+  <div class="msh-pq">«Предприниматель видит следствие в своей нише, но не видит причину, которая зародилась уровнем выше.»</div>
+
+  <button class="msh-btn" onclick="mshUnlock(5)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s5');
+    if(!el) return;
+    var u = getU();
+    if(u < 5){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>
