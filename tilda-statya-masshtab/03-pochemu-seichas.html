@@ -1,0 +1,577 @@
+<!-- BLOCK 03: Почему сейчас — pixel-perfect copy of vision-quest-revamp.lovable.app/#why-now -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── NAMESPACE & FONT ── */
+#s3-root, #s3-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s3-root p, #s3-root h2, #s3-root h3,
+#s3-root span, #s3-root div, #s3-root button, #s3-root blockquote {
+  margin: 0; padding: 0;
+}
+
+/* ── FULL-WIDTH BLEED ── */
+#s3-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* ══════════════════════════════════
+   PART 1 — CINEMATIC QUOTE (dark)
+══════════════════════════════════ */
+#s3-cinematic {
+  background: #07110E !important;
+  padding: 140px 64px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+#s3-cinematic::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: radial-gradient(ellipse at center, rgba(66,189,138,0.07) 0%, transparent 70%) !important;
+  pointer-events: none !important;
+}
+.s3-cin-inner {
+  max-width: 820px !important;
+  text-align: center !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+.s3-cin-qmark {
+  font-size: 72px !important;
+  font-weight: 900 !important;
+  color: rgba(66,189,138,0.22) !important;
+  line-height: 0.8 !important;
+  display: block !important;
+  margin-bottom: 24px !important;
+}
+.s3-cin-text {
+  font-size: clamp(22px, 3vw, 42px) !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+}
+.s3-cin-em { color: #42BD8A !important; }
+
+/* ══════════════════════════════════
+   PART 2 — MAIN SECTION (light bg)
+══════════════════════════════════ */
+#s3-sec {
+  background: #e8eeec !important;
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+}
+
+/* ── FADE ANIMATION ── */
+@keyframes s3FadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s3-fade {
+  animation: s3FadeIn .7s ease-out both !important;
+  animation-play-state: paused !important;
+}
+.s3-fade.s3-vis { animation-play-state: running !important; }
+
+/* ── LAYOUT HELPERS ── */
+.s3-narrow { max-width: 720px !important; width: 100% !important; }
+.s3-wide   { max-width: 960px !important; width: 100% !important; }
+.s3-mt-48  { margin-top: 48px !important; }
+.s3-mt-64  { margin-top: 64px !important; }
+.s3-mt-80  { margin-top: 80px !important; }
+
+/* ── H2 ── */
+.s3-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #0d1c17 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 64px !important;
+}
+.s3-h2-green { color: #288a61 !important; }
+
+/* ── 2-COL GRID ── */
+.s3-two-col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 48px !important;
+  align-items: center !important;
+}
+
+/* ── DARK GAUGE CARD ── */
+.s3-gauge-card {
+  background: linear-gradient(135deg, #070e0b 0%, #0e1b16 50%, #13201c 100%) !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+  overflow: hidden !important;
+}
+.s3-gauge-svg {
+  width: 100% !important;
+  max-width: 280px !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+.s3-gauge-caption {
+  text-align: center !important;
+  margin-top: 20px !important;
+}
+.s3-gauge-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #f2f2f2 !important;
+  display: block !important;
+  margin: 0 0 4px !important;
+  text-transform: none !important;
+}
+.s3-gauge-sub {
+  font-size: 14px !important;
+  color: rgba(242,242,242,0.5) !important;
+  display: block !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Needle animation */
+@keyframes s3NeedleSweep {
+  0%   { transform: rotate(-70deg); }
+  100% { transform: rotate(28deg); }
+}
+#s3-needle {
+  transform-origin: 150px 170px !important;
+  transform: rotate(-70deg) !important;
+  transition: none !important;
+}
+#s3-needle.s3-animated {
+  animation: s3NeedleSweep 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+/* ── TEXT SIDE ── */
+.s3-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  line-height: 1.35 !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s3-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: #3d5c52 !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s3-p:last-child { margin-bottom: 0 !important; }
+.s3-p strong { color: #0d1c17 !important; font-weight: 600 !important; }
+
+/* ── BLOCKQUOTE ── */
+.s3-blockquote {
+  margin: 64px 0 !important;
+  padding: 40px 56px !important;
+  border-left: 4px solid #42bd8a !important;
+  background: #f3f7f5 !important;
+  border-radius: 0 16px 16px 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.s3-blockquote::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -20px !important; right: -20px !important;
+  width: 140px !important; height: 140px !important;
+  background: rgba(66,189,138,0.05) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+}
+.s3-bq-text {
+  font-size: clamp(18px, 2vw, 24px) !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  line-height: 1.45 !important;
+  margin: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  text-transform: none !important;
+}
+.s3-bq-cite {
+  display: block !important;
+  margin-top: 20px !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  color: #57756b !important;
+  position: relative !important;
+  z-index: 1 !important;
+  font-weight: 400 !important;
+}
+
+/* ── STAT 20% ── */
+.s3-stat-wrap {
+  text-align: center !important;
+  padding: 112px 32px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.s3-stat-wrap::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(40,138,97,0.18) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+.s3-stat-wrap::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important; left: 50% !important;
+  transform: translate(-50%,-50%) !important;
+  width: 500px !important; height: 500px !important;
+  background: radial-gradient(circle, rgba(40,138,97,0.1) 0%, transparent 65%) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+}
+.s3-stat-num {
+  font-size: clamp(72px, 9vw, 128px) !important;
+  font-weight: 700 !important;
+  color: #288a61 !important;
+  line-height: 1 !important;
+  display: block !important;
+  margin: 0 0 16px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  letter-spacing: -0.02em !important;
+}
+.s3-stat-label {
+  font-size: clamp(18px, 2vw, 24px) !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  display: block !important;
+  margin: 0 0 12px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  text-transform: none !important;
+}
+.s3-stat-desc {
+  font-size: 16px !important;
+  color: #57756b !important;
+  max-width: 400px !important;
+  margin: 0 auto !important;
+  line-height: 1.6 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  text-transform: none !important;
+}
+
+/* ── GREEN CARD ── */
+.s3-green-card {
+  background: linear-gradient(135deg, #225946 0%, #35976e 50%, #3f8367 100%) !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+}
+.s3-gc-h3 {
+  font-size: clamp(22px, 2.5vw, 30px) !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 0 24px !important;
+  line-height: 1.25 !important;
+  text-transform: none !important;
+}
+.s3-gc-p {
+  font-size: 18px !important;
+  line-height: 1.65 !important;
+  color: rgba(255,255,255,0.9) !important;
+  margin: 0 0 16px !important;
+  text-transform: none !important;
+}
+.s3-gc-p:last-child { margin-bottom: 0 !important; }
+.s3-gc-p strong { color: #fff !important; font-weight: 700 !important; }
+
+/* ── CLOSING TEXT ── */
+.s3-closing {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #0d1c17 !important;
+  line-height: 1.85 !important;
+  text-align: center !important;
+  margin: 56px 0 0 !important;
+  text-transform: none !important;
+}
+.s3-closing-green { color: #288a61 !important; }
+
+/* ── BUTTON ── */
+.s3-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 0 !important;
+}
+.s3-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: linear-gradient(135deg, #225946 0%, #35976e 50%, #3f8367 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 9999px !important;
+  padding: 18px 40px !important;
+  min-height: 60px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+  line-height: 1 !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s3-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(34,89,70,0.3) !important;
+}
+.s3-btn:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(34,89,70,0.5) !important;
+  animation: none !important;
+  color: #fff !important;
+}
+@keyframes s3-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(34,89,70,0.3); }
+  50%      { box-shadow: 0 4px 40px rgba(34,89,70,0.5), 0 0 0 8px rgba(34,89,70,0.08); }
+}
+
+/* ════════════ RESPONSIVE ════════════ */
+@media (max-width: 1100px) {
+  #s3-sec { padding: 120px 48px 120px 300px !important; }
+}
+@media (max-width: 900px) {
+  #s3-sec { padding: 100px 32px 100px 288px !important; }
+  .s3-two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
+@media (max-width: 768px) {
+  #s3-sec { padding: 80px 24px 80px 24px !important; }
+  #s3-cinematic { padding: 100px 32px !important; }
+  .s3-h2 { font-size: clamp(26px, 7vw, 40px) !important; margin-bottom: 40px !important; }
+  .s3-blockquote { padding: 32px 28px !important; }
+  .s3-bq-text { font-size: 20px !important; }
+  .s3-stat-wrap { padding: 80px 16px !important; }
+  .s3-green-card { padding: 32px !important; }
+  .s3-closing { font-size: 18px !important; margin-top: 40px !important; }
+  .s3-btn-row { padding: 48px 0 0 !important; }
+  .s3-mt-48 { margin-top: 32px !important; }
+  .s3-mt-64 { margin-top: 40px !important; }
+}
+@media (max-width: 520px) {
+  #s3-sec { padding: 60px 20px 60px 20px !important; }
+  #s3-cinematic { padding: 80px 20px !important; }
+  .s3-cin-text { font-size: 20px !important; }
+  .s3-blockquote { padding: 24px 20px !important; }
+  .s3-bq-text { font-size: 17px !important; }
+  .s3-green-card { padding: 24px !important; }
+  .s3-gc-h3 { font-size: 20px !important; }
+  .s3-gc-p { font-size: 16px !important; }
+  .s3-p { font-size: 16px !important; }
+  .s3-h3 { font-size: 20px !important; }
+  .s3-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .s3-stat-wrap { padding: 60px 16px !important; }
+}
+</style>
+
+<!-- ════════════════════ HTML ════════════════════ -->
+<div id="s3-root">
+
+  <!-- ═══ 1. CINEMATIC QUOTE (тёмная вводная панель) ═══ -->
+  <div id="s3-cinematic">
+    <div class="s3-cin-inner s3-fade">
+      <span class="s3-cin-qmark">«</span>
+      <p class="s3-cin-text">Масштабирование — это не <span class="s3-cin-em">«ещё горячее»</span>.<br>
+      Это переход в другое <span class="s3-cin-em">агрегатное состояние</span>.</p>
+    </div>
+  </div>
+
+  <!-- ═══ 2. MAIN SECTION (светлый фон) ═══ -->
+  <section id="s3-sec" data-msh-sec="3">
+
+    <!-- H2 -->
+    <div class="s3-narrow s3-fade">
+      <h2 class="s3-h2">Почему искать следующий виток<br>нужно <span class="s3-h2-green">уже сейчас</span></h2>
+    </div>
+
+    <!-- Gauge card + text (2 колонки) -->
+    <div class="s3-wide s3-fade s3-mt-48">
+      <div class="s3-two-col">
+
+        <!-- Тёмная карточка с датчиком топлива -->
+        <div class="s3-gauge-card">
+          <svg id="s3-gauge-svg" class="s3-gauge-svg" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s3gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#c0392b"/>
+                <stop offset="50%"  stop-color="#d4a017"/>
+                <stop offset="100%" stop-color="#288a61"/>
+              </linearGradient>
+            </defs>
+            <!-- Track (background arc) -->
+            <path d="M40,170 A110,110 0 0,1 260,170"
+              stroke="#1c2a38" stroke-width="18" fill="none" stroke-linecap="round"/>
+            <!-- Colour gradient arc -->
+            <path d="M40,170 A110,110 0 0,1 260,170"
+              stroke="url(#s3gaugeGrad)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.9"/>
+            <!-- Tick marks -->
+            <line x1="40"  y1="165" x2="53"  y2="152" stroke="#6a8080" stroke-width="2"/>
+            <line x1="70"  y1="100" x2="82"  y2="108" stroke="#6a8080" stroke-width="2"/>
+            <line x1="150" y1="62"  x2="150" y2="76"  stroke="#6a8080" stroke-width="2"/>
+            <line x1="230" y1="100" x2="218" y2="108" stroke="#6a8080" stroke-width="2"/>
+            <line x1="260" y1="165" x2="247" y2="152" stroke="#6a8080" stroke-width="2"/>
+            <!-- Label E (empty = left) -->
+            <text x="28" y="162" fill="#c0392b" font-size="14" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">E</text>
+            <!-- Label F (full = right) -->
+            <text x="272" y="162" fill="#288a61" font-size="14" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">F</text>
+            <!-- Needle (animated) -->
+            <line id="s3-needle" x1="150" y1="170" x2="150" y2="78"
+              stroke="#e0e0e0" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Pivot -->
+            <circle cx="150" cy="170" r="9" fill="#1e2e28"/>
+            <circle cx="150" cy="170" r="4.5" fill="#d0d0d0"/>
+          </svg>
+          <div class="s3-gauge-caption">
+            <span class="s3-gauge-title">Бак не бесконечный</span>
+            <span class="s3-gauge-sub">Искать заправку нужно пока есть запас хода</span>
+          </div>
+        </div>
+
+        <!-- Текст -->
+        <div>
+          <h3 class="s3-h3">Бак не бесконечный</h3>
+          <p class="s3-p">Представьте: вы едете по трассе, бак полный. Но бак не бесконечный. Искать заправку нужно не когда загорелась лампочка, а пока есть запас хода.</p>
+          <p class="s3-p">С бизнес-моделью то же самое. Помните аналогию со школой? Некоторые родители уже в первом классе выбирают школу с прицелом на будущий ВУЗ.</p>
+          <p class="s3-p">Переход в другую систему требует подготовки — и чем раньше думаешь о следующем этапе, тем больше пространства для манёвра и тем точнее можно действовать, накапливая потенциал.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Цитата Романа Ершова -->
+    <div class="s3-narrow s3-fade s3-mt-64">
+      <blockquote class="s3-blockquote">
+        <p class="s3-bq-text">«Они с CEO уже сейчас тратят 20% времени на поиск того, что компания будет делать дальше. При этом текущий пятилетний стратцикл только начался. Зачем? Потому что они видят: потолок текущей модели приближается. И если не начать думать о следующей сейчас, когда есть ресурсы, потом будет поздно.»</p>
+        <cite class="s3-bq-cite">— Роман Ершов, президент «Асконы»</cite>
+      </blockquote>
+    </div>
+
+    <!-- Стат 20% -->
+    <div class="s3-wide s3-fade">
+      <div class="s3-stat-wrap">
+        <span class="s3-stat-num" id="s3-stat-num">0%</span>
+        <span class="s3-stat-label">времени на поиск следующего витка</span>
+        <p class="s3-stat-desc">тратит руководство «Асконы» уже сейчас, пока текущая модель ещё растёт</p>
+      </div>
+    </div>
+
+    <!-- Зелёная карточка "Падающий рынок" -->
+    <div class="s3-narrow s3-fade">
+      <div class="s3-green-card">
+        <h3 class="s3-gc-h3">Падающий рынок ошибок не прощает</h3>
+        <p class="s3-gc-p">Это особенно актуально сегодня. Экономика в России находится в падающем цикле. На растущем рынке даже если вы допускаете ошибки, рынок их прощает — потому что растут все.</p>
+        <p class="s3-gc-p">На падающем рынке всё наоборот. Ошибки не прощаются. Те, кто рос за счёт инерции, начинают буксовать и не понимают почему. Ведь «ничего не изменили». Верно. Не изменили.</p>
+        <p class="s3-gc-p"><strong>В этом и проблема.</strong></p>
+      </div>
+    </div>
+
+    <!-- Закрывающий текст + кнопка -->
+    <div class="s3-narrow s3-fade">
+      <p class="s3-closing">На каком бы этапе вы сейчас ни находились, вам нужно понимать, какой будет следующий виток вашей бизнес-модели. <span class="s3-closing-green">Не через пять лет, а сейчас.</span></p>
+
+      <div class="s3-btn-row">
+        <button class="s3-btn" onclick="mshScrollTo(4)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── Fade-in on scroll ── */
+function initFade(){
+  var els = document.querySelectorAll('#s3-root .s3-fade');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('s3-vis'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('s3-vis'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.08});
+  els.forEach(function(el){ obs.observe(el); });
+}
+
+/* ── Gauge needle sweep ── */
+function initGauge(){
+  var needle = document.getElementById('s3-needle');
+  var svg    = document.getElementById('s3-gauge-svg');
+  if(!needle || !svg) return;
+  if(!('IntersectionObserver' in window)){
+    needle.classList.add('s3-animated'); return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    obs.disconnect();
+    setTimeout(function(){ needle.classList.add('s3-animated'); }, 400);
+  },{threshold:0.35});
+  obs.observe(svg);
+}
+
+/* ── 20% counter ── */
+function initStat(){
+  var el = document.getElementById('s3-stat-num');
+  if(!el) return;
+  if(!('IntersectionObserver' in window)){
+    el.textContent = '20%'; return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    obs.disconnect();
+    var t0 = Date.now(), dur = 1600;
+    var id = setInterval(function(){
+      var p = Math.min((Date.now()-t0)/dur, 1);
+      var ease = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(ease*20)+'%';
+      if(p>=1) clearInterval(id);
+    }, 16);
+  },{threshold:0.3});
+  obs.observe(el);
+}
+
+function init(){
+  initFade();
+  initGauge();
+  initStat();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+})();
+</script>
