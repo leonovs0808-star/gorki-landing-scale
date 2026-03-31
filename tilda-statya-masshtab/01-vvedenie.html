@@ -776,21 +776,18 @@ function initCounters(){
   if('IntersectionObserver' in window){
     var obs = new IntersectionObserver(function(entries){
       if(entries[0].isIntersecting){
-        setTimeout(function(){
-          countUp('msh-st1',35,'',  ' лет',1400);
-          countUp('msh-st2',6,  '',  '',     1000);
-          countUp('msh-st3',88,'топ-','+',   1600);
-        },200);
+        /* Sequential: each counter starts after the previous one finishes */
+        setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },200);
+        setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },1800);
+        setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3000);
         obs.disconnect();
       }
     },{threshold:0.2});
     obs.observe(el);
   } else {
-    setTimeout(function(){
-      countUp('msh-st1',35,'',  ' лет',1400);
-      countUp('msh-st2',6,  '',  '',     1000);
-      countUp('msh-st3',88,'топ-','+',   1600);
-    },700);
+    setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },700);
+    setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },2300);
+    setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3500);
   }
 }
 
