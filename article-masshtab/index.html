@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стратегия масштабирования — Школа бизнеса «Горки»</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a1a11;color:#fff;display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── Progress bar ── */
+#prog{position:fixed;top:0;left:0;height:3px;background:#3ecf6e;z-index:300;width:0%;transition:width .1s;pointer-events:none}
+
+/* ── Sidebar ── */
+#sb{position:fixed;top:0;left:0;width:250px;height:100vh;background:#0d1f17;display:flex;flex-direction:column;z-index:100;transition:width .3s ease;overflow:hidden}
+#sb.col{width:56px}
+.sb-hd{display:flex;align-items:center;justify-content:space-between;padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.1);min-height:60px}
+.sb-title{font-size:11px;font-weight:600;letter-spacing:.15em;color:rgba(255,255,255,.5);white-space:nowrap;transition:opacity .2s}
+#sb.col .sb-title{opacity:0;pointer-events:none}
+#tb{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:4px;flex-shrink:0;transition:transform .3s;line-height:0}
+#sb.col #tb{transform:rotate(180deg)}
+.nav-ul{list-style:none;padding:12px 8px;flex:1;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:12px;padding:9px 8px;cursor:pointer;border-radius:8px;transition:background .2s;margin-bottom:2px}
+.ni:hover{background:rgba(255,255,255,.05)}
+.ni.locked-nav{opacity:.5;cursor:default}
+.ni-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;border:2px solid rgba(255,255,255,.2);color:rgba(255,255,255,.3);transition:all .3s}
+.ni-ico.done{border-color:#3ecf6e;color:#3ecf6e}
+.ni-ico.act{background:#3ecf6e;border-color:#3ecf6e;color:#0a1a11}
+.ni-lbl{white-space:nowrap;overflow:hidden;transition:opacity .2s}
+#sb.col .ni-lbl{opacity:0;pointer-events:none}
+.ni-num{font-size:10px;color:rgba(255,255,255,.4);line-height:1}
+.ni-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.65);line-height:1.3;transition:color .2s}
+.ni.cur .ni-name{color:#fff;font-weight:700}
+.sb-cnt{padding:14px 16px;font-size:12px;color:rgba(255,255,255,.3);border-top:1px solid rgba(255,255,255,.1);text-align:center;white-space:nowrap;transition:opacity .2s}
+#sb.col .sb-cnt{opacity:0}
+
+/* ── Sticky header ── */
+#sh{position:sticky;top:0;z-index:50;background:rgba(10,26,17,.95);backdrop-filter:blur(8px);padding:11px 48px;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s}
+#sh.vis{transform:translateY(0)}
+#sh-num{color:rgba(255,255,255,.35)}
+#sh-name{color:#3ecf6e;font-weight:600}
+
+/* ── Main ── */
+#main{margin-left:250px;flex:1;transition:margin-left .3s;min-width:0}
+body.col #main{margin-left:56px}
+
+/* ── Sections ── */
+.sec{position:relative;padding:80px 64px 60px;transition:opacity .5s,filter .5s}
+.sec.dk{background:#0a1a11;color:#fff}
+.sec.lt{background:#e8f5ee;color:#1a2e22}
+.sec.lk{filter:blur(5px);pointer-events:none;user-select:none;opacity:.35}
+.sec.hid{display:none}
+.sec-content{}
+
+/* ── Read-more btn ── */
+.rmb{display:flex;align-items:center;gap:10px;background:#3ecf6e;color:#0a1a11;border:none;border-radius:50px;padding:17px 36px;font-size:16px;font-weight:700;cursor:pointer;margin:44px auto 0;transition:transform .2s,box-shadow .2s}
+.rmb:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+.rmb.lt-btn{background:#1a8c45;color:#fff}
+
+/* ── Hero ── */
+.hero-meta{display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:50px;padding:10px 20px;margin-bottom:48px;font-size:13px;color:rgba(255,255,255,.7)}
+.hero-meta .sep{color:rgba(255,255,255,.2)}
+.hero-h1{font-size:clamp(32px,5vw,70px);font-weight:800;line-height:1.1;margin-bottom:20px;max-width:860px}
+.hero-h1 .ac{color:#3ecf6e}
+.hero-sub{font-size:18px;color:rgba(255,255,255,.55);margin-bottom:56px}
+.divider{width:100%;height:1px;background:rgba(255,255,255,.12);margin-bottom:44px}
+.stats-row{display:flex;gap:0;margin-bottom:56px;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}
+.stat-it{flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 24px;border-right:1px solid rgba(255,255,255,.1)}
+.stat-it:last-child{border-right:none}
+.stat-n{font-size:clamp(36px,5vw,60px);font-weight:800;color:#3ecf6e;line-height:1;margin-bottom:8px}
+.stat-l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
+
+/* ── Typography ── */
+.sec-lbl{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(62,207,110,.75);margin-bottom:14px}
+.lt .sec-lbl{color:#1a8c45}
+h2{font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;margin-bottom:14px}
+h2 .ac{color:#3ecf6e}
+.lt h2 .ac{color:#1a8c45}
+h3{font-size:clamp(18px,2.5vw,28px);font-weight:700;line-height:1.25;margin:32px 0 14px;color:inherit}
+p{font-size:16px;line-height:1.8;color:rgba(255,255,255,.78);max-width:720px;margin-bottom:14px}
+.lt p{color:rgba(0,0,0,.72)}
+em{color:#3ecf6e;font-style:normal}
+.lt em{color:#1a8c45}
+.pq{border-left:3px solid #3ecf6e;padding:18px 24px;margin:28px 0;font-size:17px;font-style:italic;color:rgba(255,255,255,.88);background:rgba(62,207,110,.05);border-radius:0 8px 8px 0;max-width:720px}
+.lt .pq{border-color:#1a8c45;background:rgba(26,140,69,.07);color:rgba(0,0,0,.78)}
+
+/* ── Cards ── */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:22px 0}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:22px}
+.lt .card{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)}
+.c-num{font-size:11px;font-weight:600;letter-spacing:.1em;color:#3ecf6e;margin-bottom:7px}
+.lt .c-num{color:#1a8c45}
+.c-ttl{font-size:16px;font-weight:700;margin-bottom:7px;color:inherit}
+.c-bdy{font-size:14px;line-height:1.65;color:rgba(255,255,255,.6)}
+.lt .c-bdy{color:rgba(0,0,0,.6)}
+
+/* ── Analogy cards ── */
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:22px 0}
+.ac-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px}
+.lt .ac-card{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)}
+.ac-badge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
+.lt .ac-badge{color:rgba(0,0,0,.4)}
+.ac-card h4{font-size:18px;font-weight:700;color:inherit;margin-bottom:10px}
+.ac-icons{font-size:22px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ac-card p{font-size:14px;color:rgba(255,255,255,.62);max-width:100%;margin:0}
+.lt .ac-card p{color:rgba(0,0,0,.62)}
+
+/* ── Stat highlight ── */
+.sh-wrap{display:flex;align-items:baseline;gap:16px;margin:24px 0}
+.sh-big{font-size:clamp(52px,8vw,80px);font-weight:800;color:#3ecf6e;line-height:1}
+.lt .sh-big{color:#1a8c45}
+.sh-desc{font-size:16px;max-width:340px;line-height:1.65}
+
+/* ── Levels ── */
+.lvls{max-width:640px;margin:22px 0}
+.lv{display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.lt .lv{border-color:rgba(0,0,0,.08)}
+.lv:last-child{border-bottom:none}
+.lv-n{font-size:26px;font-weight:800;color:#3ecf6e;line-height:1;min-width:36px}
+.lv-ttl{font-size:16px;font-weight:700;margin-bottom:4px}
+.lv-desc{font-size:14px;color:rgba(255,255,255,.58);line-height:1.55}
+.lt .lv-desc{color:rgba(0,0,0,.55)}
+
+/* ── Options grid ── */
+.og{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:600px;margin:22px 0}
+.op{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px;display:flex;align-items:center;gap:12px}
+.lt .op{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)}
+.op-ico{font-size:22px}
+.op-tx{font-size:14px;font-weight:600}
+
+/* ── Timeline ── */
+.tl{max-width:660px;margin:28px 0;position:relative}
+.tl::before{content:'';position:absolute;left:23px;top:0;bottom:0;width:2px;background:rgba(62,207,110,.25)}
+.tl-it{display:flex;gap:22px;padding:0 0 26px}
+.tl-ico{width:46px;height:46px;border-radius:50%;background:rgba(62,207,110,.12);border:2px solid #3ecf6e;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;z-index:1;position:relative}
+.tl-cnt{padding-top:8px}
+.tl-yr{font-size:12px;color:#3ecf6e;font-weight:600;margin-bottom:3px}
+.tl-ttl{font-size:15px;font-weight:600}
+
+/* ── Formula ── */
+.fml{background:rgba(62,207,110,.08);border:1px solid rgba(62,207,110,.25);border-radius:16px;padding:32px;margin:28px 0;max-width:720px;text-align:center}
+.lt .fml{background:rgba(26,140,69,.07);border-color:rgba(26,140,69,.25)}
+.fml-tx{font-size:clamp(15px,2.2vw,20px);font-weight:700;line-height:1.65;color:#fff}
+.lt .fml-tx{color:#1a2e22}
+.fml-res{margin-top:12px;font-size:18px;color:#3ecf6e;font-weight:800}
+.lt .fml-res{color:#1a8c45}
+
+/* ── Venn diagram ── */
+.venn{display:flex;justify-content:center;margin:36px 0}
+.venn-wrap{position:relative;width:420px;height:200px}
+.vc{position:absolute;width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;text-align:center}
+.vc1{left:0;top:50%;transform:translateY(-50%);background:rgba(26,140,69,.18);border:2px solid #1a8c45;color:#1a2e22}
+.vc2{right:0;top:50%;transform:translateY(-50%);background:rgba(26,140,69,.18);border:2px solid #1a8c45;color:#1a2e22}
+.vc3{left:50%;top:0;transform:translateX(-50%);background:rgba(26,140,69,.18);border:2px solid #1a8c45;color:#1a2e22}
+.vc-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#1a8c45;color:#fff;border-radius:50%;width:82px;height:82px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;text-align:center;z-index:10;padding:4px;line-height:1.3}
+
+/* ── Summary ── */
+.sum-ul{list-style:none;max-width:700px;margin:22px 0}
+.sum-ul li{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:16px;line-height:1.7;color:rgba(0,0,0,.72)}
+.sum-ul li::before{content:'✓';color:#1a8c45;font-weight:800;flex-shrink:0;margin-top:3px}
+
+/* ── CTA box ── */
+.cta-box{background:#1a2e22;border-radius:20px;padding:44px;max-width:680px;margin-top:44px;text-align:center}
+.cta-box h3{color:#fff;font-size:26px;margin-bottom:14px}
+.cta-box p{color:rgba(255,255,255,.68);margin-bottom:28px;max-width:100%;text-align:center;font-size:16px}
+.cta-a{display:inline-flex;align-items:center;gap:8px;background:#3ecf6e;color:#0a1a11;border:none;border-radius:50px;padding:17px 38px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.cta-a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.35)}
+
+/* ── Footer ── */
+.ft{text-align:center;padding:32px;color:rgba(0,0,0,.3);font-size:12px}
+
+/* ── Fade-in animation ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.sec:not(.lk):not(.hid) .sec-content{animation:fadeUp .55s ease forwards}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  #sb{width:56px}#sb.col{width:0;overflow:hidden}
+  #main{margin-left:56px}
+  body.col #main{margin-left:0}
+  .sec{padding:56px 24px 44px}
+  .stats-row{flex-direction:column}
+  .stat-it{border-right:none;border-bottom:1px solid rgba(255,255,255,.1)}
+  .stat-it:last-child{border-bottom:none}
+  .og{grid-template-columns:1fr}
+  #sh{padding:11px 20px}
+  .venn-wrap{width:300px;height:160px}
+  .vc{width:110px;height:110px;font-size:13px}
+  .vc-center{width:64px;height:64px;font-size:9px}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress -->
+<div id="prog"></div>
+
+<!-- Sidebar -->
+<aside id="sb">
+  <div class="sb-hd">
+    <span class="sb-title">СОДЕРЖАНИЕ</span>
+    <button id="tb" onclick="toggleSb()" title="Свернуть">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <ul class="nav-ul" id="nav-ul">
+    <li class="ni cur" data-s="1" onclick="goSec(1)"><div class="ni-ico act" id="ico-1">▶</div><div class="ni-lbl"><div class="ni-num">01</div><div class="ni-name">Введение</div></div></li>
+    <li class="ni locked-nav" data-s="2" onclick="goSec(2)"><div class="ni-ico" id="ico-2"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">02</div><div class="ni-name">Масштабирование</div></div></li>
+    <li class="ni locked-nav" data-s="3" onclick="goSec(3)"><div class="ni-ico" id="ico-3"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">03</div><div class="ni-name">Почему сейчас</div></div></li>
+    <li class="ni locked-nav" data-s="4" onclick="goSec(4)"><div class="ni-ico" id="ico-4"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">04</div><div class="ni-name">Ошибки</div></div></li>
+    <li class="ni locked-nav" data-s="5" onclick="goSec(5)"><div class="ni-ico" id="ico-5"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">05</div><div class="ni-name">Точка потенциала</div></div></li>
+    <li class="ni locked-nav" data-s="6" onclick="goSec(6)"><div class="ni-ico" id="ico-6"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">06</div><div class="ni-name">Контекст</div></div></li>
+    <li class="ni locked-nav" data-s="7" onclick="goSec(7)"><div class="ni-ico" id="ico-7"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">07</div><div class="ni-name">Личность</div></div></li>
+    <li class="ni locked-nav" data-s="8" onclick="goSec(8)"><div class="ni-ico" id="ico-8"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">08</div><div class="ni-name">Дело</div></div></li>
+    <li class="ni locked-nav" data-s="9" onclick="goSec(9)"><div class="ni-ico" id="ico-9"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="ni-lbl"><div class="ni-num">09</div><div class="ni-name">Итог</div></div></li>
+  </ul>
+  <div class="sb-cnt" id="sb-cnt">1 / 9</div>
+</aside>
+
+<!-- Main -->
+<main id="main">
+
+  <!-- Sticky header -->
+  <div id="sh"><span id="sh-num">01</span><span id="sh-name">Введение</span></div>
+
+  <!-- ══ 01 ВВЕДЕНИЕ ══ -->
+  <section class="sec dk" id="s1">
+    <div class="sec-content">
+      <div class="hero-meta">
+        <span>📅 17–19 апреля</span><span class="sep">|</span>
+        <span>📍 в Доброграде</span><span class="sep">|</span>
+        <span>⏱ 12 мин</span>
+      </div>
+      <h1 class="hero-h1">Стратегия <span class="ac">масштабирования</span>,<br>которая работает даже на <span class="ac">падающем рынке</span></h1>
+      <p class="hero-sub">Аналитический материал международной школы бизнеса «Горки»</p>
+      <div class="divider"></div>
+      <div class="stats-row">
+        <div class="stat-it"><div class="stat-n" id="st1">0</div><div class="stat-l">Опыт «Асконы»</div></div>
+        <div class="stat-it"><div class="stat-n" id="st2">0</div><div class="stat-l">Смен модели</div></div>
+        <div class="stat-it"><div class="stat-n" id="st3">топ-0</div><div class="stat-l">Техкомпаний мира</div></div>
+      </div>
+    </div>
+    <button class="rmb" onclick="unlock(1)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 02 МАСШТАБИРОВАНИЕ ══ -->
+  <section class="sec dk lk hid" id="s2">
+    <div class="sec-content">
+      <div class="sec-lbl">По методологии школы «Горки»</div>
+      <h2>Что такое <span class="ac">масштабирование*</span></h2>
+      <h3>«Больше того же самого» — это не масштабирование</h3>
+      <p>Масштабирование — одно из самых употребляемых слов в предпринимательской среде. И одно из самых непонятых. Немного компаний, вышедших на 100+ млн выручки, смогли действительно масштабироваться до миллиарда+.</p>
+      <p>Когда предприниматель говорит «хочу масштабироваться», чаще всего он имеет в виду: больше трафика, больше менеджеров, больше точек.</p>
+      <p>Но это не масштабирование. Это <em>линейное увеличение</em>.</p>
+      <p>Линейное увеличение — это когда вы наращиваете объём внутри существующей модели. <em>Сама бизнес-модель</em> не меняется.</p>
+      <h3>Аналогии</h3>
+      <div class="ag">
+        <div class="ac-card">
+          <div class="ac-badge">Аналогия</div>
+          <h4>Нагрев vs Пар</h4>
+          <div class="ac-icons"><span>99°</span><span style="color:#3ecf6e">→</span><span>💧→💨 100°</span></div>
+          <p>Вы греете воду. С каждым градусом она горячее. Но при 100°C — качественный скачок: вода → пар. Количество перешло в качество.</p>
+        </div>
+        <div class="ac-card">
+          <div class="ac-badge">Аналогия</div>
+          <h4>Школа → Институт</h4>
+          <div class="ac-icons"><span>🏫</span><span style="color:#3ecf6e">→</span><span>🎓</span></div>
+          <p>После 11-го класса не бывает 12-го. Дальше — институт. Другая система, другие правила. В бизнесе так же.</p>
+        </div>
+      </div>
+      <h3>Любая модель конечна</h3>
+      <p>Любая бизнес-модель — это комбинация переменных: клиент, конкурент, технология, регулирование, экономический цикл. Ни одна из них не стоит на месте. Вопрос не в том, изменятся ли условия. Вопрос в том, <em>когда</em>.</p>
+      <p>По нашей методологии линейное увеличение и поиск следующего витка модели идут <em>параллельно</em>. Одно не заменяет другое.</p>
+      <div class="pq">«Масштабирование — это не "ещё горячее". Это переход в другое агрегатное состояние.»</div>
+    </div>
+    <button class="rmb" onclick="unlock(2)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 03 ПОЧЕМУ СЕЙЧАС ══ -->
+  <section class="sec lt lk hid" id="s3">
+    <div class="sec-content">
+      <h2>Почему искать следующий виток нужно <span class="ac">уже сейчас</span></h2>
+      <div class="ag">
+        <div class="ac-card">
+          <div class="ac-badge">Аналогия</div>
+          <h4>Бак не бесконечный</h4>
+          <div class="ac-icons"><span>⛽</span><span style="color:#1a8c45">→</span><span>🚗</span></div>
+          <p>Искать заправку нужно пока есть запас хода, не когда загорелась лампочка. Некоторые родители в 1-м классе выбирают школу с прицелом на ВУЗ.</p>
+        </div>
+      </div>
+      <div class="sh-wrap">
+        <div class="sh-big">20%</div>
+        <p class="sh-desc">времени — столько руководство «Асконы» уже сейчас тратит на поиск следующего витка, пока текущая модель ещё растёт</p>
+      </div>
+      <div class="pq">«Они с CEO уже сейчас тратят 20% времени на поиск того, что компания будет делать дальше...» — Роман Ершов, президент «Асконы»</div>
+      <h3>Падающий рынок ошибок не прощает</h3>
+      <p>Экономика РФ в падающем цикле. На растущем рынке ошибки прощаются, на падающем — нет. Те, кто рос за счёт инерции, начинают буксовать.</p>
+      <p>На каком бы этапе вы сейчас ни находились, вам нужно понимать, какой будет следующий виток. <strong>Не через пять лет, а сейчас.</strong></p>
+    </div>
+    <button class="rmb lt-btn" onclick="unlock(3)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 04 ОШИБКИ ══ -->
+  <section class="sec dk lk hid" id="s4">
+    <div class="sec-content">
+      <h2>Как найти <span class="ac">правильный</span> виток?</h2>
+      <p>Как обычно ищут следующий виток?</p>
+      <div class="cg">
+        <div class="card"><div class="c-num">01</div><div class="c-ttl">Копирование чужой модели</div><div class="c-bdy">«У конкурента получилось...» — нельзя скопировать причины, по которым модель работает. Контекст и личность другие.</div></div>
+        <div class="card"><div class="c-num">02</div><div class="c-ttl">Бегство в модную нишу</div><div class="c-bdy">«Все говорят про ИИ...» — без связи с тем, что уже есть. Это не эволюция модели, а импульсивный прыжок.</div></div>
+        <div class="card"><div class="c-num">03</div><div class="c-ttl">Панический разворот</div><div class="c-bdy">Модель буксует → стресс → «всё менять» → обнуляется всё, что работало. Теряется клиентская база, экспертиза, репутация.</div></div>
+      </div>
+      <div class="pq">Что объединяет все три? Решение принимается <em>без методологии</em> выбора бизнес-модели.</div>
+      <p>Нужно учесть три вещи: <em>кто вы</em>, <em>как устроена текущая модель</em>, <em>что происходит на рынке</em>.</p>
+      <p>На пересечении трёх элементов рождается <em>Точка максимального потенциала</em>.</p>
+    </div>
+    <button class="rmb" onclick="unlock(4)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 05 ТОЧКА ПОТЕНЦИАЛА ══ -->
+  <section class="sec lt lk hid" id="s5">
+    <div class="sec-content">
+      <h2>Точка максимального <span class="ac">потенциала</span></h2>
+      <p>Метод из трёх элементов, проверен на десятках компаний с оборотами от сотен млн до десятков млрд рублей.</p>
+      <div class="venn">
+        <div class="venn-wrap">
+          <div class="vc vc1">Контекст</div>
+          <div class="vc vc2">Дело</div>
+          <div class="vc vc3">Личность</div>
+          <div class="vc-center">Точка потенциала</div>
+        </div>
+      </div>
+      <div class="cg">
+        <div class="card"><div class="c-num">Контекст</div><div class="c-bdy">В каком мире вы строите стратегию. Что происходит вокруг и какие возможности это создаёт.</div></div>
+        <div class="card"><div class="c-num">Личность</div><div class="c-bdy">Кто вы и зачем вам этот бизнес. В чём ваша суперсила и как она становится ядром компании.</div></div>
+        <div class="card"><div class="c-num">Дело</div><div class="c-bdy">Как устроена ваша модель, где её потолок и каким должен быть следующий виток.</div></div>
+      </div>
+      <div class="pq">«Предприниматель видит следствие в своей нише, но не видит причину, которая зародилась уровнем выше.» — Методология «Горок»</div>
+    </div>
+    <button class="rmb lt-btn" onclick="unlock(5)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 06 КОНТЕКСТ ══ -->
+  <section class="sec dk lk hid" id="s6">
+    <div class="sec-content">
+      <div class="sec-lbl">Элемент 1</div>
+      <h2><span class="ac">Контекст:</span> в каком мире вы строите стратегию</h2>
+      <p>Контекст — это всё, что вокруг бизнеса, на что почти нельзя повлиять, но что влияет на вас. Мировая экономика, геополитика, стратегия страны, наука и технологии, отрасль.</p>
+      <div class="sh-wrap">
+        <div class="sh-big">70%</div>
+        <p class="sh-desc">начального успеха компании — это удача<br><em>Владимир Горжичук, бывший гендиректор «Магнита»</em></p>
+      </div>
+      <div class="pq">«70% начального успеха компании это была удача. Кризис 1998 года изменил поведение потребителей...» — Владимир Горжичук</div>
+      <h3>Три уровня контекста</h3>
+      <div class="lvls">
+        <div class="lv"><div class="lv-n">1</div><div><div class="lv-ttl">🌍 Мир</div><div class="lv-desc">Глобальные циклы, геополитика, наука. Циклы Кондратьева, 60-летний технологический цикл, Нобелевские премии как будущие бизнес-модели.</div></div></div>
+        <div class="lv"><div class="lv-n">2</div><div><div class="lv-ttl">🇷🇺 Страна</div><div class="lv-desc">Стратегия государства, нацпроекты, поддержка / депрессия отраслей. Фокус государственного внимания меняет экономику.</div></div></div>
+        <div class="lv"><div class="lv-n">3</div><div><div class="lv-ttl">🏭 Отрасль</div><div class="lv-desc">Конкуренты, инновации, регулирование. Кто появляется, кто уходит, что меняется.</div></div></div>
+      </div>
+      <p style="margin-top:8px">Между уровнями есть причинно-следственные связи. Решение на уровне страны через два года меняет отрасль. <em>Задача: видеть не только что происходит, но откуда это пришло и куда ведёт.</em></p>
+    </div>
+    <button class="rmb" onclick="unlock(6)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 07 ЛИЧНОСТЬ ══ -->
+  <section class="sec lt lk hid" id="s7">
+    <div class="sec-content">
+      <div class="sec-lbl">Элемент 2</div>
+      <h2><span class="ac">Личность,</span> или почему стратегия начинается с вас</h2>
+      <h3>Бизнес служит жизни, а не жизнь бизнесу</h3>
+      <p>Главный вопрос: «Я делаю бизнес, чтобы что?»</p>
+      <div class="og">
+        <div class="op"><span class="op-ico">💰</span><span class="op-tx">Продать бизнес</span></div>
+        <div class="op"><span class="op-ico">❤️</span><span class="op-tx">Кайфовать от продукта</span></div>
+        <div class="op"><span class="op-ico">👨‍👩‍👧</span><span class="op-tx">Передать детям</span></div>
+        <div class="op"><span class="op-ico">🏛️</span><span class="op-tx">Построить наследие</span></div>
+      </div>
+      <p>Каждый ответ ведёт к принципиально разной стратегии. Личность основателя в уравнении часто отсутствует — это ошибка.</p>
+      <h3>У каждого основателя есть суперсила</h3>
+      <p>Суперсила — неизменное свойство личности (не навык). То, что даётся легко и проявляется постоянно, непроизвольно.</p>
+      <div class="cg">
+        <div class="card" style="border-color:rgba(180,0,0,.2)"><div class="c-num" style="color:#c0392b">❌ Навык</div><div class="c-bdy">Приобретённое умение. Можно научить другого человека.</div></div>
+        <div class="card" style="border-color:rgba(180,0,0,.2)"><div class="c-num" style="color:#c0392b">❌ Инструмент</div><div class="c-bdy">Лопата. Помогает копать, но сама не копает.</div></div>
+        <div class="card" style="background:rgba(26,140,69,.08);border-color:rgba(26,140,69,.3)"><div class="c-num" style="color:#1a8c45">✓ Суперсила</div><div class="c-bdy">То, что даётся легко и проявляется постоянно. Основа стратегии.</div></div>
+      </div>
+      <div class="pq">«Принцип «Горок»: усиливаем сильное. Не прокачиваем слабые стороны, а строим стратегию вокруг сильных.»</div>
+      <h3>От суперсилы к главгену</h3>
+      <p>Суперсила впечатывается в стратегию, продукт, культуру, команду, модель. Когда суперсила основателя впечатывается в бизнес и становится его ядром — мы называем это <strong>главген компании</strong>.</p>
+    </div>
+    <button class="rmb lt-btn" onclick="unlock(7)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 08 ДЕЛО ══ -->
+  <section class="sec dk lk hid" id="s8">
+    <div class="sec-content">
+      <div class="sec-lbl">Элемент 3</div>
+      <h2><span class="ac">Дело:</span> как устроена ваша модель и где её потолок</h2>
+      <h3>Три критерия правильного витка</h3>
+      <div class="cg">
+        <div class="card"><div class="c-num">🧬 01</div><div class="c-ttl">Строится на главгене</div><div class="c-bdy">Следующий виток должен опираться на суперсилу основателя — ядро компании.</div></div>
+        <div class="card"><div class="c-num">🧱 02</div><div class="c-ttl">Надстраивается, не обнуляет</div><div class="c-bdy">Клиентская база, экспертиза, репутация — фундамент. «Аскона» за 35 лет — 6 смен, каждый виток строился на активах предыдущего.</div></div>
+        <div class="card"><div class="c-num">⏰ 03</div><div class="c-ttl">Делается вовремя</div><div class="c-bdy">На пике, когда есть ресурсы. Проверяется контекстом — туда ли движется мир?</div></div>
+      </div>
+      <h3>Эволюция «Асконы»: 6 смен бизнес-модели</h3>
+      <div class="tl">
+        <div class="tl-it"><div class="tl-ico">🛏️</div><div class="tl-cnt"><div class="tl-yr">1990-е</div><div class="tl-ttl">Торговля матрасами</div></div></div>
+        <div class="tl-it"><div class="tl-ico">🏭</div><div class="tl-cnt"><div class="tl-yr">2000-е</div><div class="tl-ttl">Производство</div></div></div>
+        <div class="tl-it"><div class="tl-ico">🏪</div><div class="tl-cnt"><div class="tl-yr">2005+</div><div class="tl-ttl">Ритейлер с вертикальной интеграцией</div></div></div>
+        <div class="tl-it"><div class="tl-ico">🌐</div><div class="tl-cnt"><div class="tl-yr">2010+</div><div class="tl-ttl">Федеральная сеть</div></div></div>
+        <div class="tl-it"><div class="tl-ico">🏢</div><div class="tl-cnt"><div class="tl-yr">2015+</div><div class="tl-ttl">Мульти-индустриальный холдинг</div></div></div>
+        <div class="tl-it"><div class="tl-ico">💤</div><div class="tl-cnt"><div class="tl-yr">2020+</div><div class="tl-ttl">Экосистема здорового сна</div></div></div>
+      </div>
+      <h3>Формула следующего витка</h3>
+      <div class="fml">
+        <div class="fml-tx">Суперсила (главген) + Активы (что уже работает) + Контекст (куда движется мир)</div>
+        <div class="fml-res">= Виток (направление роста)</div>
+      </div>
+    </div>
+    <button class="rmb" onclick="unlock(8)">Читать дальше <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 13L4 8H14L9 13Z" fill="currentColor"/></svg></button>
+  </section>
+
+  <!-- ══ 09 ИТОГ ══ -->
+  <section class="sec lt lk hid" id="s9">
+    <div class="sec-content">
+      <h2>Как всё <span class="ac">собирается вместе</span></h2>
+      <ul class="sum-ul">
+        <li>Масштабирование — это эволюция бизнес-модели, не «больше того же самого»</li>
+        <li>Любая модель конечна, вопрос только <strong>когда</strong> она упрётся в потолок</li>
+        <li><strong>Контекст:</strong> в каком мире строите стратегию, какие тренды создают окна возможностей</li>
+        <li><strong>Личность:</strong> кто вы, зачем вам бизнес, в чём суперсила</li>
+        <li><strong>Дело:</strong> как устроена модель, где потолок и каким должен быть следующий виток</li>
+        <li>На пересечении трёх элементов — <strong>Точка максимального потенциала</strong>: конкретный вектор, куда двигаться</li>
+      </ul>
+      <div class="cta-box">
+        <h3>Что дальше</h3>
+        <p>Интенсив <strong>«Масштаб»</strong> — 17–19 апреля, Доброград. Три дня офлайн. Спикеры — действующие предприниматели и управленцы миллиардных компаний. Живые разборы, работа в группах, индивидуальная проработка стратегии.</p>
+        <a class="cta-a" href="#">Оставить заявку →</a>
+      </div>
+      <div class="ft">© Школа бизнеса «Горки» · Методология масштабирования</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+var unlocked = 1;
+var TOTAL = 9;
+var names = ['','Введение','Масштабирование','Почему сейчас','Ошибки','Точка потенциала','Контекст','Личность','Дело','Итог'];
+
+function unlock(n) {
+  var nx = n + 1;
+  if (nx > TOTAL) return;
+  var sec = document.getElementById('s' + nx);
+  if (!sec) return;
+  // mark prev done
+  var ico = document.getElementById('ico-' + n);
+  if (ico) { ico.className = 'ni-ico done'; ico.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#3ecf6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  var nav = document.querySelector('[data-s="' + n + '"]');
+  if (nav) nav.classList.remove('cur');
+  // unlock next
+  sec.classList.remove('lk','hid');
+  unlocked = Math.max(unlocked, nx);
+  setSidebar(nx);
+  setTimeout(function(){ sec.scrollIntoView({behavior:'smooth'}); }, 80);
+}
+
+function setSidebar(active) {
+  for (var i = 1; i <= TOTAL; i++) {
+    var ni = document.querySelector('[data-s="' + i + '"]');
+    var ic = document.getElementById('ico-' + i);
+    if (!ni || !ic) continue;
+    ni.classList.remove('cur');
+    if (i < active) {
+      ic.className = 'ni-ico done';
+      ic.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#3ecf6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      ni.classList.remove('locked-nav');
+    } else if (i === active) {
+      ic.className = 'ni-ico act';
+      ic.innerHTML = '▶';
+      ni.classList.add('cur');
+      ni.classList.remove('locked-nav');
+    } else if (i <= unlocked) {
+      ni.classList.remove('locked-nav');
+    }
+  }
+  document.getElementById('sb-cnt').textContent = active + ' / ' + TOTAL;
+  document.getElementById('sh-num').textContent = (active < 10 ? '0' : '') + active;
+  document.getElementById('sh-name').textContent = names[active];
+}
+
+function goSec(n) {
+  var sec = document.getElementById('s' + n);
+  if (sec && !sec.classList.contains('hid')) {
+    sec.scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function toggleSb() {
+  document.getElementById('sb').classList.toggle('col');
+  document.body.classList.toggle('col');
+}
+
+// Scroll handler
+window.addEventListener('scroll', function() {
+  var scrolled = window.scrollY;
+  var total = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('prog').style.width = (scrolled / total * 100) + '%';
+  // sticky header
+  document.getElementById('sh').className = scrolled > 160 ? 'vis' : '';
+  // active section
+  var cur = 1;
+  for (var i = 1; i <= TOTAL; i++) {
+    var s = document.getElementById('s' + i);
+    if (!s || s.classList.contains('hid')) continue;
+    if (s.getBoundingClientRect().top <= 80) cur = i;
+  }
+  setSidebar(cur);
+});
+
+// Counter animation
+function animCount(el, target, prefix, suffix, dur) {
+  var start = Date.now();
+  var t = setInterval(function() {
+    var p = Math.min((Date.now() - start) / dur, 1);
+    var e = 1 - Math.pow(1 - p, 3);
+    el.textContent = (prefix||'') + Math.round(e * target) + (suffix||'');
+    if (p >= 1) clearInterval(t);
+  }, 16);
+}
+
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    animCount(document.getElementById('st1'), 35, '', ' лет', 1400);
+    animCount(document.getElementById('st2'), 6, '', ' смен', 1100);
+    animCount(document.getElementById('st3'), 100, 'топ-', '+', 1600);
+  }, 400);
+});
+</script>
+</body>
+</html>
