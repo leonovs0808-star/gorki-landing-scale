@@ -328,41 +328,24 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
 #s5-cta-btn {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 12px !important;
-  padding: 16px 40px !important;
-  border-radius: 9999px !important;
-  background: linear-gradient(135deg, rgb(34,89,70) 0%, rgb(53,151,110) 50%, rgb(63,131,103) 100%) !important;
-  color: #fff !important;
-  font-size: 18px !important;
-  font-weight: 600 !important;
+  gap: 8px !important;
+  padding: 15px 30px !important;
+  border-radius: 50px !important;
+  background: #3ecf6e !important;
+  color: #0a1a11 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 24px rgba(53,151,110,0.25) !important;
-  transition: box-shadow 0.3s ease, transform 0.2s ease, opacity 0.2s ease !important;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
   letter-spacing: 0 !important;
   line-height: 1 !important;
 }
 #s5-cta-btn:hover {
-  box-shadow: 0 8px 40px rgba(53,151,110,0.45) !important;
   transform: translateY(-2px) !important;
-}
-#s5-cta-btn:active {
-  transform: translateY(0) !important;
-  opacity: 0.85 !important;
-}
-#s5-cta-btn svg {
-  width: 20px !important;
-  height: 20px !important;
-  stroke: #fff !important;
-  fill: none !important;
-  stroke-width: 2 !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-  flex-shrink: 0 !important;
-  transition: transform 0.2s ease !important;
-}
-#s5-cta-btn:hover svg {
-  transform: translateX(4px) !important;
+  box-shadow: 0 8px 24px rgba(62,207,110,0.4) !important;
 }
 
 /* ── RESPONSIVE ── */
@@ -497,6 +480,12 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
       </div><!-- /cards-grid -->
     </div><!-- /cards-wrap -->
 
+    <!-- ── CTA ── -->
+    <div id="s5-cta-wrap" class="s5-fade">
+      <button id="s5-cta-btn" onclick="if(typeof mshScrollTo==='function'){mshScrollTo(6);}">
+        Читать дальше →
+      </button>
+    </div>
 
   </section>
 </div>
