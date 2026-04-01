@@ -1,0 +1,623 @@
+<!-- BLOCK 02: Масштабирование — pixel-perfect copy of vision-quest-revamp.lovable.app/#what-is -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── FORCE DARK BG + REMOVE TILDA RECORD GAPS ── */
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* ── NAMESPACE RESET ── */
+#s2-root, #s2-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s2-root p, #s2-root h2, #s2-root h3, #s2-root h4,
+#s2-root span, #s2-root strong, #s2-root div, #s2-root button {
+  margin: 0; padding: 0;
+}
+
+/* ── FULL-WIDTH BLEED (break out of Tilda column) ── */
+#s2-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #08110E !important;
+  overflow-x: hidden !important;
+}
+
+/* ── SECTION ── */
+#s2-sec {
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+  background: transparent !important;
+}
+
+/* Fade-in animation */
+@keyframes s2FadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s2-fade {
+  animation: s2FadeIn .7s ease-out both !important;
+  animation-play-state: paused !important;
+}
+.s2-fade.s2-visible { animation-play-state: running !important; }
+
+/* ── CONTENT WIDTHS ── */
+.s2-narrow { max-width: 720px !important; width: 100% !important; }
+.s2-wide   { max-width: 960px !important; width: 100% !important; }
+
+/* ── SPACING UTILITY ── */
+.s2-mt-64 { margin-top: 64px !important; }
+.s2-mt-80 { margin-top: 80px !important; }
+
+/* ── H2 ── */
+.s2-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  letter-spacing: -0.96px !important;
+  text-transform: none !important;
+}
+/* Green skewed highlight behind words */
+.s2-hl {
+  position: relative !important;
+  display: inline !important;
+}
+.s2-hl::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 2px -6px !important;
+  background: rgba(66,189,138,0.15) !important;
+  transform: skewX(-2deg) !important;
+  border-radius: 3px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.s2-hl-inner {
+  position: relative !important;
+  z-index: 1 !important;
+  color: #EDEDED !important;
+}
+
+/* Footnote */
+.s2-footnote {
+  font-size: 14px !important;
+  color: rgba(129,152,144,0.6) !important;
+  margin: 0 0 64px !important;
+  display: block !important;
+  line-height: 1.4 !important;
+}
+.s2-footnote-accent { color: #42BD8A !important; }
+
+/* ── CARD ── */
+.s2-card {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 40px !important;
+  margin: 0 0 48px !important;
+}
+.s2-card-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  line-height: 1.33 !important;
+  text-transform: none !important;
+}
+
+/* Drop-cap */
+.s2-dropcap { overflow: hidden !important; }
+.s2-dropcap-letter {
+  float: left !important;
+  font-size: 4.6em !important;
+  font-weight: 800 !important;
+  color: #42BD8A !important;
+  line-height: .78 !important;
+  margin: 4px 10px 0 0 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.s2-dropcap-text {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.85) !important;
+  text-transform: none !important;
+}
+
+/* ── BODY TEXT ── */
+.s2-body { margin-left: 8% !important; }
+.s2-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 0 24px !important;
+  text-transform: none !important;
+}
+.s2-p:last-child { margin-bottom: 0 !important; }
+.s2-p strong, .s2-p b {
+  color: #EDEDED !important;
+  font-weight: 600 !important;
+}
+
+/* ── CHART BLOCK ── */
+.s2-chart-wrap {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+}
+.s2-chart-h4 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  text-align: center !important;
+  margin: 0 0 32px !important;
+  text-transform: none !important;
+}
+.s2-chart-caption {
+  font-size: 14px !important;
+  color: #819890 !important;
+  text-align: center !important;
+  margin: 16px 0 0 !important;
+  line-height: 1.5 !important;
+}
+.s2-svg { width: 100% !important; display: block !important; max-width: 100% !important; margin: 0 auto !important; }
+
+/* ── MID PARAGRAPH ── */
+.s2-mid-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 0 80px !important;
+  text-transform: none !important;
+}
+
+/* ── ANALOGY CARDS GRID ── */
+.s2-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 24px !important;
+  margin: 0 0 80px !important;
+}
+.s2-analogy-card {
+  background: #111D19 !important;
+  border: 1px solid rgba(35,47,43,0.6) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  transition: box-shadow .3s ease, transform .3s ease !important;
+}
+.s2-analogy-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+  transform: translateY(-2px) !important;
+}
+.s2-analogy-vis {
+  width: 100% !important;
+  background: linear-gradient(135deg, rgb(21,31,40), rgb(20,31,31)) !important;
+  overflow: hidden !important;
+  height: 225px !important;
+}
+.s2-analogy-body { padding: 32px !important; }
+.s2-analogy-label {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.8px !important;
+  color: rgba(129,152,144,0.6) !important;
+  display: block !important;
+  margin: 0 0 10px !important;
+}
+.s2-analogy-h4 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 12px !important;
+  text-transform: none !important;
+  line-height: 1.3 !important;
+}
+.s2-analogy-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 !important;
+  text-transform: none !important;
+}
+
+/* ── FINAL SECTION ── */
+.s2-final-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  text-transform: none !important;
+}
+.s2-final-p {
+  font-size: 18px !important;
+  line-height: 1.65 !important;
+  color: rgba(237,237,237,0.65) !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s2-final-p:last-child { margin-bottom: 0 !important; }
+.s2-final-p strong { color: #EDEDED !important; font-weight: 600 !important; }
+
+/* ── BUTTON ── */
+.s2-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 0 !important;
+}
+.s2-btn {
+  display: inline-flex !important; align-items: center !important; gap: 10px !important;
+  background: linear-gradient(135deg,#225946 0%,#35976E 50%,#3F8367 100%) !important;
+  color: #fff !important; border: none !important; outline: none !important;
+  border-radius: 9999px !important;
+  padding: 18px 40px !important; min-height: 60px !important;
+  font-size: 18px !important; font-weight: 600 !important;
+  cursor: pointer !important; letter-spacing: .01em !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s2-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
+  text-decoration: none !important; text-transform: none !important; line-height: 1 !important;
+}
+.s2-btn:hover { transform: scale(1.05) !important; box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important; animation: none !important; color: #fff !important; }
+@keyframes s2-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  #s2-sec { padding: 120px 48px 120px 300px !important; }
+}
+@media (max-width: 900px) {
+  #s2-sec { padding: 100px 32px 100px 288px !important; }
+  .s2-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  #s2-sec { padding: 80px 24px 80px 24px !important; }
+  .s2-body { margin-left: 0 !important; }
+  .s2-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .s2-h2 { font-size: clamp(28px, 7vw, 40px) !important; }
+  .s2-mid-p { font-size: 17px !important; margin-bottom: 48px !important; }
+  .s2-mt-64 { margin-top: 40px !important; }
+  .s2-mt-80 { margin-top: 48px !important; }
+}
+@media (max-width: 520px) {
+  #s2-sec { padding: 60px 20px 60px 20px !important; }
+  .s2-card { padding: 24px !important; }
+  .s2-chart-wrap { padding: 20px 12px !important; }
+  .s2-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .s2-btn-row { padding: 40px 0 0 !important; }
+}
+</style>
+
+<!-- ════════════════════ HTML ════════════════════ -->
+<div id="s2-root">
+  <section id="s2-sec" data-msh-sec="2">
+
+    <!-- ═══ 1. ЗАГОЛОВОК + ПЕРВЫЙ ТЕКСТОВЫЙ БЛОК ═══ -->
+    <div class="s2-narrow s2-fade">
+      <h2 class="s2-h2">
+        <span class="s2-hl"><span class="s2-hl-inner">Что такое</span></span><br>
+        <span class="s2-hl"><span class="s2-hl-inner">масштабирование</span></span><sup style="color:#42BD8A;font-size:0.55em;margin-left:4px;vertical-align:super;font-weight:400">*</sup>
+      </h2>
+      <span class="s2-footnote"><span class="s2-footnote-accent">*</span> По методологии школы «Горки»</span>
+
+      <!-- Тёмная карточка с drop-cap -->
+      <div class="s2-card">
+        <h3 class="s2-card-h3">«Больше того же самого» — это не масштабирование</h3>
+        <div class="s2-dropcap">
+          <span class="s2-dropcap-letter">М</span>
+          <span class="s2-dropcap-text">асштабирование. Одно из самых употребляемых слов в предпринимательской среде. И одно из самых непонятых. Все об этом говорят. Но на практике немного компаний, прошедших долину смерти и вышедших на выручку 100+ миллионов, смогли действительно масштабироваться дальше. Построить компанию на миллиард, десять или сто миллиардов.</span>
+        </div>
+      </div>
+
+      <!-- Текст со сдвигом -->
+      <div class="s2-body">
+        <p class="s2-p">Когда предприниматель говорит «хочу масштабироваться», чаще всего он имеет в виду: больше трафика, больше лидов, больше клиентов, больше точек, больше сотрудников. То есть больше того же самого.</p>
+        <p class="s2-p">Но это не масштабирование. Это <strong>линейное увеличение</strong>.</p>
+        <p class="s2-p">Линейное увеличение — это когда вы наращиваете объём внутри существующей модели. Больше менеджеров, больше точек, больше рекламы. Масштабирование — это когда меняется <strong>сама бизнес-модель</strong>.</p>
+      </div>
+    </div>
+
+    <!-- ═══ 2. ГРАФИК SVG ═══ -->
+    <div class="s2-wide s2-fade s2-mt-64">
+      <div class="s2-chart-wrap">
+        <h4 class="s2-chart-h4">Линейный рост vs Масштабирование</h4>
+        <svg class="s2-svg" viewBox="0 0 650 320" fill="none" id="s2-chart">
+          <!-- Grid -->
+          <line x1="70" y1="60"  x2="560" y2="60"  stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="115" x2="560" y2="115" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="170" x2="560" y2="170" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="225" x2="560" y2="225" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="280" x2="560" y2="280" stroke="#232F2B" stroke-width="1"/>
+          <!-- Axis labels -->
+          <text x="40"  y="295" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle">0</text>
+          <text x="310" y="312" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle">Время →</text>
+          <text x="18"  y="160" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle" transform="rotate(-90,18,160)">Результат →</text>
+          <!-- Linear growth (dashed, muted) -->
+          <line x1="80" y1="250" x2="520" y2="110"
+            stroke="#819890" stroke-width="2.5" stroke-dasharray="8 4" opacity="0.5"
+            id="s2-linear-line"/>
+          <text x="525" y="104" fill="#819890" font-size="10" font-family="Inter">Линейный</text>
+          <text x="525" y="117" fill="#819890" font-size="10" font-family="Inter">рост</text>
+          <!-- Scale curve fill -->
+          <path d="M80,250 L160,225 L200,225 L220,180 L310,170 L340,170 L360,110 L440,95 L480,95 L500,55 L530,50 L530,280 L80,280 Z"
+            fill="#42BD8A" opacity="0.07"/>
+          <!-- Scale curve line -->
+          <polyline id="s2-scale-line"
+            points="80,250 160,225 200,225 220,180 310,170 340,170 360,110 440,95 480,95 500,55 530,50"
+            stroke="#42BD8A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+            fill="none"/>
+          <!-- Виток 1 -->
+          <circle cx="200" cy="225" r="6"  fill="#42BD8A"/>
+          <circle cx="200" cy="225" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="200" y="213" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 1</text>
+          <!-- Виток 2 -->
+          <circle cx="340" cy="170" r="6"  fill="#42BD8A"/>
+          <circle cx="340" cy="170" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="340" y="157" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 2</text>
+          <!-- Виток 3 -->
+          <circle cx="480" cy="95" r="6"  fill="#42BD8A"/>
+          <circle cx="480" cy="95" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="480" y="82" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 3</text>
+          <!-- Масштабирование label -->
+          <text x="534" y="42" fill="#42BD8A" font-size="10" font-family="Inter" font-weight="700">Масшта-</text>
+          <text x="534" y="55" fill="#42BD8A" font-size="10" font-family="Inter" font-weight="700">бирование</text>
+        </svg>
+        <p class="s2-chart-caption">Каждый виток — смена бизнес-модели, а не просто «больше того же самого»</p>
+      </div>
+    </div>
+
+    <!-- ═══ 3. АБЗАЦ ПОСЛЕ ГРАФИКА ═══ -->
+    <div class="s2-narrow s2-fade s2-mt-64">
+      <p class="s2-mid-p">Линейное увеличение не плохо. На определённом этапе это именно то, что нужно. Если модель недавно нашла свой продукт и растёт, её нужно давить: оптимизировать, нанимать, расширять каналы. Но важно понимать: это разные процессы. И путать одно с другим опасно.</p>
+    </div>
+
+    <!-- ═══ 4. КАРТОЧКИ-АНАЛОГИИ ═══ -->
+    <div class="s2-wide s2-fade">
+      <div class="s2-grid">
+
+        <!-- Нагрев vs Пар -->
+        <div class="s2-analogy-card">
+          <div class="s2-analogy-vis">
+            <svg viewBox="0 0 400 200" style="width:100%;height:225px;display:block" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <clipPath id="s2-clip-l"><rect x="0" y="0" width="200" height="200"/></clipPath>
+                <clipPath id="s2-clip-r"><rect x="200" y="0" width="200" height="200"/></clipPath>
+              </defs>
+              <!-- Background halves -->
+              <rect x="0"   width="200" height="200" fill="#151f28"/>
+              <rect x="200" width="200" height="200" fill="#141f1f"/>
+
+              <!-- LEFT: 99° — cool water -->
+              <g clip-path="url(#s2-clip-l)">
+                <rect x="0" y="148" width="200" height="52" fill="hsl(210,50%,22%)"/>
+                <path d="M0,148 Q25,140 50,148 Q75,156 100,148 Q125,140 150,148 Q175,156 200,148 L200,155 Q175,147 150,155 Q125,163 100,155 Q75,147 50,155 Q25,163 0,155 Z" fill="hsl(210,45%,26%)"/>
+                <!-- Slow bubbles -->
+                <circle cx="65" cy="155" r="4" fill="hsl(210,50%,55%)">
+                  <animate attributeName="cy" values="155;60" dur="4s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="r"  values="4;2"   dur="4s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0.55;0.2;0" keyTimes="0;0.8;1" dur="4s" repeatCount="indefinite" begin="0s"/>
+                </circle>
+                <circle cx="135" cy="155" r="3" fill="hsl(210,50%,55%)">
+                  <animate attributeName="cy" values="155;75" dur="4s" repeatCount="indefinite" begin="2s"/>
+                  <animate attributeName="r"  values="3;1.5" dur="4s" repeatCount="indefinite" begin="2s"/>
+                  <animate attributeName="opacity" values="0.5;0.2;0" keyTimes="0;0.8;1" dur="4s" repeatCount="indefinite" begin="2s"/>
+                </circle>
+                <text x="100" y="118" fill="hsl(0,0%,70%)" font-size="42" font-family="Georgia,serif" font-style="italic" text-anchor="middle" opacity="0.35">99°</text>
+              </g>
+
+              <!-- RIGHT: 100° — boiling water -->
+              <g clip-path="url(#s2-clip-r)">
+                <rect x="200" y="148" width="200" height="52" fill="hsl(190,55%,28%)"/>
+                <path d="M200,145 Q220,137 240,145 Q260,153 280,145 Q300,137 320,145 Q340,153 360,145 Q380,137 400,145 L400,153 Q380,145 360,153 Q340,161 320,153 Q300,145 280,153 Q260,161 240,153 Q220,145 200,153 Z" fill="hsl(190,50%,32%)"/>
+                <!-- Fast bubbles -->
+                <circle cx="222" cy="152" r="4" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;58" dur="1.8s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="1.8s" repeatCount="indefinite" begin="0s"/>
+                </circle>
+                <circle cx="260" cy="152" r="3" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;65" dur="2.2s" repeatCount="indefinite" begin="0.5s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.2s" repeatCount="indefinite" begin="0.5s"/>
+                </circle>
+                <circle cx="300" cy="152" r="5" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;52" dur="2.0s" repeatCount="indefinite" begin="1.0s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.0s" repeatCount="indefinite" begin="1.0s"/>
+                </circle>
+                <circle cx="342" cy="152" r="3" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;68" dur="2.6s" repeatCount="indefinite" begin="1.3s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.6s" repeatCount="indefinite" begin="1.3s"/>
+                </circle>
+                <circle cx="376" cy="152" r="4" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;58" dur="2.4s" repeatCount="indefinite" begin="0.8s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.4s" repeatCount="indefinite" begin="0.8s"/>
+                </circle>
+                <!-- Steam paths -->
+                <path d="M228,145 Q224,125 228,105 Q232,85 228,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+                </path>
+                <path d="M258,145 Q262,125 258,105 Q254,85 258,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.0s" repeatCount="indefinite" begin="0.4s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.0s" repeatCount="indefinite" begin="0.4s"/>
+                </path>
+                <path d="M295,145 Q291,125 295,105 Q299,85 295,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.4s" repeatCount="indefinite" begin="0.8s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.4s" repeatCount="indefinite" begin="0.8s"/>
+                </path>
+                <path d="M334,145 Q338,125 334,105 Q330,85 334,67" stroke="hsl(0,0%,85%)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.1s" repeatCount="indefinite" begin="0.2s"/>
+                  <animate attributeName="opacity" values="0;0.4;0.35;0" keyTimes="0;0.2;0.8;1" dur="1.1s" repeatCount="indefinite" begin="0.2s"/>
+                </path>
+                <path d="M370,145 Q374,125 370,105 Q366,85 370,67" stroke="hsl(0,0%,85%)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="0.9s" repeatCount="indefinite" begin="0.6s"/>
+                  <animate attributeName="opacity" values="0;0.4;0.35;0" keyTimes="0;0.2;0.8;1" dur="0.9s" repeatCount="indefinite" begin="0.6s"/>
+                </path>
+                <text x="300" y="118" fill="hsl(160,45%,55%)" font-size="42" font-family="Georgia,serif" font-style="italic" text-anchor="middle" opacity="0.9">100°</text>
+              </g>
+
+              <!-- Divider + Arrow -->
+              <line x1="200" y1="8" x2="200" y2="192" stroke="hsl(200,60%,70%)" stroke-width="1.5" opacity="0.25"/>
+              <text x="200" y="110" fill="hsl(200,60%,70%)" font-size="22" font-family="Inter,sans-serif" text-anchor="middle" dominant-baseline="middle" opacity="0.75">→</text>
+            </svg>
+          </div>
+          <div class="s2-analogy-body">
+            <span class="s2-analogy-label">Аналогия</span>
+            <h4 class="s2-analogy-h4">Нагрев vs Пар</h4>
+            <p class="s2-analogy-p">Вы греете воду. С каждым градусом она горячее. Но при 100°C — качественный скачок: вода → пар. Количество перешло в качество.</p>
+          </div>
+        </div>
+
+        <!-- Школа → Институт -->
+        <div class="s2-analogy-card">
+          <div class="s2-analogy-vis">
+            <svg viewBox="0 0 400 200" style="width:100%;height:225px;display:block" preserveAspectRatio="xMidYMid slice">
+              <!-- Background: dark teal gradient -->
+              <rect width="400" height="200" fill="#070e0b"/>
+              <!-- Ground line -->
+              <line x1="20" y1="168" x2="380" y2="168" stroke="hsl(0,0%,30%)" stroke-width="1" opacity="0.4"/>
+
+              <!-- SCHOOL (left) -->
+              <rect x="32" y="98" width="95" height="70" fill="hsl(0,0%,22%)" rx="2"/>
+              <polygon points="22,98 79.5,60 137,98" fill="hsl(0,0%,26%)"/>
+              <!-- Windows -->
+              <rect x="44"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <rect x="70"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <rect x="96"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <!-- Door -->
+              <rect x="66"  y="136" width="27" height="32" rx="2" fill="#070e0b"/>
+              <!-- Label -->
+              <text x="79.5" y="188" fill="hsl(0,0%,55%)" font-size="13" font-family="Inter,sans-serif" font-weight="500" text-anchor="middle">11-й класс</text>
+
+              <!-- ANIMATED ARROW -->
+              <line x1="148" y1="130" x2="240" y2="130" stroke="hsl(142,40%,45%)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="92">
+                <animate attributeName="stroke-dashoffset" from="92" to="0" dur="1.6s" repeatCount="indefinite" begin="0s"/>
+                <animate attributeName="opacity" values="0.4;1;1;0.4" keyTimes="0;0.3;0.7;1" dur="1.6s" repeatCount="indefinite" begin="0s"/>
+              </line>
+              <!-- Arrowhead -->
+              <polygon points="237,123 252,130 237,137" fill="hsl(142,40%,45%)">
+                <animate attributeName="opacity" values="0.3;1;1;0.3" keyTimes="0;0.5;0.8;1" dur="1.6s" repeatCount="indefinite" begin="0.3s"/>
+              </polygon>
+
+              <!-- UNIVERSITY (right) -->
+              <rect x="260" y="88" width="112" height="80" fill="hsl(0,0%,20%)" rx="2"/>
+              <polygon points="252,88 316,48 380,88" fill="hsl(0,0%,24%)"/>
+              <!-- Columns -->
+              <rect x="272" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="292" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="331" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="351" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <!-- Door/entrance -->
+              <rect x="304" y="112" width="24" height="56" fill="#070e0b" rx="2"/>
+              <!-- Dome -->
+              <ellipse cx="316" cy="48" rx="20" ry="11" fill="hsl(0,0%,22%)"/>
+              <line x1="316" y1="37" x2="316" y2="22" stroke="hsl(142,40%,55%)" stroke-width="1.5"/>
+              <polygon points="316,22 328,29 316,37" fill="hsl(142,40%,55%)" opacity="0.9"/>
+              <!-- Label -->
+              <text x="316" y="188" fill="hsl(142,40%,55%)" font-size="13" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Университет</text>
+            </svg>
+          </div>
+          <div class="s2-analogy-body">
+            <span class="s2-analogy-label">Аналогия</span>
+            <h4 class="s2-analogy-h4">Школа → Институт</h4>
+            <p class="s2-analogy-p">После 11-го класса не бывает 12-го. Дальше — институт. Другая система, другие правила. В бизнесе так же: есть свой «последний класс», после которого нужна полная смена подхода.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ 5. ЛЮБАЯ МОДЕЛЬ КОНЕЧНА ═══ -->
+    <div class="s2-narrow s2-fade">
+      <h3 class="s2-final-h3">Любая модель конечна</h3>
+      <p class="s2-final-p">Любая бизнес-модель — это комбинация переменных: клиент, конкурент, технология, регулирование, экономический цикл. Ни одна из них не стоит на месте. Вопрос не в том, изменятся ли условия. Вопрос в том, когда.</p>
+      <p class="s2-final-p">Поэтому по нашей методологии линейное увеличение и поиск следующего витка модели идут <strong>параллельно</strong>. Одно не заменяет другое.</p>
+    </div>
+
+    <!-- ═══ КНОПКА ═══ -->
+    <div class="s2-narrow">
+      <div class="s2-btn-row">
+        <button class="s2-btn" onclick="mshScrollTo(3)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── Fade-in on scroll ── */
+function initFade() {
+  var els = document.querySelectorAll('#s2-root .s2-fade');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('s2-visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('s2-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(function(el){ obs.observe(el); });
+}
+
+/* ── Chart draw animation ── */
+function initChart() {
+  var scaleLine  = document.getElementById('s2-scale-line');
+  var linearLine = document.getElementById('s2-linear-line');
+  var chart      = document.getElementById('s2-chart');
+  if (!scaleLine || !chart) return;
+
+  // Pre-set
+  scaleLine.style.strokeDasharray  = '900';
+  scaleLine.style.strokeDashoffset = '900';
+  if (linearLine) {
+    linearLine.setAttribute('stroke-dasharray','8 4');
+    linearLine.style.strokeDashoffset = '500';
+  }
+
+  var obs = new IntersectionObserver(function(entries) {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    setTimeout(function() {
+      scaleLine.style.transition  = 'stroke-dashoffset 2s ease-out';
+      scaleLine.style.strokeDashoffset = '0';
+      if (linearLine) {
+        linearLine.style.transition = 'stroke-dashoffset 1.5s ease-out 0.1s';
+        linearLine.style.strokeDashoffset = '0';
+      }
+    }, 100);
+  }, { threshold: 0.3 });
+  obs.observe(chart);
+}
+
+function init() {
+  initFade();
+  initChart();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+})();
+</script>

@@ -1,0 +1,157 @@
+<!-- BLOCK 07: Личность (LIGHT) -->
+<style>
+#msh-s7{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#e8f5ee;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s7 *{box-sizing:border-box}
+#msh-s7 .msh-sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2.5px;color:#1a8c45;
+  text-transform:uppercase;margin-bottom:12px;display:block;
+}
+#msh-s7 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#1a2e22;margin-bottom:14px;
+}
+#msh-s7 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#1a2e22;
+}
+#msh-s7 p{
+  font-size:16px;line-height:1.8;color:#2d4a35;
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s7 .msh-ac{color:#1a8c45}
+.msh-question-block{
+  font-size:clamp(20px,2.5vw,26px);font-weight:700;color:#1a2e22;
+  margin:20px 0;padding-left:16px;border-left:3px solid #1a8c45;
+}
+.msh-2x2-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  max-width:520px;margin:20px 0;
+}
+.msh-2x2-item{
+  background:#fff;border:1px solid rgba(26,140,69,.2);border-radius:10px;
+  padding:16px 18px;display:flex;align-items:flex-start;gap:10px;
+}
+.msh-2x2-emoji{font-size:20px;flex-shrink:0;line-height:1.3}
+.msh-2x2-text{font-size:14px;color:#2d4a35;line-height:1.5;font-weight:500}
+/* supersila cards */
+.msh-super-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:720px;margin:20px 0;
+}
+.msh-super-card{
+  background:#fff;border:1px solid rgba(26,140,69,.2);border-radius:12px;
+  padding:20px;position:relative;
+}
+.msh-super-card.msh-super-win{
+  border-color:#1a8c45;background:rgba(26,140,69,.05);
+}
+.msh-super-badge{
+  font-size:13px;font-weight:700;margin-bottom:8px;display:block;
+}
+.msh-super-badge.msh-cross{color:#c0392b}
+.msh-super-badge.msh-check{color:#1a8c45}
+.msh-super-title{font-size:15px;font-weight:700;color:#1a2e22;margin-bottom:6px}
+.msh-super-desc{font-size:14px;color:#3d5a47;line-height:1.6}
+#msh-s7 .msh-pq{
+  border-left:3px solid #1a8c45;padding:16px 22px;margin:24px 0;
+  font-size:16px;font-style:italic;background:rgba(26,140,69,.07);
+  border-radius:0 8px 8px 0;max-width:720px;color:#1a2e22;line-height:1.6;
+}
+#msh-s7 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#1a8c45;
+  color:#fff;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s7 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,140,69,.3)}
+@media(max-width:900px){
+  #msh-s7{padding:52px 20px 40px 68px}
+  .msh-2x2-grid{grid-template-columns:1fr}
+  .msh-super-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div id="msh-s7" data-msh-sec="7">
+  <span class="msh-sec-label">Элемент 2</span>
+  <h2><span class="msh-ac">Личность,</span> или почему стратегия начинается с вас</h2>
+
+  <h3>Бизнес служит жизни, а не жизнь бизнесу</h3>
+
+  <p>Прежде чем строить стратегию масштабирования, нужно ответить на один вопрос, который большинство предпринимателей никогда не формулировали явно.</p>
+
+  <div class="msh-question-block">Я делаю бизнес, чтобы что?</div>
+
+  <div class="msh-2x2-grid">
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">💰</span>
+      <span class="msh-2x2-text">Продать бизнес и получить капитал</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">❤️</span>
+      <span class="msh-2x2-text">Кайфовать от продукта каждый день</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">👨‍👩‍👧</span>
+      <span class="msh-2x2-text">Передать детям и создать фамильное дело</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">🏛️</span>
+      <span class="msh-2x2-text">Построить наследие и изменить отрасль</span>
+    </div>
+  </div>
+
+  <p>Каждый из этих ответов ведёт к принципиально разной стратегии. Тот, кто хочет продать, должен строить на масштаб и понятность для покупателя. Тот, кто хочет кайфовать от продукта — строит иначе. Смешивать эти цели — значит двигаться в разных направлениях одновременно.</p>
+
+  <h3>У каждого основателя есть <span class="msh-ac">суперсила</span></h3>
+
+  <p>Школа «Горки» выделяет три уровня того, что предприниматели называют «своим преимуществом». Только третий уровень работает как стратегическая основа.</p>
+
+  <div class="msh-super-grid">
+    <div class="msh-super-card">
+      <span class="msh-super-badge msh-cross">❌ Навык</span>
+      <div class="msh-super-title">Умею делать X</div>
+      <p class="msh-super-desc">Конкретное умение, которое можно скопировать, автоматизировать или нанять. Не уникально и не устойчиво.</p>
+    </div>
+    <div class="msh-super-card">
+      <span class="msh-super-badge msh-cross">❌ Инструмент</span>
+      <div class="msh-super-title">Есть технология/метод</div>
+      <p class="msh-super-desc">Проп, который работает сегодня. Инструменты устаревают. Конкуренты перенимают. Это не суперсила.</p>
+    </div>
+    <div class="msh-super-card msh-super-win">
+      <span class="msh-super-badge msh-check">✓ Суперсила</span>
+      <div class="msh-super-title">Вижу/чувствую то, чего не видят другие</div>
+      <p class="msh-super-desc">Уникальный способ восприятия, принятия решений, создания смысла. Именно здесь — источник устойчивого конкурентного преимущества.</p>
+    </div>
+  </div>
+
+  <div class="msh-pq">«Принцип «Горок»: усиливаем сильное. Не прокачиваем слабые стороны, а строим стратегию вокруг сильных.»</div>
+
+  <h3>От суперсилы к <span class="msh-ac">главгену</span></h3>
+
+  <p>Главный генератор (главген) — это то, как суперсила основателя трансформируется в конкурентное преимущество компании. Это не миссия и не ценности — это операционный механизм, который объясняет, почему у вас получается лучше, чем у других, и как это можно масштабировать на следующий виток без потери сути.</p>
+
+  <button class="msh-btn" onclick="mshUnlock(7)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s7');
+    if(!el) return;
+    var u = getU();
+    if(u < 7){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>

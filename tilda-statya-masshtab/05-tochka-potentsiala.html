@@ -1,0 +1,549 @@
+<!-- BLOCK 05: Точка максимального потенциала — pixel-perfect copy of vision-quest-revamp.lovable.app -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── REMOVE TILDA RECORD GAPS ── */
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !important; }
+
+/* ── NAMESPACE ── */
+#s5-root, #s5-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s5-root p, #s5-root h2, #s5-root h3, #s5-root h4,
+#s5-root span, #s5-root div, #s5-root button {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── FULL-WIDTH BLEED ── */
+#s5-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #070E0B !important;
+  overflow-x: hidden !important;
+}
+
+/* ── SECTION ── */
+#s5-sec {
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  overflow: hidden !important;
+}
+
+/* ── DOT GRID BACKGROUND ── */
+#s5-dot-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(66,189,138,0.12) 1.5px, rgba(0,0,0,0) 1.5px) !important;
+  background-size: 28px 28px !important;
+  opacity: 0.2 !important;
+  pointer-events: none !important;
+}
+
+/* ── FADE ANIMATION ── */
+.s5-fade {
+  opacity: 0 !important;
+  transform: translateY(28px) !important;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out !important;
+}
+.s5-fade.s5-vis {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ── HEADER BLOCK ── */
+#s5-header {
+  max-width: 720px !important;
+  margin: 0 auto 0 auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+  text-align: center !important;
+}
+
+/* ── H2 ── */
+#s5-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #EDEDED !important;
+  letter-spacing: -0.96px !important;
+  margin: 0 0 20px !important;
+  text-align: center !important;
+}
+
+/* ── SUBTITLE ── */
+#s5-subtitle {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+
+/* ── VENN DIAGRAM OUTER WRAP ── */
+#s5-venn-wrap {
+  max-width: 800px !important;
+  margin: 48px auto !important;
+  padding: 64px 48px !important;
+  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  border-radius: 24px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 10 !important;
+}
+
+#s5-venn-dot-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(66,189,138,0.12) 1.5px, rgba(0,0,0,0) 1.5px) !important;
+  background-size: 28px 28px !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+
+#s5-venn-glow-1 {
+  position: absolute !important;
+  top: 25% !important;
+  left: 25% !important;
+  width: 256px !important;
+  height: 256px !important;
+  border-radius: 50% !important;
+  background: rgba(66,189,138,0.1) !important;
+  filter: blur(100px) !important;
+  pointer-events: none !important;
+}
+
+#s5-venn-glow-2 {
+  position: absolute !important;
+  bottom: 25% !important;
+  right: 25% !important;
+  width: 192px !important;
+  height: 192px !important;
+  border-radius: 50% !important;
+  background: rgba(51,102,204,0.1) !important;
+  filter: blur(80px) !important;
+  pointer-events: none !important;
+}
+
+/* ── VENN INNER (max-width limiter) ── */
+#s5-venn-inner {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 0 auto !important;
+}
+
+/* Aspect-square achieved via padding-bottom */
+#s5-venn-aspect {
+  position: relative !important;
+  width: 100% !important;
+  padding-bottom: 100% !important;
+}
+
+/* The three Venn circles */
+.s5-circle {
+  position: absolute !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  transition: border-color 0.35s ease !important;
+  /* width & height set by padding-bottom trick: width=55%, height=auto via aspect */
+  width: 55% !important;
+  padding-bottom: 55% !important;
+  height: 0 !important;
+}
+.s5-circle-top {
+  top: 5% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  border: 2px solid rgba(57,172,172,0.4) !important;
+}
+.s5-circle-bl {
+  bottom: 8% !important;
+  left: 8% !important;
+  border: 2px solid rgba(61,143,116,0.4) !important;
+}
+.s5-circle-br {
+  bottom: 8% !important;
+  right: 8% !important;
+  border: 2px solid rgba(51,102,204,0.4) !important;
+}
+#s5-venn-inner:hover .s5-circle-top { border-color: rgba(57,172,172,0.8) !important; }
+#s5-venn-inner:hover .s5-circle-bl  { border-color: rgba(61,143,116,0.8) !important; }
+#s5-venn-inner:hover .s5-circle-br  { border-color: rgba(51,102,204,0.8) !important; }
+
+/* Center pulsing dot */
+#s5-center-wrap {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+#s5-center-dot {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgb(71,209,209), rgb(52,121,98)) !important;
+  animation: s5PulseGreen 2s ease-in-out infinite !important;
+}
+@keyframes s5PulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66,189,138,0.4); }
+  50%       { box-shadow: 0 0 0 12px rgba(66,189,138,0); }
+}
+
+/* Venn labels — positioned relative to #s5-venn-inner */
+.s5-venn-label {
+  position: absolute !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  text-align: center !important;
+}
+#s5-label-top {
+  top: -6% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  white-space: nowrap !important;
+}
+#s5-label-bl {
+  bottom: -8% !important;
+  left: 4% !important;
+  white-space: nowrap !important;
+}
+#s5-label-br {
+  bottom: -8% !important;
+  right: 4% !important;
+  white-space: nowrap !important;
+}
+#s5-label-center {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.s5-lbl-kontekst {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(102,204,204) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-lichnost {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(66,189,138) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-delo {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(112,148,219) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-tochka {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  line-height: 1.35 !important;
+  display: block !important;
+}
+
+/* ── CARDS SECTION ── */
+#s5-cards-wrap {
+  max-width: 1000px !important;
+  margin: 48px auto 0 !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+#s5-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 32px !important;
+}
+.s5-card {
+  text-align: center !important;
+  padding: 40px !important;
+  border-radius: 16px !important;
+  background: rgb(18,22,43) !important;
+  border: 1px solid rgb(36,41,66) !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease !important;
+}
+.s5-card:hover {
+  border-color: rgba(66,189,138,0.4) !important;
+  box-shadow: 0 0 30px rgba(66,189,138,0.07) !important;
+  transform: translateY(-4px) !important;
+}
+.s5-card-icon {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, rgb(34,89,70) 0%, rgb(53,151,110) 50%, rgb(63,131,103) 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 20px !important;
+}
+.s5-card-icon svg {
+  width: 24px !important;
+  height: 24px !important;
+  stroke: #fff !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+.s5-card-h4 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  line-height: 1.3 !important;
+  margin-bottom: 12px !important;
+}
+.s5-card-p {
+  font-size: 14px !important;
+  line-height: 1.43 !important;
+  color: rgba(237,237,237,0.6) !important;
+}
+
+/* ── CTA BUTTON ── */
+#s5-cta-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  padding-top: 64px !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+#s5-cta-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px 40px !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(135deg, rgb(34,89,70) 0%, rgb(53,151,110) 50%, rgb(63,131,103) 100%) !important;
+  color: #fff !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 24px rgba(53,151,110,0.25) !important;
+  transition: box-shadow 0.3s ease, transform 0.2s ease, opacity 0.2s ease !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+}
+#s5-cta-btn:hover {
+  box-shadow: 0 8px 40px rgba(53,151,110,0.45) !important;
+  transform: translateY(-2px) !important;
+}
+#s5-cta-btn:active {
+  transform: translateY(0) !important;
+  opacity: 0.85 !important;
+}
+#s5-cta-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: #fff !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease !important;
+}
+#s5-cta-btn:hover svg {
+  transform: translateX(4px) !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  #s5-sec { padding: 120px 48px 120px 300px !important; }
+}
+@media (max-width: 900px) {
+  #s5-sec { padding: 100px 32px 100px 288px !important; }
+  #s5-cards-grid { gap: 20px !important; }
+  .s5-card { padding: 32px 24px !important; }
+}
+@media (max-width: 768px) {
+  #s5-sec { padding: 80px 24px !important; }
+  #s5-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+  }
+  #s5-venn-wrap { padding: 48px 24px !important; max-width: 100% !important; }
+  #s5-venn-inner { max-width: 340px !important; }
+  #s5-header { max-width: 100% !important; }
+}
+@media (max-width: 520px) {
+  #s5-sec { padding: 60px 20px !important; }
+  #s5-h2 { font-size: clamp(26px, 7vw, 36px) !important; letter-spacing: -0.5px !important; }
+  #s5-subtitle { font-size: 15px !important; }
+  #s5-venn-inner { max-width: 270px !important; }
+  #s5-center-dot { width: 56px !important; height: 56px !important; }
+  .s5-lbl-kontekst, .s5-lbl-lichnost, .s5-lbl-delo { font-size: 14px !important; }
+  #s5-cta-btn { font-size: 16px !important; padding: 14px 28px !important; }
+}
+</style>
+
+<div id="s5-root">
+  <section id="s5-sec" data-msh-sec="5">
+
+    <!-- Background dot grid -->
+    <div id="s5-dot-grid"></div>
+
+    <!-- ── HEADER ── -->
+    <div id="s5-header" class="s5-fade">
+      <h2 id="s5-h2">Точка максимального <span style="color:#42BD8A">потенциала</span></h2>
+      <p id="s5-subtitle">Метод состоит из трёх элементов: Контекст, Дело и Личность. Рамка прошла проверку на десятках компаний с оборотами от сотен миллионов до десятков миллиардов.</p>
+    </div>
+
+    <!-- ── VENN DIAGRAM ── -->
+    <div id="s5-venn-wrap" class="s5-fade">
+      <div id="s5-venn-dot-grid"></div>
+      <div id="s5-venn-glow-1"></div>
+      <div id="s5-venn-glow-2"></div>
+
+      <div id="s5-venn-inner">
+
+        <!-- Aspect-square area for the circles -->
+        <div id="s5-venn-aspect">
+          <!-- Circle: Контекст (top) -->
+          <div class="s5-circle s5-circle-top"></div>
+          <!-- Circle: Личность (bottom-left) -->
+          <div class="s5-circle s5-circle-bl"></div>
+          <!-- Circle: Дело (bottom-right) -->
+          <div class="s5-circle s5-circle-br"></div>
+          <!-- Center pulsing dot -->
+          <div id="s5-center-wrap">
+            <div id="s5-center-dot"></div>
+          </div>
+        </div>
+
+        <!-- Labels overlaid on venn-inner -->
+        <div class="s5-venn-label" id="s5-label-top">
+          <span class="s5-lbl-kontekst">Контекст</span>
+        </div>
+        <div class="s5-venn-label" id="s5-label-bl">
+          <span class="s5-lbl-lichnost">Личность</span>
+        </div>
+        <div class="s5-venn-label" id="s5-label-br">
+          <span class="s5-lbl-delo">Дело</span>
+        </div>
+        <div id="s5-label-center">
+          <span class="s5-lbl-tochka">Точка<br>потенциала</span>
+        </div>
+
+      </div><!-- /venn-inner -->
+    </div><!-- /venn-wrap -->
+
+    <!-- ── CARDS ── -->
+    <div id="s5-cards-wrap" class="s5-fade">
+      <div id="s5-cards-grid">
+
+        <!-- Контекст -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+              <path d="M2 12h20"></path>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Контекст</div>
+          <p class="s5-card-p">В каком мире вы строите стратегию. Что происходит вокруг и какие возможности это создаёт.</p>
+        </div>
+
+        <!-- Личность -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Личность</div>
+          <p class="s5-card-p">Кто вы и зачем вам этот бизнес. В чём ваша суперсила и как она становится ядром компании.</p>
+        </div>
+
+        <!-- Дело -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+              <path d="M9 22v-4h6v4"></path>
+              <path d="M8 6h.01"></path><path d="M16 6h.01"></path>
+              <path d="M12 6h.01"></path><path d="M12 10h.01"></path>
+              <path d="M12 14h.01"></path><path d="M16 10h.01"></path>
+              <path d="M16 14h.01"></path><path d="M8 10h.01"></path>
+              <path d="M8 14h.01"></path>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Дело</div>
+          <p class="s5-card-p">Как устроена ваша модель, где её потолок и каким должен быть следующий виток.</p>
+        </div>
+
+      </div><!-- /cards-grid -->
+    </div><!-- /cards-wrap -->
+
+    <!-- ── CTA ── -->
+    <div id="s5-cta-wrap" class="s5-fade">
+      <button id="s5-cta-btn" onclick="if(typeof mshScrollTo==='function'){mshScrollTo(6);}">
+        Читать дальше
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── IntersectionObserver fade-in ──
+  var fades = document.querySelectorAll('.s5-fade');
+  if (!fades.length) return;
+
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('s5-vis');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  fades.forEach(function(el, i) {
+    // stagger each fade element
+    el.style.setProperty('transition-delay', (i * 0.13) + 's', 'important');
+    io.observe(el);
+  });
+
+  // ── Venn diagram center glow on hover ──
+  var vennInner = document.getElementById('s5-venn-inner');
+  var centerDot = document.getElementById('s5-center-dot');
+  if (vennInner && centerDot) {
+    vennInner.addEventListener('mouseenter', function() {
+      centerDot.style.setProperty('box-shadow', '0 0 28px 6px rgba(66,189,138,0.55)', 'important');
+    });
+    vennInner.addEventListener('mouseleave', function() {
+      centerDot.style.removeProperty('box-shadow');
+    });
+  }
+})();
+</script>

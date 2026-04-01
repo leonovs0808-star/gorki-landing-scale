@@ -1,0 +1,870 @@
+<!-- BLOCK 01: Введение — pixel-perfect Lovable copy for Tilda T123 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════
+   0. FORCE DARK BODY BACKGROUND
+══════════════════════════════════════════════════════ */
+html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
+  background-color: #08110E !important;
+}
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* ══════════════════════════════════════════════════════
+   1. PROGRESS BAR (fixed, moved to body via JS)
+══════════════════════════════════════════════════════ */
+#msh-prog {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  height: 4px !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  background: rgba(27,39,35,0.3) !important;
+  margin: 0 !important; padding: 0 !important;
+}
+#msh-prog-fill {
+  height: 100% !important;
+  width: 0% !important;
+  background: #42BD8A !important;
+  box-shadow: 0 0 8px rgba(66,189,138,0.6) !important;
+  transition: width .15s linear !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   2. SIDEBAR (fixed, moved to body via JS)
+══════════════════════════════════════════════════════ */
+#msh-sidebar {
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; bottom: 0 !important;
+  width: 256px !important;
+  background: rgba(8,17,14,0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-right: 1px solid rgba(35,47,43,0.4) !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform .3s ease !important;
+  overflow: hidden !important;
+  font-family: 'Inter', sans-serif !important;
+  box-sizing: border-box !important;
+}
+#msh-sidebar.msh-col { transform: translateX(-100%) !important; }
+#msh-sidebar * { box-sizing: border-box !important; font-family: 'Inter', sans-serif !important; }
+
+/* Sidebar header */
+.msh-sb-hd {
+  display: flex !important; align-items: center !important; justify-content: space-between !important;
+  padding: 16px !important;
+  border-bottom: 1px solid rgba(35,47,43,0.3) !important;
+  flex-shrink: 0 !important; min-height: 60px !important;
+  background: transparent !important;
+}
+.msh-sb-ttl {
+  font-size: 12px !important; font-weight: 700 !important;
+  letter-spacing: .12em !important; text-transform: uppercase !important;
+  color: rgba(237,237,237,0.8) !important;
+  display: block !important; line-height: 1 !important;
+  background: transparent !important;
+  border: none !important; margin: 0 !important; padding: 0 !important;
+}
+.msh-sb-ttl-bar {
+  margin-top: 5px !important; height: 2px !important; width: 24px !important;
+  background: rgba(66,189,138,0.4) !important; border-radius: 99px !important;
+  display: block !important;
+}
+.msh-sb-tog {
+  background: none !important; border: none !important;
+  color: rgba(129,152,144,0.7) !important; cursor: pointer !important;
+  width: 28px !important; height: 28px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  border-radius: 6px !important; flex-shrink: 0 !important;
+  transition: color .2s !important;
+  padding: 0 !important; margin: 0 !important;
+}
+.msh-sb-tog:hover { color: #EDEDED !important; }
+
+/* Sidebar nav */
+.msh-sb-nav {
+  flex: 1 !important; overflow-y: auto !important;
+  padding: 8px 0 !important;
+  scrollbar-width: none !important;
+  position: relative !important;
+}
+.msh-sb-nav::-webkit-scrollbar { display: none !important; }
+
+/* Nav item */
+.msh-ni {
+  position: relative !important;
+  display: flex !important; align-items: center !important; gap: 12px !important;
+  padding: 4px 14px !important;
+  cursor: pointer !important;
+  background: none !important; border: none !important;
+  width: 100% !important; text-align: left !important;
+  transition: background .15s !important;
+}
+.msh-ni:hover { background: rgba(66,189,138,0.05) !important; }
+
+/* Connector line per item (height set by JS) */
+.msh-ni-connector {
+  position: absolute !important;
+  left: 28px !important; top: 43px !important;
+  width: 1px !important;
+  background: rgba(35,47,43,0.9) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Icon circle */
+.msh-ni-ico {
+  position: relative !important; z-index: 1 !important;
+  width: 31px !important; height: 31px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(66,189,138,0.35) !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  flex-shrink: 0 !important;
+  background: #08110E !important;
+  color: rgba(129,152,144,0.4) !important;
+  transition: all .3s !important;
+  margin: 7px 0 !important;
+}
+.msh-ni-ico.msh-act {
+  background: #42BD8A !important;
+  border-color: #42BD8A !important;
+  color: #08110E !important;
+}
+.msh-ni-ico.msh-done {
+  background: #08110E !important;
+  border-color: rgba(66,189,138,0.4) !important;
+  color: rgba(66,189,138,0.6) !important;
+}
+
+/* Labels */
+.msh-ni-lbl {
+  display: flex !important; flex-direction: column !important;
+  min-width: 0 !important; padding: 8px 0 !important;
+  overflow: hidden !important;
+}
+.msh-ni-num {
+  font-size: 10px !important; font-weight: 400 !important;
+  color: rgba(66,189,138,0.75) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .15em !important;
+  line-height: 1 !important; display: block !important;
+  background: transparent !important;
+}
+.msh-ni-name {
+  font-size: 13px !important; font-weight: 400 !important;
+  color: rgba(129,152,144,0.65) !important;
+  line-height: 1.3 !important; margin-top: 3px !important;
+  display: block !important; white-space: nowrap !important;
+  overflow: hidden !important; text-overflow: ellipsis !important;
+  background: transparent !important;
+  transition: color .3s !important;
+}
+.msh-ni.msh-cur .msh-ni-name {
+  color: #EDEDED !important; font-weight: 600 !important;
+}
+
+/* Footer */
+.msh-sb-ft {
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(35,47,43,0.3) !important;
+  flex-shrink: 0 !important; background: transparent !important;
+}
+.msh-sb-cnt {
+  font-size: 12px !important;
+  color: rgba(129,152,144,0.4) !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   3. MOBILE TOGGLE BUTTON
+══════════════════════════════════════════════════════ */
+#msh-mob-btn {
+  display: none !important; /* shown via media query */
+  position: fixed !important;
+  top: 16px !important; left: 16px !important;
+  z-index: 9998 !important;
+  width: 40px !important; height: 40px !important;
+  background: rgba(8,17,14,0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(35,47,43,0.5) !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  color: #819890 !important;
+  align-items: center !important; justify-content: center !important;
+  padding: 0 !important; margin: 0 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+
+/* ── Sidebar "reopen" tab (appears when sidebar is collapsed on desktop) ── */
+#msh-sb-reopen {
+  display: none !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 22px !important;
+  height: 52px !important;
+  background: rgba(8,17,14,0.92) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(35,47,43,0.5) !important;
+  border-left: none !important;
+  border-radius: 0 8px 8px 0 !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10000 !important;
+  color: rgba(129,152,144,0.8) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: color .2s, background .2s !important;
+}
+#msh-sb-reopen:hover {
+  color: #42BD8A !important;
+  background: rgba(8,17,14,0.98) !important;
+}
+#msh-sb-reopen.msh-visible { display: flex !important; }
+
+/* ── Sidebar toggle icon: flip arrow when collapsed ── */
+#msh-sidebar.msh-col .msh-sb-tog-icon { transform: rotate(180deg) !important; }
+.msh-sb-tog-icon { transition: transform .3s ease !important; display: block !important; }
+#msh-overlay {
+  display: none !important;
+  position: fixed !important; inset: 0 !important;
+  background: rgba(0,0,0,0.55) !important;
+  z-index: 9997 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   4. HERO ROOT — FULL-WIDTH BLEED from Tilda container
+══════════════════════════════════════════════════════ */
+#msh-root {
+  /* Break out of Tilda's column/container */
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #08110E !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+  margin: 0 !important; padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   5. HERO SECTION INNER
+══════════════════════════════════════════════════════ */
+#msh-s1 {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  /* Left offset: sidebar(256) + inner gap(64) = 320px */
+  padding: 112px 48px 80px 320px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+}
+
+/* BG blobs */
+#msh-s1::before {
+  content: '' !important;
+  position: absolute !important;
+  width: 600px !important; height: 600px !important;
+  background: radial-gradient(circle, rgba(66,189,138,0.07) 0%, transparent 65%) !important;
+  bottom: -100px !important; left: 256px !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+#msh-s1::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 400px !important; height: 400px !important;
+  background: radial-gradient(circle, rgba(66,189,138,0.04) 0%, transparent 65%) !important;
+  top: 0 !important; right: 0 !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Hero content wrapper */
+.msh-inner {
+  position: relative !important; z-index: 1 !important;
+  max-width: 920px !important; width: 100% !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: center !important; text-align: center !important;
+}
+/* Forced line break after "масштабирования," — matches Lovable's natural wrap */
+.msh-h1-br { display: block !important; }
+@media (max-width: 900px) { .msh-h1-br { display: none !important; } }
+
+/* ══════════════════════════════════════════════════════
+   6. META BADGE
+══════════════════════════════════════════════════════ */
+.msh-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1px solid rgba(66,189,138,0.22) !important;
+  border-radius: 9999px !important;
+  padding: 10px 20px !important;
+  margin: 0 0 40px !important;
+  backdrop-filter: blur(4px) !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+  flex-wrap: nowrap !important;
+}
+.msh-bdg-date {
+  font-size: 14px !important; font-weight: 600 !important;
+  color: #42BD8A !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.4px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+  display: inline-block !important;
+  margin: 0 !important; padding: 0 !important; border: none !important;
+}
+.msh-bdg-sep {
+  display: inline-block !important;
+  width: 1px !important;
+  height: 14px !important;
+  background: rgba(66,189,138,0.22) !important;
+  margin: 0 12px !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  border: none !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+.msh-bdg-muted {
+  font-size: 14px !important; font-weight: 500 !important;
+  color: #819890 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.7px !important;
+  white-space: nowrap !important;
+  display: inline-flex !important; align-items: center !important; gap: 5px !important;
+  background: transparent !important;
+  margin: 0 !important; padding: 0 !important; border: none !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   7. H1
+══════════════════════════════════════════════════════ */
+.msh-h1 {
+  font-size: clamp(34px, 5.5vw, 72px) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  color: #EDEDED !important;
+  letter-spacing: -2.16px !important;
+  margin: 0 0 32px !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: none !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+}
+.msh-h1-green {
+  color: #42BD8A !important;
+  background: transparent !important;
+  font-weight: inherit !important;
+  font-size: inherit !important;
+}
+.msh-h1-ul {
+  position: relative !important;
+  display: inline-block !important;
+  color: #EDEDED !important;
+  background: transparent !important;
+  font-size: inherit !important; font-weight: inherit !important;
+  text-decoration: none !important;
+}
+.msh-h1-ul-bar {
+  position: absolute !important;
+  left: 0 !important; right: 0 !important; bottom: -6px !important;
+  height: 4px !important;
+  background: #42BD8A !important;
+  border-radius: 99px !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   8. SUBTITLE
+══════════════════════════════════════════════════════ */
+.msh-sub {
+  font-size: 20px !important;
+  color: #819890 !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  margin: 0 0 40px !important; padding: 0 !important;
+  max-width: 620px !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: none !important;
+  background: transparent !important;
+  border: none !important;
+  text-align: center !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   9. DIVIDER
+══════════════════════════════════════════════════════ */
+.msh-div {
+  width: 100% !important; height: 1px !important;
+  background: rgba(35,47,43,0.5) !important;
+  margin: 0 0 56px !important;
+  border: none !important; padding: 0 !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   10. STATS
+══════════════════════════════════════════════════════ */
+.msh-stats {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 32px !important;
+  width: 100% !important;
+  margin: 0 !important; padding: 0 !important;
+  border: none !important;
+}
+.msh-stat {
+  padding: 0px 12px !important;
+  text-align: center !important;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+}
+.msh-stat + .msh-stat::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important; top: 25% !important; bottom: 25% !important;
+  width: 1px !important;
+  background: rgba(35,47,43,0.8) !important;
+  display: block !important;
+}
+.msh-stat-n {
+  font-size: clamp(38px, 4.5vw, 60px) !important;
+  font-weight: 700 !important;
+  color: #42BD8A !important;
+  line-height: 1 !important;
+  display: block !important;
+  margin: 0 0 8px !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-shadow: 0 0 20px rgba(66,189,138,0.25) !important;
+  background: transparent !important;
+  border: none !important;
+  letter-spacing: -.01em !important;
+  text-transform: none !important;
+}
+.msh-stat-l {
+  font-size: 14px !important;
+  color: #819890 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.4px !important;
+  line-height: 1.4 !important;
+  display: block !important;
+  margin: 0 !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: 400 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   11. CTA BUTTON
+══════════════════════════════════════════════════════ */
+.msh-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  margin: 0 !important; border: none !important;
+}
+.msh-btn {
+  display: inline-flex !important;
+  align-items: center !important; gap: 10px !important;
+  background: linear-gradient(135deg,#225946 0%,#35976E 50%,#3F8367 100%) !important;
+  color: #ffffff !important;
+  border: none !important; outline: none !important;
+  border-radius: 9999px !important;
+  padding: 16px 40px !important;
+  min-height: 56px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  cursor: pointer !important;
+  letter-spacing: .01em !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  transition: transform .3s ease, box-shadow .3s ease !important;
+  animation: msh-pulse-btn 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+.msh-btn:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important;
+  animation: none !important;
+  color: #ffffff !important;
+}
+@keyframes msh-pulse-btn {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
+}
+
+/* ══════════════════════════════════════════════════════
+   12. RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  #msh-s1 { padding: 112px 48px 80px 310px !important; }
+}
+@media (max-width: 1024px) {
+  #msh-s1 { padding: 100px 40px 60px 296px !important; }
+  .msh-h1 { font-size: clamp(34px, 4.8vw, 60px) !important; }
+}
+@media (max-width: 900px) {
+  #msh-s1 { padding: 100px 32px 60px 288px !important; }
+  .msh-h1 { font-size: clamp(32px, 5vw, 52px) !important; }
+}
+@media (max-width: 768px) {
+  #msh-sidebar { transform: translateX(-256px) !important; transition: transform .3s ease !important; }
+  #msh-sidebar.msh-mob-open { transform: translateX(0) !important; }
+  #msh-mob-btn { display: flex !important; }
+  #msh-s1 { padding: 80px 32px 60px 32px !important; }
+  .msh-inner { max-width: 100% !important; }
+  .msh-h1 { font-size: clamp(32px, 6.5vw, 52px) !important; }
+  .msh-sub { font-size: 18px !important; }
+  .msh-stats { grid-template-columns: 1fr 1fr 1fr !important; }
+  .msh-btn-row { padding: 48px 0 !important; }
+  .msh-stat-n { font-size: clamp(32px, 5vw, 48px) !important; }
+}
+@media (max-width: 520px) {
+  #msh-s1 { padding: 72px 20px 40px 20px !important; }
+  .msh-h1 { font-size: clamp(26px, 8.5vw, 40px) !important; letter-spacing: -.01em !important; }
+  .msh-sub { font-size: 15px !important; margin: 0 0 32px !important; }
+  .msh-badge { padding: 8px 14px !important; flex-wrap: wrap !important; gap: 6px !important; justify-content: center !important; }
+  .msh-bdg-sep { display: none !important; }
+  .msh-stats { grid-template-columns: 1fr !important; }
+  .msh-stat + .msh-stat::before { display: none !important; }
+  .msh-stat { padding: 16px 0 !important; border-bottom: 1px solid rgba(35,47,43,0.5) !important; }
+  .msh-stat:last-child { border-bottom: none !important; }
+  .msh-btn-row { padding: 32px 0 !important; }
+  .msh-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .msh-div { margin: 0 0 40px !important; }
+}
+</style>
+
+<!-- Sidebar reopen tab (visible when sidebar is collapsed on desktop) -->
+<div id="msh-sb-reopen" onclick="mshOpen()" title="Открыть меню">
+  <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
+    <path d="M3 2l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<!-- Mobile burger button (moved to body via JS) -->
+<button id="msh-mob-btn" onclick="mshMobToggle()" aria-label="Меню">
+  <svg width="18" height="13" viewBox="0 0 18 13" fill="none">
+    <path d="M1 1h16M1 6.5h16M1 12h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- Mobile overlay -->
+<div id="msh-overlay" onclick="mshMobClose()"></div>
+
+<!-- Progress bar -->
+<div id="msh-prog"><div id="msh-prog-fill"></div></div>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside id="msh-sidebar">
+  <div class="msh-sb-hd">
+    <div>
+      <span class="msh-sb-ttl">Содержание</span>
+      <span class="msh-sb-ttl-bar"></span>
+    </div>
+    <button class="msh-sb-tog" onclick="mshToggle()">
+      <svg class="msh-sb-tog-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 11L5 7L9 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="msh-sb-nav" id="msh-nav">
+    <div class="msh-ni msh-cur" data-s="1" onclick="mshGo(1)">
+      <div class="msh-ni-ico msh-act" id="msh-ico-1">
+        <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">01</span><span class="msh-ni-name">Введение</span></div>
+    </div>
+    <div class="msh-ni" data-s="2" onclick="mshGo(2)">
+      <div class="msh-ni-ico" id="msh-ico-2">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">02</span><span class="msh-ni-name">Масштабирование</span></div>
+    </div>
+    <div class="msh-ni" data-s="3" onclick="mshGo(3)">
+      <div class="msh-ni-ico" id="msh-ico-3">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">03</span><span class="msh-ni-name">Почему сейчас</span></div>
+    </div>
+    <div class="msh-ni" data-s="4" onclick="mshGo(4)">
+      <div class="msh-ni-ico" id="msh-ico-4">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">04</span><span class="msh-ni-name">Ошибки</span></div>
+    </div>
+    <div class="msh-ni" data-s="5" onclick="mshGo(5)">
+      <div class="msh-ni-ico" id="msh-ico-5">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">05</span><span class="msh-ni-name">Точка потенциала</span></div>
+    </div>
+    <div class="msh-ni" data-s="6" onclick="mshGo(6)">
+      <div class="msh-ni-ico" id="msh-ico-6">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">06</span><span class="msh-ni-name">Контекст</span></div>
+    </div>
+    <div class="msh-ni" data-s="7" onclick="mshGo(7)">
+      <div class="msh-ni-ico" id="msh-ico-7">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">07</span><span class="msh-ni-name">Личность</span></div>
+    </div>
+    <div class="msh-ni" data-s="8" onclick="mshGo(8)">
+      <div class="msh-ni-ico" id="msh-ico-8">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">08</span><span class="msh-ni-name">Дело</span></div>
+    </div>
+    <div class="msh-ni" data-s="9" onclick="mshGo(9)">
+      <div class="msh-ni-ico" id="msh-ico-9">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">09</span><span class="msh-ni-name">Итог</span></div>
+    </div>
+  </nav>
+  <div class="msh-sb-ft"><span class="msh-sb-cnt" id="msh-cnt">1 / 9</span></div>
+</aside>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div id="msh-root">
+  <div id="msh-s1" data-msh-sec="1">
+    <div class="msh-inner">
+
+      <!-- Badge -->
+      <div class="msh-badge">
+        <span class="msh-bdg-date">17–19 апреля</span>
+        <span class="msh-bdg-sep"></span>
+        <span class="msh-bdg-muted">в Доброграде</span>
+        <span class="msh-bdg-sep"></span>
+        <span class="msh-bdg-muted">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          12 мин
+        </span>
+      </div>
+
+      <!-- H1 -->
+      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>,<br class="msh-h1-br"> которая работает даже на <span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
+
+      <!-- Subtitle -->
+      <p class="msh-sub">Аналитический материал международной школы бизнеса «Горки»</p>
+
+      <!-- Divider -->
+      <div class="msh-div"></div>
+
+      <!-- Stats -->
+      <div class="msh-stats">
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st1">0 лет</span>
+          <span class="msh-stat-l">Опыт «Асконы»</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st2">0</span>
+          <span class="msh-stat-l">Смен модели</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st3">топ-0+</span>
+          <span class="msh-stat-l">Техкомпаний мира</span>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="msh-btn-row">
+        <button class="msh-btn" onclick="mshScrollTo(2)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var TOTAL = 9;
+var SVG_PLAY = '<svg width="8" height="10" viewBox="0 0 8 10" fill="none"><polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/></svg>';
+var SVG_DONE = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.5l2.5 2.5 4.5-4.5" stroke="#42BD8A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var SVG_LOCK = '<svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>';
+
+/* ─── Fix Tilda transform bug: move fixed elements to <body> ─── */
+function fixFixed(){
+  var ids = ['msh-prog','msh-sidebar','msh-mob-btn','msh-overlay','msh-sb-reopen'];
+  ids.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el && el.parentNode !== document.body) document.body.appendChild(el);
+  });
+  /* Force dark background */
+  document.body.style.setProperty('background','#08110E','important');
+  document.documentElement.style.setProperty('background','#08110E','important');
+}
+
+/* ─── Connector lines ─── */
+function buildConnectors(){
+  var items = document.querySelectorAll('#msh-nav .msh-ni');
+  items.forEach(function(ni,i){
+    var old = ni.querySelector('.msh-ni-connector');
+    if(old) old.parentNode.removeChild(old);
+    if(i < items.length - 1){
+      var line = document.createElement('div');
+      line.className = 'msh-ni-connector';
+      /* height = full item height minus the offset from top */
+      line.style.cssText = 'position:absolute;left:28px;top:43px;bottom:0;width:1px;background:rgba(35,47,43,0.9);z-index:0;pointer-events:none;';
+      ni.style.position = 'relative';
+      ni.appendChild(line);
+    }
+  });
+}
+
+/* ─── Public API (used from other Tilda blocks on same page) ─── */
+window.mshScrollTo = function(n){
+  var el = document.querySelector('[data-msh-sec="'+n+'"]');
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.mshUnlock = function(n){ window.mshScrollTo(n+1); };
+window.mshGo     = function(n){ window.mshScrollTo(n); };
+window.mshToggle = function(){
+  var sb = document.getElementById('msh-sidebar');
+  if(!sb) return;
+  if(window.innerWidth <= 768){ mshMobToggle(); return; }
+  var isCollapsed = sb.classList.toggle('msh-col');
+  var reopen = document.getElementById('msh-sb-reopen');
+  if(reopen) reopen.classList.toggle('msh-visible', isCollapsed);
+};
+window.mshOpen = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var reopen = document.getElementById('msh-sb-reopen');
+  if(sb) sb.classList.remove('msh-col');
+  if(reopen) reopen.classList.remove('msh-visible');
+};
+window.mshMobToggle = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var ov = document.getElementById('msh-overlay');
+  if(!sb) return;
+  var open = sb.classList.toggle('msh-mob-open');
+  if(ov) ov.style.display = open ? 'block' : 'none';
+};
+window.mshMobClose = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var ov = document.getElementById('msh-overlay');
+  if(sb) sb.classList.remove('msh-mob-open');
+  if(ov) ov.style.display = 'none';
+};
+
+/* ─── Active section state ─── */
+function setActive(cur){
+  document.querySelectorAll('#msh-nav .msh-ni').forEach(function(ni){
+    var s = parseInt(ni.getAttribute('data-s'),10);
+    var ic = ni.querySelector('.msh-ni-ico');
+    ni.classList.remove('msh-cur');
+    if(!ic) return;
+    if(s < cur){ ic.className='msh-ni-ico msh-done'; ic.innerHTML=SVG_DONE; }
+    else if(s === cur){ ni.classList.add('msh-cur'); ic.className='msh-ni-ico msh-act'; ic.innerHTML=SVG_PLAY; }
+    else { ic.className='msh-ni-ico'; ic.innerHTML=SVG_LOCK; }
+  });
+  var c = document.getElementById('msh-cnt');
+  if(c) c.textContent = cur+' / '+TOTAL;
+}
+
+/* ─── Scroll: progress bar + active section ─── */
+window.addEventListener('scroll', function(){
+  var fill = document.getElementById('msh-prog-fill');
+  if(fill){
+    var st = document.documentElement.scrollTop || window.pageYOffset;
+    var sh = document.body.scrollHeight - window.innerHeight;
+    fill.style.width = (sh>0 ? Math.min(100,Math.round(st/sh*100)):0)+'%';
+  }
+  var cur=1;
+  for(var i=1;i<=TOTAL;i++){
+    var el=document.querySelector('[data-msh-sec="'+i+'"]');
+    if(el && el.getBoundingClientRect().top <= window.innerHeight*0.45) cur=i;
+  }
+  setActive(cur);
+},{passive:true});
+
+/* ─── Counter animation (easeOutCubic) ─── */
+function countUp(id, to, pre, suf, dur){
+  var el = document.getElementById(id);
+  if(!el) return;
+  var t0 = Date.now();
+  var id2 = setInterval(function(){
+    var p = Math.min((Date.now()-t0)/dur,1);
+    var e = 1-Math.pow(1-p,3);
+    el.textContent = (pre||'')+Math.round(e*to)+(suf||'');
+    if(p>=1) clearInterval(id2);
+  },16);
+}
+
+/* ─── Trigger counters when section enters viewport ─── */
+function initCounters(){
+  var el = document.getElementById('msh-s1');
+  if(!el) return;
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        /* Sequential: each counter starts after the previous one finishes */
+        setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },200);
+        setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },1800);
+        setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3000);
+        obs.disconnect();
+      }
+    },{threshold:0.2});
+    obs.observe(el);
+  } else {
+    setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },700);
+    setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },2300);
+    setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3500);
+  }
+}
+
+/* ─── Init ─── */
+function init(){
+  fixFixed();
+  buildConnectors();
+  setActive(1);
+  initCounters();
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
+/* Re-run fixFixed in case Tilda manipulates DOM after load */
+setTimeout(fixFixed,200);
+setTimeout(fixFixed,800);
+setTimeout(fixFixed,2000);
+
+})();
+</script>
