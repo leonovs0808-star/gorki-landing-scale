@@ -2429,7 +2429,7 @@ else initFade();
 <style>
 /* ── REMOVE TILDA RECORD GAPS ── */
 .t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
-html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
 
 /* ── NAMESPACE ── */
 #s5-root, #s5-root * {
@@ -2438,9 +2438,9 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
   -webkit-font-smoothing: antialiased !important;
 }
 #s5-root p, #s5-root h2, #s5-root h3, #s5-root h4,
-#s5-root span, #s5-root div:not(#s5-cta-wrap), #s5-root button:not(#s5-cta-btn) {
-  margin: 0 !important;
-  padding: 0 !important;
+#s5-root span, #s5-root div, #s5-root button {
+  margin: 0;
+  padding: 0;
 }
 
 /* ── FULL-WIDTH BLEED ── */
@@ -2449,7 +2449,7 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
   left: calc(50% - 50vw) !important;
   width: 100vw !important;
   max-width: 100vw !important;
-  background: #070E0B !important;
+  background: #08110E !important;
   overflow-x: hidden !important;
 }
 
@@ -2457,7 +2457,7 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
 #s5-sec {
   padding: 192px 64px 192px 320px !important;
   position: relative !important;
-  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  background: linear-gradient(135deg, #08110E 0%, #0E1B16 50%, #13201C 100%) !important;
   overflow: hidden !important;
 }
 
@@ -2516,7 +2516,7 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
   max-width: 800px !important;
   margin: 48px auto !important;
   padding: 64px 48px !important;
-  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  background: linear-gradient(135deg, #08110E 0%, #0E1B16 50%, #13201C 100%) !important;
   border-radius: 24px !important;
   position: relative !important;
   overflow: hidden !important;
@@ -2753,23 +2753,32 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
   display: inline-flex !important;
   align-items: center !important;
   gap: 10px !important;
-  padding: 18px 48px !important;
-  border-radius: 50px !important;
-  background: #3ecf6e !important;
-  color: #0a1a11 !important;
+  padding: 16px 40px !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(135deg, #225946 0%, #35976E 50%, #3F8367 100%) !important;
+  color: #fff !important;
   font-size: 18px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-family: 'Inter', -apple-system, sans-serif !important;
   border: none !important;
   cursor: pointer !important;
   text-decoration: none !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-  letter-spacing: 0 !important;
+  min-height: 56px !important;
+  letter-spacing: .01em !important;
   line-height: 1 !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s5-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
 }
 #s5-cta-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(62,207,110,0.4) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important;
+  animation: none !important;
+  color: #fff !important;
+}
+@keyframes s5-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
 }
 
 /* ── RESPONSIVE ── */
@@ -2907,7 +2916,8 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !
     <!-- ── CTA ── -->
     <div id="s5-cta-wrap" class="s5-fade">
       <button id="s5-cta-btn" onclick="if(typeof mshScrollTo==='function'){mshScrollTo(6);}">
-        Читать дальше →
+        Читать дальше
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </button>
     </div>
 
