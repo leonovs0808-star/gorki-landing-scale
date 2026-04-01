@@ -1,0 +1,3613 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Механика масштабирования — Школа бизнеса Горки</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #08110E; }
+  </style>
+</head>
+<body>
+
+<!-- === 01-vvedenie.html === -->
+<!-- BLOCK 01: Введение — pixel-perfect Lovable copy for Tilda T123 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════
+   0. FORCE DARK BODY BACKGROUND
+══════════════════════════════════════════════════════ */
+html, body, .t-body, .t-page, .t-cover, .t-rec, .t-container {
+  background-color: #08110E !important;
+}
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* ══════════════════════════════════════════════════════
+   1. PROGRESS BAR (fixed, moved to body via JS)
+══════════════════════════════════════════════════════ */
+#msh-prog {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  height: 4px !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  background: rgba(27,39,35,0.3) !important;
+  margin: 0 !important; padding: 0 !important;
+}
+#msh-prog-fill {
+  height: 100% !important;
+  width: 0% !important;
+  background: #42BD8A !important;
+  box-shadow: 0 0 8px rgba(66,189,138,0.6) !important;
+  transition: width .15s linear !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   2. SIDEBAR (fixed, moved to body via JS)
+══════════════════════════════════════════════════════ */
+#msh-sidebar {
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; bottom: 0 !important;
+  width: 256px !important;
+  background: rgba(8,17,14,0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-right: 1px solid rgba(35,47,43,0.4) !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform .3s ease !important;
+  overflow: hidden !important;
+  font-family: 'Inter', sans-serif !important;
+  box-sizing: border-box !important;
+}
+#msh-sidebar.msh-col { transform: translateX(-100%) !important; }
+#msh-sidebar * { box-sizing: border-box !important; font-family: 'Inter', sans-serif !important; }
+
+/* Sidebar header */
+.msh-sb-hd {
+  display: flex !important; align-items: center !important; justify-content: space-between !important;
+  padding: 16px !important;
+  border-bottom: 1px solid rgba(35,47,43,0.3) !important;
+  flex-shrink: 0 !important; min-height: 60px !important;
+  background: transparent !important;
+}
+.msh-sb-ttl {
+  font-size: 12px !important; font-weight: 700 !important;
+  letter-spacing: .12em !important; text-transform: uppercase !important;
+  color: rgba(237,237,237,0.8) !important;
+  display: block !important; line-height: 1 !important;
+  background: transparent !important;
+  border: none !important; margin: 0 !important; padding: 0 !important;
+}
+.msh-sb-ttl-bar {
+  margin-top: 5px !important; height: 2px !important; width: 24px !important;
+  background: rgba(66,189,138,0.4) !important; border-radius: 99px !important;
+  display: block !important;
+}
+.msh-sb-tog {
+  background: none !important; border: none !important;
+  color: rgba(129,152,144,0.7) !important; cursor: pointer !important;
+  width: 28px !important; height: 28px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  border-radius: 6px !important; flex-shrink: 0 !important;
+  transition: color .2s !important;
+  padding: 0 !important; margin: 0 !important;
+}
+.msh-sb-tog:hover { color: #EDEDED !important; }
+
+/* Sidebar nav */
+.msh-sb-nav {
+  flex: 1 !important; overflow-y: auto !important;
+  padding: 8px 0 !important;
+  scrollbar-width: none !important;
+  position: relative !important;
+}
+.msh-sb-nav::-webkit-scrollbar { display: none !important; }
+
+/* Nav item */
+.msh-ni {
+  position: relative !important;
+  display: flex !important; align-items: center !important; gap: 12px !important;
+  padding: 4px 14px !important;
+  cursor: pointer !important;
+  background: none !important; border: none !important;
+  width: 100% !important; text-align: left !important;
+  transition: background .15s !important;
+}
+.msh-ni:hover { background: rgba(66,189,138,0.05) !important; }
+
+/* Connector line per item (height set by JS) */
+.msh-ni-connector {
+  position: absolute !important;
+  left: 28px !important; top: 43px !important;
+  width: 1px !important;
+  background: rgba(35,47,43,0.9) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Icon circle */
+.msh-ni-ico {
+  position: relative !important; z-index: 1 !important;
+  width: 31px !important; height: 31px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(66,189,138,0.35) !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  flex-shrink: 0 !important;
+  background: #08110E !important;
+  color: rgba(129,152,144,0.4) !important;
+  transition: all .3s !important;
+  margin: 7px 0 !important;
+}
+.msh-ni-ico.msh-act {
+  background: #42BD8A !important;
+  border-color: #42BD8A !important;
+  color: #08110E !important;
+}
+.msh-ni-ico.msh-done {
+  background: #08110E !important;
+  border-color: rgba(66,189,138,0.4) !important;
+  color: rgba(66,189,138,0.6) !important;
+}
+
+/* Labels */
+.msh-ni-lbl {
+  display: flex !important; flex-direction: column !important;
+  min-width: 0 !important; padding: 8px 0 !important;
+  overflow: hidden !important;
+}
+.msh-ni-num {
+  font-size: 10px !important; font-weight: 400 !important;
+  color: rgba(66,189,138,0.75) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .15em !important;
+  line-height: 1 !important; display: block !important;
+  background: transparent !important;
+}
+.msh-ni-name {
+  font-size: 13px !important; font-weight: 400 !important;
+  color: rgba(129,152,144,0.65) !important;
+  line-height: 1.3 !important; margin-top: 3px !important;
+  display: block !important; white-space: nowrap !important;
+  overflow: hidden !important; text-overflow: ellipsis !important;
+  background: transparent !important;
+  transition: color .3s !important;
+}
+.msh-ni.msh-cur .msh-ni-name {
+  color: #EDEDED !important; font-weight: 600 !important;
+}
+
+/* Footer */
+.msh-sb-ft {
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(35,47,43,0.3) !important;
+  flex-shrink: 0 !important; background: transparent !important;
+}
+.msh-sb-cnt {
+  font-size: 12px !important;
+  color: rgba(129,152,144,0.4) !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   3. MOBILE TOGGLE BUTTON
+══════════════════════════════════════════════════════ */
+#msh-mob-btn {
+  display: none !important; /* shown via media query */
+  position: fixed !important;
+  top: 16px !important; left: 16px !important;
+  z-index: 9998 !important;
+  width: 40px !important; height: 40px !important;
+  background: rgba(8,17,14,0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(35,47,43,0.5) !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  color: #819890 !important;
+  align-items: center !important; justify-content: center !important;
+  padding: 0 !important; margin: 0 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+
+/* ── Sidebar "reopen" tab (appears when sidebar is collapsed on desktop) ── */
+#msh-sb-reopen {
+  display: none !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 22px !important;
+  height: 52px !important;
+  background: rgba(8,17,14,0.92) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(35,47,43,0.5) !important;
+  border-left: none !important;
+  border-radius: 0 8px 8px 0 !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10000 !important;
+  color: rgba(129,152,144,0.8) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: color .2s, background .2s !important;
+}
+#msh-sb-reopen:hover {
+  color: #42BD8A !important;
+  background: rgba(8,17,14,0.98) !important;
+}
+#msh-sb-reopen.msh-visible { display: flex !important; }
+
+/* ── Sidebar toggle icon: flip arrow when collapsed ── */
+#msh-sidebar.msh-col .msh-sb-tog-icon { transform: rotate(180deg) !important; }
+.msh-sb-tog-icon { transition: transform .3s ease !important; display: block !important; }
+#msh-overlay {
+  display: none !important;
+  position: fixed !important; inset: 0 !important;
+  background: rgba(0,0,0,0.55) !important;
+  z-index: 9997 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   4. HERO ROOT — FULL-WIDTH BLEED from Tilda container
+══════════════════════════════════════════════════════ */
+#msh-root {
+  /* Break out of Tilda's column/container */
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #08110E !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+  margin: 0 !important; padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   5. HERO SECTION INNER
+══════════════════════════════════════════════════════ */
+#msh-s1 {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  /* Left offset: sidebar(256) + inner gap(64) = 320px */
+  padding: 112px 48px 80px 320px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+}
+
+/* BG blobs */
+#msh-s1::before {
+  content: '' !important;
+  position: absolute !important;
+  width: 600px !important; height: 600px !important;
+  background: radial-gradient(circle, rgba(66,189,138,0.07) 0%, transparent 65%) !important;
+  bottom: -100px !important; left: 256px !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+#msh-s1::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 400px !important; height: 400px !important;
+  background: radial-gradient(circle, rgba(66,189,138,0.04) 0%, transparent 65%) !important;
+  top: 0 !important; right: 0 !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Hero content wrapper */
+.msh-inner {
+  position: relative !important; z-index: 1 !important;
+  max-width: 920px !important; width: 100% !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: center !important; text-align: center !important;
+}
+/* Forced line break after "масштабирования," — matches Lovable's natural wrap */
+.msh-h1-br { display: block !important; }
+@media (max-width: 900px) { .msh-h1-br { display: none !important; } }
+
+/* ══════════════════════════════════════════════════════
+   6. META BADGE
+══════════════════════════════════════════════════════ */
+.msh-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1px solid rgba(66,189,138,0.22) !important;
+  border-radius: 9999px !important;
+  padding: 10px 20px !important;
+  margin: 0 0 40px !important;
+  backdrop-filter: blur(4px) !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+  flex-wrap: nowrap !important;
+}
+.msh-bdg-date {
+  font-size: 14px !important; font-weight: 600 !important;
+  color: #42BD8A !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.4px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+  display: inline-block !important;
+  margin: 0 !important; padding: 0 !important; border: none !important;
+}
+.msh-bdg-sep {
+  display: inline-block !important;
+  width: 1px !important;
+  height: 14px !important;
+  background: rgba(66,189,138,0.22) !important;
+  margin: 0 12px !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  border: none !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+.msh-bdg-muted {
+  font-size: 14px !important; font-weight: 500 !important;
+  color: #819890 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.7px !important;
+  white-space: nowrap !important;
+  display: inline-flex !important; align-items: center !important; gap: 5px !important;
+  background: transparent !important;
+  margin: 0 !important; padding: 0 !important; border: none !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   7. H1
+══════════════════════════════════════════════════════ */
+.msh-h1 {
+  font-size: clamp(34px, 5.5vw, 72px) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  color: #EDEDED !important;
+  letter-spacing: -2.16px !important;
+  margin: 0 0 32px !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: none !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+}
+.msh-h1-green {
+  color: #42BD8A !important;
+  background: transparent !important;
+  font-weight: inherit !important;
+  font-size: inherit !important;
+}
+.msh-h1-ul {
+  position: relative !important;
+  display: inline-block !important;
+  color: #EDEDED !important;
+  background: transparent !important;
+  font-size: inherit !important; font-weight: inherit !important;
+  text-decoration: none !important;
+}
+.msh-h1-ul-bar {
+  position: absolute !important;
+  left: 0 !important; right: 0 !important; bottom: -6px !important;
+  height: 4px !important;
+  background: #42BD8A !important;
+  border-radius: 99px !important;
+  display: block !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   8. SUBTITLE
+══════════════════════════════════════════════════════ */
+.msh-sub {
+  font-size: 20px !important;
+  color: #819890 !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  margin: 0 0 40px !important; padding: 0 !important;
+  max-width: 620px !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: none !important;
+  background: transparent !important;
+  border: none !important;
+  text-align: center !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   9. DIVIDER
+══════════════════════════════════════════════════════ */
+.msh-div {
+  width: 100% !important; height: 1px !important;
+  background: rgba(35,47,43,0.5) !important;
+  margin: 0 0 56px !important;
+  border: none !important; padding: 0 !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   10. STATS
+══════════════════════════════════════════════════════ */
+.msh-stats {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 32px !important;
+  width: 100% !important;
+  margin: 0 !important; padding: 0 !important;
+  border: none !important;
+}
+.msh-stat {
+  padding: 0px 12px !important;
+  text-align: center !important;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+}
+.msh-stat + .msh-stat::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important; top: 25% !important; bottom: 25% !important;
+  width: 1px !important;
+  background: rgba(35,47,43,0.8) !important;
+  display: block !important;
+}
+.msh-stat-n {
+  font-size: clamp(38px, 4.5vw, 60px) !important;
+  font-weight: 700 !important;
+  color: #42BD8A !important;
+  line-height: 1 !important;
+  display: block !important;
+  margin: 0 0 8px !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-shadow: 0 0 20px rgba(66,189,138,0.25) !important;
+  background: transparent !important;
+  border: none !important;
+  letter-spacing: -.01em !important;
+  text-transform: none !important;
+}
+.msh-stat-l {
+  font-size: 14px !important;
+  color: #819890 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.4px !important;
+  line-height: 1.4 !important;
+  display: block !important;
+  margin: 0 !important; padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: 400 !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   11. CTA BUTTON
+══════════════════════════════════════════════════════ */
+.msh-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  margin: 0 !important; border: none !important;
+}
+.msh-btn {
+  display: inline-flex !important;
+  align-items: center !important; gap: 10px !important;
+  background: linear-gradient(135deg,#225946 0%,#35976E 50%,#3F8367 100%) !important;
+  color: #ffffff !important;
+  border: none !important; outline: none !important;
+  border-radius: 9999px !important;
+  padding: 16px 40px !important;
+  min-height: 56px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  cursor: pointer !important;
+  letter-spacing: .01em !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  transition: transform .3s ease, box-shadow .3s ease !important;
+  animation: msh-pulse-btn 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+.msh-btn:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important;
+  animation: none !important;
+  color: #ffffff !important;
+}
+@keyframes msh-pulse-btn {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
+}
+
+/* ══════════════════════════════════════════════════════
+   12. RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  #msh-s1 { padding: 112px 48px 80px 310px !important; }
+}
+@media (max-width: 1024px) {
+  #msh-s1 { padding: 100px 40px 60px 296px !important; }
+  .msh-h1 { font-size: clamp(34px, 4.8vw, 60px) !important; }
+}
+@media (max-width: 900px) {
+  #msh-s1 { padding: 100px 32px 60px 288px !important; }
+  .msh-h1 { font-size: clamp(32px, 5vw, 52px) !important; }
+}
+@media (max-width: 768px) {
+  #msh-sidebar { transform: translateX(-256px) !important; transition: transform .3s ease !important; }
+  #msh-sidebar.msh-mob-open { transform: translateX(0) !important; }
+  #msh-mob-btn { display: flex !important; }
+  #msh-s1 { padding: 80px 32px 60px 32px !important; }
+  .msh-inner { max-width: 100% !important; }
+  .msh-h1 { font-size: clamp(32px, 6.5vw, 52px) !important; }
+  .msh-sub { font-size: 18px !important; }
+  .msh-stats { grid-template-columns: 1fr 1fr 1fr !important; }
+  .msh-btn-row { padding: 48px 0 !important; }
+  .msh-stat-n { font-size: clamp(32px, 5vw, 48px) !important; }
+}
+@media (max-width: 520px) {
+  #msh-s1 { padding: 72px 20px 40px 20px !important; }
+  .msh-h1 { font-size: clamp(26px, 8.5vw, 40px) !important; letter-spacing: -.01em !important; }
+  .msh-sub { font-size: 15px !important; margin: 0 0 32px !important; }
+  .msh-badge { padding: 8px 14px !important; flex-wrap: wrap !important; gap: 6px !important; justify-content: center !important; }
+  .msh-bdg-sep { display: none !important; }
+  .msh-stats { grid-template-columns: 1fr !important; }
+  .msh-stat + .msh-stat::before { display: none !important; }
+  .msh-stat { padding: 16px 0 !important; border-bottom: 1px solid rgba(35,47,43,0.5) !important; }
+  .msh-stat:last-child { border-bottom: none !important; }
+  .msh-btn-row { padding: 32px 0 !important; }
+  .msh-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .msh-div { margin: 0 0 40px !important; }
+}
+</style>
+
+<!-- Sidebar reopen tab (visible when sidebar is collapsed on desktop) -->
+<div id="msh-sb-reopen" onclick="mshOpen()" title="Открыть меню">
+  <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
+    <path d="M3 2l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<!-- Mobile burger button (moved to body via JS) -->
+<button id="msh-mob-btn" onclick="mshMobToggle()" aria-label="Меню">
+  <svg width="18" height="13" viewBox="0 0 18 13" fill="none">
+    <path d="M1 1h16M1 6.5h16M1 12h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- Mobile overlay -->
+<div id="msh-overlay" onclick="mshMobClose()"></div>
+
+<!-- Progress bar -->
+<div id="msh-prog"><div id="msh-prog-fill"></div></div>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside id="msh-sidebar">
+  <div class="msh-sb-hd">
+    <div>
+      <span class="msh-sb-ttl">Содержание</span>
+      <span class="msh-sb-ttl-bar"></span>
+    </div>
+    <button class="msh-sb-tog" onclick="mshToggle()">
+      <svg class="msh-sb-tog-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 11L5 7L9 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="msh-sb-nav" id="msh-nav">
+    <div class="msh-ni msh-cur" data-s="1" onclick="mshGo(1)">
+      <div class="msh-ni-ico msh-act" id="msh-ico-1">
+        <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">01</span><span class="msh-ni-name">Введение</span></div>
+    </div>
+    <div class="msh-ni" data-s="2" onclick="mshGo(2)">
+      <div class="msh-ni-ico" id="msh-ico-2">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">02</span><span class="msh-ni-name">Масштабирование</span></div>
+    </div>
+    <div class="msh-ni" data-s="3" onclick="mshGo(3)">
+      <div class="msh-ni-ico" id="msh-ico-3">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">03</span><span class="msh-ni-name">Почему сейчас</span></div>
+    </div>
+    <div class="msh-ni" data-s="4" onclick="mshGo(4)">
+      <div class="msh-ni-ico" id="msh-ico-4">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">04</span><span class="msh-ni-name">Ошибки</span></div>
+    </div>
+    <div class="msh-ni" data-s="5" onclick="mshGo(5)">
+      <div class="msh-ni-ico" id="msh-ico-5">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">05</span><span class="msh-ni-name">Точка потенциала</span></div>
+    </div>
+    <div class="msh-ni" data-s="6" onclick="mshGo(6)">
+      <div class="msh-ni-ico" id="msh-ico-6">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">06</span><span class="msh-ni-name">Контекст</span></div>
+    </div>
+    <div class="msh-ni" data-s="7" onclick="mshGo(7)">
+      <div class="msh-ni-ico" id="msh-ico-7">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">07</span><span class="msh-ni-name">Личность</span></div>
+    </div>
+    <div class="msh-ni" data-s="8" onclick="mshGo(8)">
+      <div class="msh-ni-ico" id="msh-ico-8">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">08</span><span class="msh-ni-name">Дело</span></div>
+    </div>
+    <div class="msh-ni" data-s="9" onclick="mshGo(9)">
+      <div class="msh-ni-ico" id="msh-ico-9">
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <div class="msh-ni-lbl"><span class="msh-ni-num">09</span><span class="msh-ni-name">Итог</span></div>
+    </div>
+  </nav>
+  <div class="msh-sb-ft"><span class="msh-sb-cnt" id="msh-cnt">1 / 9</span></div>
+</aside>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div id="msh-root">
+  <div id="msh-s1" data-msh-sec="1">
+    <div class="msh-inner">
+
+      <!-- Badge -->
+      <div class="msh-badge">
+        <span class="msh-bdg-date">17–19 апреля</span>
+        <span class="msh-bdg-sep"></span>
+        <span class="msh-bdg-muted">в Доброграде</span>
+        <span class="msh-bdg-sep"></span>
+        <span class="msh-bdg-muted">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          12 мин
+        </span>
+      </div>
+
+      <!-- H1 -->
+      <h1 class="msh-h1">Стратегия <span class="msh-h1-green">масштабирования</span>,<br class="msh-h1-br"> которая работает даже на <span class="msh-h1-ul">падающем рынке<span class="msh-h1-ul-bar"></span></span></h1>
+
+      <!-- Subtitle -->
+      <p class="msh-sub">Аналитический материал международной школы бизнеса «Горки»</p>
+
+      <!-- Divider -->
+      <div class="msh-div"></div>
+
+      <!-- Stats -->
+      <div class="msh-stats">
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st1">0 лет</span>
+          <span class="msh-stat-l">Опыт «Асконы»</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st2">0</span>
+          <span class="msh-stat-l">Смен модели</span>
+        </div>
+        <div class="msh-stat">
+          <span class="msh-stat-n" id="msh-st3">топ-0+</span>
+          <span class="msh-stat-l">Техкомпаний мира</span>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="msh-btn-row">
+        <button class="msh-btn" onclick="mshScrollTo(2)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var TOTAL = 9;
+var SVG_PLAY = '<svg width="8" height="10" viewBox="0 0 8 10" fill="none"><polygon points="0.5,0.5 7.5,5 0.5,9.5" fill="currentColor"/></svg>';
+var SVG_DONE = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.5l2.5 2.5 4.5-4.5" stroke="#42BD8A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var SVG_LOCK = '<svg width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="4.5" width="7" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3.2a2 2 0 014 0v1.3" stroke="currentColor" stroke-width="1.2"/></svg>';
+
+/* ─── Fix Tilda transform bug: move fixed elements to <body> ─── */
+function fixFixed(){
+  var ids = ['msh-prog','msh-sidebar','msh-mob-btn','msh-overlay','msh-sb-reopen'];
+  ids.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el && el.parentNode !== document.body) document.body.appendChild(el);
+  });
+  /* Force dark background */
+  document.body.style.setProperty('background','#08110E','important');
+  document.documentElement.style.setProperty('background','#08110E','important');
+}
+
+/* ─── Connector lines ─── */
+function buildConnectors(){
+  var items = document.querySelectorAll('#msh-nav .msh-ni');
+  items.forEach(function(ni,i){
+    var old = ni.querySelector('.msh-ni-connector');
+    if(old) old.parentNode.removeChild(old);
+    if(i < items.length - 1){
+      var line = document.createElement('div');
+      line.className = 'msh-ni-connector';
+      /* height = full item height minus the offset from top */
+      line.style.cssText = 'position:absolute;left:28px;top:43px;bottom:0;width:1px;background:rgba(35,47,43,0.9);z-index:0;pointer-events:none;';
+      ni.style.position = 'relative';
+      ni.appendChild(line);
+    }
+  });
+}
+
+/* ─── Public API (used from other Tilda blocks on same page) ─── */
+window.mshScrollTo = function(n){
+  var el = document.querySelector('[data-msh-sec="'+n+'"]');
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.mshUnlock = function(n){ window.mshScrollTo(n+1); };
+window.mshGo     = function(n){ window.mshScrollTo(n); };
+window.mshToggle = function(){
+  var sb = document.getElementById('msh-sidebar');
+  if(!sb) return;
+  if(window.innerWidth <= 768){ mshMobToggle(); return; }
+  var isCollapsed = sb.classList.toggle('msh-col');
+  var reopen = document.getElementById('msh-sb-reopen');
+  if(reopen) reopen.classList.toggle('msh-visible', isCollapsed);
+};
+window.mshOpen = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var reopen = document.getElementById('msh-sb-reopen');
+  if(sb) sb.classList.remove('msh-col');
+  if(reopen) reopen.classList.remove('msh-visible');
+};
+window.mshMobToggle = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var ov = document.getElementById('msh-overlay');
+  if(!sb) return;
+  var open = sb.classList.toggle('msh-mob-open');
+  if(ov) ov.style.display = open ? 'block' : 'none';
+};
+window.mshMobClose = function(){
+  var sb = document.getElementById('msh-sidebar');
+  var ov = document.getElementById('msh-overlay');
+  if(sb) sb.classList.remove('msh-mob-open');
+  if(ov) ov.style.display = 'none';
+};
+
+/* ─── Active section state ─── */
+function setActive(cur){
+  document.querySelectorAll('#msh-nav .msh-ni').forEach(function(ni){
+    var s = parseInt(ni.getAttribute('data-s'),10);
+    var ic = ni.querySelector('.msh-ni-ico');
+    ni.classList.remove('msh-cur');
+    if(!ic) return;
+    if(s < cur){ ic.className='msh-ni-ico msh-done'; ic.innerHTML=SVG_DONE; }
+    else if(s === cur){ ni.classList.add('msh-cur'); ic.className='msh-ni-ico msh-act'; ic.innerHTML=SVG_PLAY; }
+    else { ic.className='msh-ni-ico'; ic.innerHTML=SVG_LOCK; }
+  });
+  var c = document.getElementById('msh-cnt');
+  if(c) c.textContent = cur+' / '+TOTAL;
+}
+
+/* ─── Scroll: progress bar + active section ─── */
+window.addEventListener('scroll', function(){
+  var fill = document.getElementById('msh-prog-fill');
+  if(fill){
+    var st = document.documentElement.scrollTop || window.pageYOffset;
+    var sh = document.body.scrollHeight - window.innerHeight;
+    fill.style.width = (sh>0 ? Math.min(100,Math.round(st/sh*100)):0)+'%';
+  }
+  var cur=1;
+  for(var i=1;i<=TOTAL;i++){
+    var el=document.querySelector('[data-msh-sec="'+i+'"]');
+    if(el && el.getBoundingClientRect().top <= window.innerHeight*0.45) cur=i;
+  }
+  setActive(cur);
+},{passive:true});
+
+/* ─── Counter animation (easeOutCubic) ─── */
+function countUp(id, to, pre, suf, dur){
+  var el = document.getElementById(id);
+  if(!el) return;
+  var t0 = Date.now();
+  var id2 = setInterval(function(){
+    var p = Math.min((Date.now()-t0)/dur,1);
+    var e = 1-Math.pow(1-p,3);
+    el.textContent = (pre||'')+Math.round(e*to)+(suf||'');
+    if(p>=1) clearInterval(id2);
+  },16);
+}
+
+/* ─── Trigger counters when section enters viewport ─── */
+function initCounters(){
+  var el = document.getElementById('msh-s1');
+  if(!el) return;
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        /* Sequential: each counter starts after the previous one finishes */
+        setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },200);
+        setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },1800);
+        setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3000);
+        obs.disconnect();
+      }
+    },{threshold:0.2});
+    obs.observe(el);
+  } else {
+    setTimeout(function(){ countUp('msh-st1',35,  '',     ' лет',1400); },700);
+    setTimeout(function(){ countUp('msh-st2',6,   '',     '',    1000); },2300);
+    setTimeout(function(){ countUp('msh-st3',100,'топ-','+',    1600); },3500);
+  }
+}
+
+/* ─── Init ─── */
+function init(){
+  fixFixed();
+  buildConnectors();
+  setActive(1);
+  initCounters();
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
+/* Re-run fixFixed in case Tilda manipulates DOM after load */
+setTimeout(fixFixed,200);
+setTimeout(fixFixed,800);
+setTimeout(fixFixed,2000);
+
+})();
+</script>
+
+
+<!-- === 02-masshtabirovanie.html === -->
+<!-- BLOCK 02: Масштабирование — pixel-perfect copy of vision-quest-revamp.lovable.app/#what-is -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── FORCE DARK BG + REMOVE TILDA RECORD GAPS ── */
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* ── NAMESPACE RESET ── */
+#s2-root, #s2-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s2-root p, #s2-root h2, #s2-root h3, #s2-root h4,
+#s2-root span, #s2-root strong, #s2-root div, #s2-root button {
+  margin: 0; padding: 0;
+}
+
+/* ── FULL-WIDTH BLEED (break out of Tilda column) ── */
+#s2-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #08110E !important;
+  overflow-x: hidden !important;
+}
+
+/* ── SECTION ── */
+#s2-sec {
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+  background: transparent !important;
+}
+
+/* Fade-in animation */
+@keyframes s2FadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s2-fade {
+  animation: s2FadeIn .7s ease-out both !important;
+  animation-play-state: paused !important;
+}
+.s2-fade.s2-visible { animation-play-state: running !important; }
+
+/* ── CONTENT WIDTHS ── */
+.s2-narrow { max-width: 720px !important; width: 100% !important; }
+.s2-wide   { max-width: 960px !important; width: 100% !important; }
+
+/* ── SPACING UTILITY ── */
+.s2-mt-64 { margin-top: 64px !important; }
+.s2-mt-80 { margin-top: 80px !important; }
+
+/* ── H2 ── */
+.s2-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  letter-spacing: -0.96px !important;
+  text-transform: none !important;
+}
+/* Green skewed highlight behind words */
+.s2-hl {
+  position: relative !important;
+  display: inline !important;
+}
+.s2-hl::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 2px -6px !important;
+  background: rgba(66,189,138,0.15) !important;
+  transform: skewX(-2deg) !important;
+  border-radius: 3px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.s2-hl-inner {
+  position: relative !important;
+  z-index: 1 !important;
+  color: #EDEDED !important;
+}
+
+/* Footnote */
+.s2-footnote {
+  font-size: 14px !important;
+  color: rgba(129,152,144,0.6) !important;
+  margin: 0 0 64px !important;
+  display: block !important;
+  line-height: 1.4 !important;
+}
+.s2-footnote-accent { color: #42BD8A !important; }
+
+/* ── CARD ── */
+.s2-card {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 40px !important;
+  margin: 0 0 48px !important;
+}
+.s2-card-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  line-height: 1.33 !important;
+  text-transform: none !important;
+}
+
+/* Drop-cap */
+.s2-dropcap { overflow: hidden !important; }
+.s2-dropcap-letter {
+  float: left !important;
+  font-size: 4.6em !important;
+  font-weight: 800 !important;
+  color: #42BD8A !important;
+  line-height: .78 !important;
+  margin: 4px 10px 0 0 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.s2-dropcap-text {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.85) !important;
+  text-transform: none !important;
+}
+
+/* ── BODY TEXT ── */
+.s2-body { margin-left: 8% !important; }
+.s2-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 0 24px !important;
+  text-transform: none !important;
+}
+.s2-p:last-child { margin-bottom: 0 !important; }
+.s2-p strong, .s2-p b {
+  color: #EDEDED !important;
+  font-weight: 600 !important;
+}
+
+/* ── CHART BLOCK ── */
+.s2-chart-wrap {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+}
+.s2-chart-h4 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  text-align: center !important;
+  margin: 0 0 32px !important;
+  text-transform: none !important;
+}
+.s2-chart-caption {
+  font-size: 14px !important;
+  color: #819890 !important;
+  text-align: center !important;
+  margin: 16px 0 0 !important;
+  line-height: 1.5 !important;
+}
+.s2-svg { width: 100% !important; display: block !important; max-width: 100% !important; margin: 0 auto !important; }
+
+/* ── MID PARAGRAPH ── */
+.s2-mid-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 0 80px !important;
+  text-transform: none !important;
+}
+
+/* ── ANALOGY CARDS GRID ── */
+.s2-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 24px !important;
+  margin: 0 0 80px !important;
+}
+.s2-analogy-card {
+  background: #111D19 !important;
+  border: 1px solid rgba(35,47,43,0.6) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  transition: box-shadow .3s ease, transform .3s ease !important;
+}
+.s2-analogy-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+  transform: translateY(-2px) !important;
+}
+.s2-analogy-vis {
+  width: 100% !important;
+  background: linear-gradient(135deg, rgb(21,31,40), rgb(20,31,31)) !important;
+  overflow: hidden !important;
+  height: 225px !important;
+}
+.s2-analogy-body { padding: 32px !important; }
+.s2-analogy-label {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.8px !important;
+  color: rgba(129,152,144,0.6) !important;
+  display: block !important;
+  margin: 0 0 10px !important;
+}
+.s2-analogy-h4 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 12px !important;
+  text-transform: none !important;
+  line-height: 1.3 !important;
+}
+.s2-analogy-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 !important;
+  text-transform: none !important;
+}
+
+/* ── FINAL SECTION ── */
+.s2-final-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  text-transform: none !important;
+}
+.s2-final-p {
+  font-size: 18px !important;
+  line-height: 1.65 !important;
+  color: rgba(237,237,237,0.65) !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s2-final-p:last-child { margin-bottom: 0 !important; }
+.s2-final-p strong { color: #EDEDED !important; font-weight: 600 !important; }
+
+/* ── BUTTON ── */
+.s2-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 0 !important;
+}
+.s2-btn {
+  display: inline-flex !important; align-items: center !important; gap: 10px !important;
+  background: linear-gradient(135deg,#225946 0%,#35976E 50%,#3F8367 100%) !important;
+  color: #fff !important; border: none !important; outline: none !important;
+  border-radius: 9999px !important;
+  padding: 18px 40px !important; min-height: 60px !important;
+  font-size: 18px !important; font-weight: 600 !important;
+  cursor: pointer !important; letter-spacing: .01em !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s2-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
+  text-decoration: none !important; text-transform: none !important; line-height: 1 !important;
+}
+.s2-btn:hover { transform: scale(1.05) !important; box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important; animation: none !important; color: #fff !important; }
+@keyframes s2-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  #s2-sec { padding: 120px 48px 120px 300px !important; }
+}
+@media (max-width: 900px) {
+  #s2-sec { padding: 100px 32px 100px 288px !important; }
+  .s2-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  #s2-sec { padding: 80px 24px 80px 24px !important; }
+  .s2-body { margin-left: 0 !important; }
+  .s2-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .s2-h2 { font-size: clamp(28px, 7vw, 40px) !important; }
+  .s2-mid-p { font-size: 17px !important; margin-bottom: 48px !important; }
+  .s2-mt-64 { margin-top: 40px !important; }
+  .s2-mt-80 { margin-top: 48px !important; }
+}
+@media (max-width: 520px) {
+  #s2-sec { padding: 60px 20px 60px 20px !important; }
+  .s2-card { padding: 24px !important; }
+  .s2-chart-wrap { padding: 20px 12px !important; }
+  .s2-btn { padding: 16px 32px !important; font-size: 16px !important; }
+  .s2-btn-row { padding: 40px 0 0 !important; }
+}
+</style>
+
+<!-- ════════════════════ HTML ════════════════════ -->
+<div id="s2-root">
+  <section id="s2-sec" data-msh-sec="2">
+
+    <!-- ═══ 1. ЗАГОЛОВОК + ПЕРВЫЙ ТЕКСТОВЫЙ БЛОК ═══ -->
+    <div class="s2-narrow s2-fade">
+      <h2 class="s2-h2">
+        <span class="s2-hl"><span class="s2-hl-inner">Что такое</span></span><br>
+        <span class="s2-hl"><span class="s2-hl-inner">масштабирование</span></span><sup style="color:#42BD8A;font-size:0.55em;margin-left:4px;vertical-align:super;font-weight:400">*</sup>
+      </h2>
+      <span class="s2-footnote"><span class="s2-footnote-accent">*</span> По методологии школы «Горки»</span>
+
+      <!-- Тёмная карточка с drop-cap -->
+      <div class="s2-card">
+        <h3 class="s2-card-h3">«Больше того же самого» — это не масштабирование</h3>
+        <div class="s2-dropcap">
+          <span class="s2-dropcap-letter">М</span>
+          <span class="s2-dropcap-text">асштабирование. Одно из самых употребляемых слов в предпринимательской среде. И одно из самых непонятых. Все об этом говорят. Но на практике немного компаний, прошедших долину смерти и вышедших на выручку 100+ миллионов, смогли действительно масштабироваться дальше. Построить компанию на миллиард, десять или сто миллиардов.</span>
+        </div>
+      </div>
+
+      <!-- Текст со сдвигом -->
+      <div class="s2-body">
+        <p class="s2-p">Когда предприниматель говорит «хочу масштабироваться», чаще всего он имеет в виду: больше трафика, больше лидов, больше клиентов, больше точек, больше сотрудников. То есть больше того же самого.</p>
+        <p class="s2-p">Но это не масштабирование. Это <strong>линейное увеличение</strong>.</p>
+        <p class="s2-p">Линейное увеличение — это когда вы наращиваете объём внутри существующей модели. Больше менеджеров, больше точек, больше рекламы. Масштабирование — это когда меняется <strong>сама бизнес-модель</strong>.</p>
+      </div>
+    </div>
+
+    <!-- ═══ 2. ГРАФИК SVG ═══ -->
+    <div class="s2-wide s2-fade s2-mt-64">
+      <div class="s2-chart-wrap">
+        <h4 class="s2-chart-h4">Линейный рост vs Масштабирование</h4>
+        <svg class="s2-svg" viewBox="0 0 650 320" fill="none" id="s2-chart">
+          <!-- Grid -->
+          <line x1="70" y1="60"  x2="560" y2="60"  stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="115" x2="560" y2="115" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="170" x2="560" y2="170" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="225" x2="560" y2="225" stroke="#232F2B" stroke-width="1"/>
+          <line x1="70" y1="280" x2="560" y2="280" stroke="#232F2B" stroke-width="1"/>
+          <!-- Axis labels -->
+          <text x="40"  y="295" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle">0</text>
+          <text x="310" y="312" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle">Время →</text>
+          <text x="18"  y="160" fill="#819890" font-size="11" font-family="Inter" text-anchor="middle" transform="rotate(-90,18,160)">Результат →</text>
+          <!-- Linear growth (dashed, muted) -->
+          <line x1="80" y1="250" x2="520" y2="110"
+            stroke="#819890" stroke-width="2.5" stroke-dasharray="8 4" opacity="0.5"
+            id="s2-linear-line"/>
+          <text x="525" y="104" fill="#819890" font-size="10" font-family="Inter">Линейный</text>
+          <text x="525" y="117" fill="#819890" font-size="10" font-family="Inter">рост</text>
+          <!-- Scale curve fill -->
+          <path d="M80,250 L160,225 L200,225 L220,180 L310,170 L340,170 L360,110 L440,95 L480,95 L500,55 L530,50 L530,280 L80,280 Z"
+            fill="#42BD8A" opacity="0.07"/>
+          <!-- Scale curve line -->
+          <polyline id="s2-scale-line"
+            points="80,250 160,225 200,225 220,180 310,170 340,170 360,110 440,95 480,95 500,55 530,50"
+            stroke="#42BD8A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+            fill="none"/>
+          <!-- Виток 1 -->
+          <circle cx="200" cy="225" r="6"  fill="#42BD8A"/>
+          <circle cx="200" cy="225" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="200" y="213" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 1</text>
+          <!-- Виток 2 -->
+          <circle cx="340" cy="170" r="6"  fill="#42BD8A"/>
+          <circle cx="340" cy="170" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="340" y="157" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 2</text>
+          <!-- Виток 3 -->
+          <circle cx="480" cy="95" r="6"  fill="#42BD8A"/>
+          <circle cx="480" cy="95" r="12" fill="none" stroke="#42BD8A" stroke-width="1.5" opacity="0.35"/>
+          <text x="480" y="82" fill="#42BD8A" font-size="11" font-family="Inter" font-weight="600" text-anchor="middle">Виток 3</text>
+          <!-- Масштабирование label -->
+          <text x="534" y="42" fill="#42BD8A" font-size="10" font-family="Inter" font-weight="700">Масшта-</text>
+          <text x="534" y="55" fill="#42BD8A" font-size="10" font-family="Inter" font-weight="700">бирование</text>
+        </svg>
+        <p class="s2-chart-caption">Каждый виток — смена бизнес-модели, а не просто «больше того же самого»</p>
+      </div>
+    </div>
+
+    <!-- ═══ 3. АБЗАЦ ПОСЛЕ ГРАФИКА ═══ -->
+    <div class="s2-narrow s2-fade s2-mt-64">
+      <p class="s2-mid-p">Линейное увеличение не плохо. На определённом этапе это именно то, что нужно. Если модель недавно нашла свой продукт и растёт, её нужно давить: оптимизировать, нанимать, расширять каналы. Но важно понимать: это разные процессы. И путать одно с другим опасно.</p>
+    </div>
+
+    <!-- ═══ 4. КАРТОЧКИ-АНАЛОГИИ ═══ -->
+    <div class="s2-wide s2-fade">
+      <div class="s2-grid">
+
+        <!-- Нагрев vs Пар -->
+        <div class="s2-analogy-card">
+          <div class="s2-analogy-vis">
+            <svg viewBox="0 0 400 200" style="width:100%;height:225px;display:block" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <clipPath id="s2-clip-l"><rect x="0" y="0" width="200" height="200"/></clipPath>
+                <clipPath id="s2-clip-r"><rect x="200" y="0" width="200" height="200"/></clipPath>
+              </defs>
+              <!-- Background halves -->
+              <rect x="0"   width="200" height="200" fill="#151f28"/>
+              <rect x="200" width="200" height="200" fill="#141f1f"/>
+
+              <!-- LEFT: 99° — cool water -->
+              <g clip-path="url(#s2-clip-l)">
+                <rect x="0" y="148" width="200" height="52" fill="hsl(210,50%,22%)"/>
+                <path d="M0,148 Q25,140 50,148 Q75,156 100,148 Q125,140 150,148 Q175,156 200,148 L200,155 Q175,147 150,155 Q125,163 100,155 Q75,147 50,155 Q25,163 0,155 Z" fill="hsl(210,45%,26%)"/>
+                <!-- Slow bubbles -->
+                <circle cx="65" cy="155" r="4" fill="hsl(210,50%,55%)">
+                  <animate attributeName="cy" values="155;60" dur="4s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="r"  values="4;2"   dur="4s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0.55;0.2;0" keyTimes="0;0.8;1" dur="4s" repeatCount="indefinite" begin="0s"/>
+                </circle>
+                <circle cx="135" cy="155" r="3" fill="hsl(210,50%,55%)">
+                  <animate attributeName="cy" values="155;75" dur="4s" repeatCount="indefinite" begin="2s"/>
+                  <animate attributeName="r"  values="3;1.5" dur="4s" repeatCount="indefinite" begin="2s"/>
+                  <animate attributeName="opacity" values="0.5;0.2;0" keyTimes="0;0.8;1" dur="4s" repeatCount="indefinite" begin="2s"/>
+                </circle>
+                <text x="100" y="118" fill="hsl(0,0%,70%)" font-size="42" font-family="Georgia,serif" font-style="italic" text-anchor="middle" opacity="0.35">99°</text>
+              </g>
+
+              <!-- RIGHT: 100° — boiling water -->
+              <g clip-path="url(#s2-clip-r)">
+                <rect x="200" y="148" width="200" height="52" fill="hsl(190,55%,28%)"/>
+                <path d="M200,145 Q220,137 240,145 Q260,153 280,145 Q300,137 320,145 Q340,153 360,145 Q380,137 400,145 L400,153 Q380,145 360,153 Q340,161 320,153 Q300,145 280,153 Q260,161 240,153 Q220,145 200,153 Z" fill="hsl(190,50%,32%)"/>
+                <!-- Fast bubbles -->
+                <circle cx="222" cy="152" r="4" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;58" dur="1.8s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="1.8s" repeatCount="indefinite" begin="0s"/>
+                </circle>
+                <circle cx="260" cy="152" r="3" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;65" dur="2.2s" repeatCount="indefinite" begin="0.5s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.2s" repeatCount="indefinite" begin="0.5s"/>
+                </circle>
+                <circle cx="300" cy="152" r="5" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;52" dur="2.0s" repeatCount="indefinite" begin="1.0s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.0s" repeatCount="indefinite" begin="1.0s"/>
+                </circle>
+                <circle cx="342" cy="152" r="3" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;68" dur="2.6s" repeatCount="indefinite" begin="1.3s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.6s" repeatCount="indefinite" begin="1.3s"/>
+                </circle>
+                <circle cx="376" cy="152" r="4" fill="hsl(190,60%,60%)">
+                  <animate attributeName="cy" values="152;58" dur="2.4s" repeatCount="indefinite" begin="0.8s"/>
+                  <animate attributeName="opacity" values="0.5;0.15;0" keyTimes="0;0.85;1" dur="2.4s" repeatCount="indefinite" begin="0.8s"/>
+                </circle>
+                <!-- Steam paths -->
+                <path d="M228,145 Q224,125 228,105 Q232,85 228,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+                </path>
+                <path d="M258,145 Q262,125 258,105 Q254,85 258,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.0s" repeatCount="indefinite" begin="0.4s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.0s" repeatCount="indefinite" begin="0.4s"/>
+                </path>
+                <path d="M295,145 Q291,125 295,105 Q299,85 295,65" stroke="hsl(0,0%,85%)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.4s" repeatCount="indefinite" begin="0.8s"/>
+                  <animate attributeName="opacity" values="0;0.5;0.4;0" keyTimes="0;0.2;0.8;1" dur="1.4s" repeatCount="indefinite" begin="0.8s"/>
+                </path>
+                <path d="M334,145 Q338,125 334,105 Q330,85 334,67" stroke="hsl(0,0%,85%)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="1.1s" repeatCount="indefinite" begin="0.2s"/>
+                  <animate attributeName="opacity" values="0;0.4;0.35;0" keyTimes="0;0.2;0.8;1" dur="1.1s" repeatCount="indefinite" begin="0.2s"/>
+                </path>
+                <path d="M370,145 Q374,125 370,105 Q366,85 370,67" stroke="hsl(0,0%,85%)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="100" opacity="0">
+                  <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="0.9s" repeatCount="indefinite" begin="0.6s"/>
+                  <animate attributeName="opacity" values="0;0.4;0.35;0" keyTimes="0;0.2;0.8;1" dur="0.9s" repeatCount="indefinite" begin="0.6s"/>
+                </path>
+                <text x="300" y="118" fill="hsl(160,45%,55%)" font-size="42" font-family="Georgia,serif" font-style="italic" text-anchor="middle" opacity="0.9">100°</text>
+              </g>
+
+              <!-- Divider + Arrow -->
+              <line x1="200" y1="8" x2="200" y2="192" stroke="hsl(200,60%,70%)" stroke-width="1.5" opacity="0.25"/>
+              <text x="200" y="110" fill="hsl(200,60%,70%)" font-size="22" font-family="Inter,sans-serif" text-anchor="middle" dominant-baseline="middle" opacity="0.75">→</text>
+            </svg>
+          </div>
+          <div class="s2-analogy-body">
+            <span class="s2-analogy-label">Аналогия</span>
+            <h4 class="s2-analogy-h4">Нагрев vs Пар</h4>
+            <p class="s2-analogy-p">Вы греете воду. С каждым градусом она горячее. Но при 100°C — качественный скачок: вода → пар. Количество перешло в качество.</p>
+          </div>
+        </div>
+
+        <!-- Школа → Институт -->
+        <div class="s2-analogy-card">
+          <div class="s2-analogy-vis">
+            <svg viewBox="0 0 400 200" style="width:100%;height:225px;display:block" preserveAspectRatio="xMidYMid slice">
+              <!-- Background: dark teal gradient -->
+              <rect width="400" height="200" fill="#070e0b"/>
+              <!-- Ground line -->
+              <line x1="20" y1="168" x2="380" y2="168" stroke="hsl(0,0%,30%)" stroke-width="1" opacity="0.4"/>
+
+              <!-- SCHOOL (left) -->
+              <rect x="32" y="98" width="95" height="70" fill="hsl(0,0%,22%)" rx="2"/>
+              <polygon points="22,98 79.5,60 137,98" fill="hsl(0,0%,26%)"/>
+              <!-- Windows -->
+              <rect x="44"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <rect x="70"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <rect x="96"  y="116" width="20" height="17" rx="2" fill="hsl(200,30%,38%)" opacity="0.5"/>
+              <!-- Door -->
+              <rect x="66"  y="136" width="27" height="32" rx="2" fill="#070e0b"/>
+              <!-- Label -->
+              <text x="79.5" y="188" fill="hsl(0,0%,55%)" font-size="13" font-family="Inter,sans-serif" font-weight="500" text-anchor="middle">11-й класс</text>
+
+              <!-- ANIMATED ARROW -->
+              <line x1="148" y1="130" x2="240" y2="130" stroke="hsl(142,40%,45%)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="92">
+                <animate attributeName="stroke-dashoffset" from="92" to="0" dur="1.6s" repeatCount="indefinite" begin="0s"/>
+                <animate attributeName="opacity" values="0.4;1;1;0.4" keyTimes="0;0.3;0.7;1" dur="1.6s" repeatCount="indefinite" begin="0s"/>
+              </line>
+              <!-- Arrowhead -->
+              <polygon points="237,123 252,130 237,137" fill="hsl(142,40%,45%)">
+                <animate attributeName="opacity" values="0.3;1;1;0.3" keyTimes="0;0.5;0.8;1" dur="1.6s" repeatCount="indefinite" begin="0.3s"/>
+              </polygon>
+
+              <!-- UNIVERSITY (right) -->
+              <rect x="260" y="88" width="112" height="80" fill="hsl(0,0%,20%)" rx="2"/>
+              <polygon points="252,88 316,48 380,88" fill="hsl(0,0%,24%)"/>
+              <!-- Columns -->
+              <rect x="272" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="292" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="331" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <rect x="351" y="130" width="9"  height="38" fill="#070e0b" rx="1"/>
+              <!-- Door/entrance -->
+              <rect x="304" y="112" width="24" height="56" fill="#070e0b" rx="2"/>
+              <!-- Dome -->
+              <ellipse cx="316" cy="48" rx="20" ry="11" fill="hsl(0,0%,22%)"/>
+              <line x1="316" y1="37" x2="316" y2="22" stroke="hsl(142,40%,55%)" stroke-width="1.5"/>
+              <polygon points="316,22 328,29 316,37" fill="hsl(142,40%,55%)" opacity="0.9"/>
+              <!-- Label -->
+              <text x="316" y="188" fill="hsl(142,40%,55%)" font-size="13" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Университет</text>
+            </svg>
+          </div>
+          <div class="s2-analogy-body">
+            <span class="s2-analogy-label">Аналогия</span>
+            <h4 class="s2-analogy-h4">Школа → Институт</h4>
+            <p class="s2-analogy-p">После 11-го класса не бывает 12-го. Дальше — институт. Другая система, другие правила. В бизнесе так же: есть свой «последний класс», после которого нужна полная смена подхода.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ 5. ЛЮБАЯ МОДЕЛЬ КОНЕЧНА ═══ -->
+    <div class="s2-narrow s2-fade">
+      <h3 class="s2-final-h3">Любая модель конечна</h3>
+      <p class="s2-final-p">Любая бизнес-модель — это комбинация переменных: клиент, конкурент, технология, регулирование, экономический цикл. Ни одна из них не стоит на месте. Вопрос не в том, изменятся ли условия. Вопрос в том, когда.</p>
+      <p class="s2-final-p">Поэтому по нашей методологии линейное увеличение и поиск следующего витка модели идут <strong>параллельно</strong>. Одно не заменяет другое.</p>
+    </div>
+
+    <!-- ═══ КНОПКА ═══ -->
+    <div class="s2-narrow">
+      <div class="s2-btn-row">
+        <button class="s2-btn" onclick="mshScrollTo(3)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── Fade-in on scroll ── */
+function initFade() {
+  var els = document.querySelectorAll('#s2-root .s2-fade');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('s2-visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('s2-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(function(el){ obs.observe(el); });
+}
+
+/* ── Chart draw animation ── */
+function initChart() {
+  var scaleLine  = document.getElementById('s2-scale-line');
+  var linearLine = document.getElementById('s2-linear-line');
+  var chart      = document.getElementById('s2-chart');
+  if (!scaleLine || !chart) return;
+
+  // Pre-set
+  scaleLine.style.strokeDasharray  = '900';
+  scaleLine.style.strokeDashoffset = '900';
+  if (linearLine) {
+    linearLine.setAttribute('stroke-dasharray','8 4');
+    linearLine.style.strokeDashoffset = '500';
+  }
+
+  var obs = new IntersectionObserver(function(entries) {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    setTimeout(function() {
+      scaleLine.style.transition  = 'stroke-dashoffset 2s ease-out';
+      scaleLine.style.strokeDashoffset = '0';
+      if (linearLine) {
+        linearLine.style.transition = 'stroke-dashoffset 1.5s ease-out 0.1s';
+        linearLine.style.strokeDashoffset = '0';
+      }
+    }, 100);
+  }, { threshold: 0.3 });
+  obs.observe(chart);
+}
+
+function init() {
+  initFade();
+  initChart();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+})();
+</script>
+
+
+<!-- === 03-pochemu-seichas.html === -->
+<!-- BLOCK 03: Почему сейчас — pixel-perfect copy of vision-quest-revamp.lovable.app -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── REMOVE TILDA RECORD GAPS ── */
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
+
+/* ── NAMESPACE ── */
+#s3-root, #s3-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s3-root p,#s3-root h2,#s3-root h3,#s3-root span,
+#s3-root div,#s3-root button,#s3-root blockquote,#s3-root cite {
+  margin:0; padding:0;
+}
+
+/* ── FULL-WIDTH BLEED ── */
+#s3-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* ══════════════════════════════════════════
+   PART 1 — CINEMATIC QUOTE CARD (dark bg)
+   Matches Lovable: dark card, 2-col grid,
+   left=wave SVG, right=quote text
+══════════════════════════════════════════ */
+#s3-quote-wrap {
+  background: #08110E !important;
+  padding: 80px 48px 0 320px !important;
+}
+
+#s3-quote-card {
+  display: grid !important;
+  grid-template-columns: 1fr 2fr !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(35,47,43,0.6) !important;
+  background: linear-gradient(135deg, #070e0b 0%, #0e1b16 50%, #13201c 100%) !important;
+  overflow: hidden !important;
+  min-height: 460px !important;
+}
+
+/* Left: decorative wave panel */
+#s3-quote-left {
+  background: linear-gradient(160deg, #060d0a 0%, #0b1d14 100%) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-right: 1px solid rgba(35,47,43,0.3) !important;
+}
+.s3-wave-svg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.25 !important;
+}
+
+/* Right: quote text */
+#s3-quote-right {
+  padding: 72px 80px !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+.s3-cin-deco {
+  font-size: 96px !important;
+  font-weight: 900 !important;
+  color: rgba(66,189,138,0.3) !important;
+  line-height: 0.8 !important;
+  position: absolute !important;
+  right: 40px !important;
+  font-family: 'Inter', sans-serif !important;
+  user-select: none !important;
+  pointer-events: none !important;
+}
+.s3-cin-deco-top { top: 24px !important; }
+.s3-cin-deco-bot { bottom: 24px !important; }
+.s3-cin-text {
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  text-transform: none !important;
+}
+
+/* ══════════════════════════════════════════
+   PART 2 — MAIN SECTION (light bg)
+══════════════════════════════════════════ */
+/* Gradient bridge between dark quote and light section */
+.s3-transition-grad {
+  height: 160px !important;
+  background: linear-gradient(to bottom, #08110E 0%, #e8eeec 100%) !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+#s3-sec {
+  background: #e8eeec !important;
+  padding: 80px 64px 192px 320px !important;
+  position: relative !important;
+}
+
+/* ── FADE ANIMATION ── */
+@keyframes s3FadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s3-fade {
+  animation: s3FadeIn .7s ease-out both !important;
+  animation-play-state: paused !important;
+}
+.s3-fade.s3-vis { animation-play-state: running !important; }
+
+/* ── LAYOUT HELPERS ── */
+.s3-narrow { max-width: 720px !important; width: 100% !important; }
+.s3-wide   { max-width: 960px !important; width: 100% !important; }
+.s3-mt-48  { margin-top: 48px !important; }
+.s3-mt-64  { margin-top: 64px !important; }
+.s3-mt-80  { margin-top: 80px !important; }
+
+/* ── H2 ── */
+.s3-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #0d1c17 !important;
+  letter-spacing: -0.96px !important;
+  margin: 0 0 64px !important;
+  text-transform: none !important;
+}
+.s3-h2-green { color: #288a61 !important; }
+
+/* ── 2-COL GRID: gauge + text ── */
+.s3-two-col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 48px !important;
+  align-items: center !important;
+}
+
+/* ── DARK GAUGE CARD ── */
+.s3-gauge-card {
+  background: linear-gradient(135deg, #070e0b 0%, #0e1b16 50%, #13201c 100%) !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+  overflow: hidden !important;
+}
+.s3-gauge-svg {
+  width: 100% !important;
+  max-width: 216px !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+.s3-gauge-caption {
+  text-align: center !important;
+  margin-top: 20px !important;
+}
+.s3-gauge-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #f2f2f2 !important;
+  display: block !important;
+  margin: 0 0 4px !important;
+  text-transform: none !important;
+}
+.s3-gauge-sub {
+  font-size: 14px !important;
+  color: rgba(242,242,242,0.5) !important;
+  display: block !important;
+  line-height: 1.5 !important;
+  text-transform: none !important;
+}
+
+/* Needle animation */
+@keyframes s3NeedleSweep {
+  0%   { transform: rotate(-70deg); }
+  100% { transform: rotate(28deg); }
+}
+#s3-needle {
+  transform-origin: 150px 170px !important;
+  transform: rotate(-70deg) !important;
+}
+#s3-needle.s3-animated {
+  animation: s3NeedleSweep 2.5s cubic-bezier(0.25,0.46,0.45,0.94) forwards !important;
+}
+
+/* ── TEXT SIDE ── */
+.s3-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  line-height: 1.35 !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s3-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: #3d5c52 !important;
+  margin: 0 0 20px !important;
+  text-transform: none !important;
+}
+.s3-p:last-child { margin-bottom: 0 !important; }
+.s3-p strong { color: #0d1c17 !important; font-weight: 600 !important; }
+
+/* ── BLOCKQUOTE ── */
+.s3-blockquote {
+  margin: 64px 0 !important;
+  padding: 40px 56px !important;
+  border-left: 4px solid #42bd8a !important;
+  background: #f3f7f5 !important;
+  border-radius: 0 16px 16px 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.s3-blockquote::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -20px !important; right: -20px !important;
+  width: 140px !important; height: 140px !important;
+  background: rgba(66,189,138,0.05) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+}
+.s3-bq-text {
+  font-size: clamp(18px, 2vw, 24px) !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  line-height: 1.45 !important;
+  margin: 0 !important;
+  position: relative !important; z-index: 1 !important;
+  text-transform: none !important;
+}
+.s3-bq-cite {
+  display: block !important;
+  margin-top: 20px !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  color: #57756b !important;
+  position: relative !important; z-index: 1 !important;
+  font-weight: 400 !important;
+}
+
+/* ── STAT 20% ── */
+.s3-stat-wrap {
+  text-align: center !important;
+  padding: 112px 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.s3-stat-wrap::before {
+  content: '' !important;
+  position: absolute !important; inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(40,138,97,0.18) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+.s3-stat-wrap::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important; left: 50% !important;
+  transform: translate(-50%,-50%) !important;
+  width: 400px !important; height: 400px !important;
+  background: rgba(40,138,97,0.08) !important;
+  border-radius: 50% !important;
+  filter: blur(48px) !important;
+  pointer-events: none !important;
+}
+.s3-stat-num {
+  font-size: clamp(72px, 9vw, 128px) !important;
+  font-weight: 700 !important;
+  color: #288a61 !important;
+  line-height: 1 !important;
+  display: block !important;
+  margin: 0 0 16px !important;
+  position: relative !important; z-index: 1 !important;
+  letter-spacing: -0.02em !important;
+}
+.s3-stat-label {
+  font-size: clamp(18px, 2vw, 24px) !important;
+  font-weight: 700 !important;
+  color: #0d1c17 !important;
+  display: block !important;
+  margin: 0 0 12px !important;
+  position: relative !important; z-index: 1 !important;
+  text-transform: none !important;
+}
+.s3-stat-desc {
+  font-size: 16px !important;
+  color: #57756b !important;
+  max-width: 400px !important;
+  margin: 0 auto !important;
+  line-height: 1.6 !important;
+  position: relative !important; z-index: 1 !important;
+  text-transform: none !important;
+}
+
+/* ── GREEN CARD ── */
+.s3-green-card {
+  background: linear-gradient(135deg, #225946 0%, #35976e 50%, #3f8367 100%) !important;
+  border-radius: 16px !important;
+  padding: 48px !important;
+}
+.s3-gc-h3 {
+  font-size: clamp(22px, 2.5vw, 30px) !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 0 24px !important;
+  line-height: 1.25 !important;
+  text-transform: none !important;
+}
+.s3-gc-p {
+  font-size: 18px !important;
+  line-height: 1.556 !important;
+  color: rgba(255,255,255,0.9) !important;
+  margin: 0 0 16px !important;
+  text-transform: none !important;
+}
+.s3-gc-p:last-child { margin-bottom: 0 !important; }
+.s3-gc-p strong { color: #fff !important; font-weight: 700 !important; }
+
+/* ── CLOSING TEXT ── */
+.s3-closing {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #0d1c17 !important;
+  line-height: 1.85 !important;
+  text-align: center !important;
+  margin: 56px 0 0 !important;
+  text-transform: none !important;
+}
+.s3-closing-green { color: #288a61 !important; }
+
+/* ── CTA BUTTON ── */
+.s3-btn-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 64px 0 0 !important;
+}
+.s3-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: linear-gradient(135deg, #225946 0%, #35976e 50%, #3f8367 100%) !important;
+  color: #fff !important;
+  border: none !important; outline: none !important;
+  border-radius: 9999px !important;
+  padding: 16px 40px !important;
+  min-height: 56px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important; line-height: 1 !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s3-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(34,89,70,0.3) !important;
+}
+.s3-btn:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(34,89,70,0.5) !important;
+  animation: none !important; color: #fff !important;
+}
+@keyframes s3-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(34,89,70,0.3); }
+  50%      { box-shadow: 0 4px 40px rgba(34,89,70,0.5), 0 0 0 8px rgba(34,89,70,0.08); }
+}
+
+/* ════════════ RESPONSIVE ════════════ */
+@media (max-width: 1100px) {
+  #s3-quote-wrap { padding: 60px 48px 0 300px !important; }
+  #s3-sec { padding: 64px 48px 120px 300px !important; }
+  .s3-transition-grad { height: 120px !important; }
+}
+@media (max-width: 900px) {
+  #s3-quote-wrap { padding: 48px 32px 0 288px !important; }
+  #s3-sec { padding: 64px 32px 100px 288px !important; }
+  .s3-two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .s3-transition-grad { height: 100px !important; }
+}
+@media (max-width: 768px) {
+  #s3-quote-wrap { padding: 40px 24px 0 !important; }
+  .s3-transition-grad { height: 80px !important; }
+  #s3-quote-card { grid-template-columns: 1fr !important; min-height: auto !important; }
+  #s3-quote-left { display: none !important; }
+  #s3-quote-right { padding: 48px 32px !important; }
+  #s3-sec { padding: 48px 24px 80px !important; }
+  .s3-h2 { font-size: clamp(26px,7vw,40px) !important; margin-bottom: 40px !important; }
+  .s3-blockquote { padding: 32px 28px !important; }
+  .s3-bq-text { font-size: 20px !important; }
+  .s3-stat-wrap { padding: 80px 16px !important; }
+  .s3-green-card { padding: 32px !important; }
+  .s3-closing { font-size: 18px !important; margin-top: 40px !important; }
+  .s3-btn-row { padding: 48px 0 0 !important; }
+}
+@media (max-width: 520px) {
+  #s3-quote-right { padding: 32px 24px !important; }
+  .s3-cin-text { font-size: 20px !important; }
+  #s3-sec { padding: 40px 20px 60px !important; }
+  .s3-transition-grad { height: 60px !important; }
+  .s3-blockquote { padding: 24px 20px !important; }
+  .s3-bq-text { font-size: 17px !important; }
+  .s3-green-card { padding: 24px !important; }
+  .s3-gc-h3 { font-size: 20px !important; }
+  .s3-gc-p, .s3-p { font-size: 16px !important; }
+  .s3-btn { padding: 16px 28px !important; font-size: 16px !important; }
+}
+</style>
+
+<!-- ═══════════════════ HTML ═══════════════════ -->
+<div id="s3-root">
+
+  <!-- ═══ 1. CINEMATIC QUOTE CARD ═══ -->
+  <div id="s3-quote-wrap" data-msh-sec="3">
+    <div id="s3-quote-card" class="s3-fade">
+
+      <!-- Левая декоративная панель с волнами -->
+      <div id="s3-quote-left" aria-hidden="true">
+        <svg class="s3-wave-svg" viewBox="0 0 200 500" preserveAspectRatio="xMidYMid meet" fill="none">
+          <path d="M0,50 C50,-20 150,120 200,50" stroke="rgba(66,189,138,0.5)" stroke-width="1.2"/>
+          <path d="M0,90 C50,20 150,160 200,90" stroke="rgba(66,189,138,0.45)" stroke-width="1"/>
+          <path d="M0,130 C50,60 150,200 200,130" stroke="rgba(66,189,138,0.4)" stroke-width="1.2"/>
+          <path d="M0,170 C50,100 150,240 200,170" stroke="rgba(66,189,138,0.35)" stroke-width="1"/>
+          <path d="M0,210 C50,140 150,280 200,210" stroke="rgba(66,189,138,0.4)" stroke-width="1.2"/>
+          <path d="M0,250 C50,180 150,320 200,250" stroke="rgba(66,189,138,0.45)" stroke-width="1"/>
+          <path d="M0,290 C50,220 150,360 200,290" stroke="rgba(66,189,138,0.4)" stroke-width="1.2"/>
+          <path d="M0,330 C50,260 150,400 200,330" stroke="rgba(66,189,138,0.35)" stroke-width="1"/>
+          <path d="M0,370 C50,300 150,440 200,370" stroke="rgba(66,189,138,0.4)" stroke-width="1.2"/>
+          <path d="M0,410 C50,340 150,480 200,410" stroke="rgba(66,189,138,0.45)" stroke-width="1"/>
+          <path d="M0,450 C50,380 150,520 200,450" stroke="rgba(66,189,138,0.35)" stroke-width="1.2"/>
+        </svg>
+      </div>
+
+      <!-- Правая панель с цитатой -->
+      <div id="s3-quote-right">
+        <span class="s3-cin-deco s3-cin-deco-top" aria-hidden="true">«</span>
+        <p class="s3-cin-text">Масштабирование — это не «ещё горячее».<br>Это переход в другое агрегатное состояние.</p>
+        <span class="s3-cin-deco s3-cin-deco-bot" aria-hidden="true">»</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ GRADIENT BRIDGE: dark → light ═══ -->
+  <div class="s3-transition-grad"></div>
+
+  <!-- ═══ 2. MAIN SECTION (светлый фон) ═══ -->
+  <section id="s3-sec">
+
+    <!-- H2 -->
+    <div class="s3-narrow s3-fade">
+      <h2 class="s3-h2">Почему искать следующий виток<br>нужно <span class="s3-h2-green">уже сейчас</span></h2>
+    </div>
+
+    <!-- Gauge card + text (2 колонки) -->
+    <div class="s3-narrow s3-fade s3-mt-48">
+      <div class="s3-two-col">
+
+        <!-- Тёмная карточка: датчик топлива -->
+        <div class="s3-gauge-card">
+          <svg id="s3-gauge-svg" class="s3-gauge-svg" viewBox="0 0 300 200" fill="none">
+            <defs>
+              <linearGradient id="s3gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#c0392b"/>
+                <stop offset="50%"  stop-color="#d4a017"/>
+                <stop offset="100%" stop-color="#288a61"/>
+              </linearGradient>
+            </defs>
+            <path d="M40,170 A110,110 0 0,1 260,170" stroke="#1c2a38" stroke-width="18" fill="none" stroke-linecap="round"/>
+            <path d="M40,170 A110,110 0 0,1 260,170" stroke="url(#s3gaugeGrad)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.9"/>
+            <line x1="40"  y1="165" x2="53"  y2="152" stroke="#6a8080" stroke-width="2"/>
+            <line x1="70"  y1="100" x2="82"  y2="108" stroke="#6a8080" stroke-width="2"/>
+            <line x1="150" y1="62"  x2="150" y2="76"  stroke="#6a8080" stroke-width="2"/>
+            <line x1="230" y1="100" x2="218" y2="108" stroke="#6a8080" stroke-width="2"/>
+            <line x1="260" y1="165" x2="247" y2="152" stroke="#6a8080" stroke-width="2"/>
+            <text x="28"  y="162" fill="#c0392b" font-size="14" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">E</text>
+            <text x="272" y="162" fill="#288a61" font-size="14" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">F</text>
+            <line id="s3-needle" x1="150" y1="170" x2="150" y2="78" stroke="#e0e0e0" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="150" cy="170" r="9" fill="#1e2e28"/>
+            <circle cx="150" cy="170" r="4.5" fill="#d0d0d0"/>
+          </svg>
+          <div class="s3-gauge-caption">
+            <span class="s3-gauge-title">Бак не бесконечный</span>
+            <span class="s3-gauge-sub">Искать заправку нужно пока есть запас хода</span>
+          </div>
+        </div>
+
+        <!-- Текст -->
+        <div>
+          <h3 class="s3-h3">Бак не бесконечный</h3>
+          <p class="s3-p">Представьте: вы едете по трассе, бак полный. Но бак не бесконечный. Искать заправку нужно не когда загорелась лампочка, а пока есть запас хода.</p>
+          <p class="s3-p">С бизнес-моделью то же самое. Помните аналогию со школой? Некоторые родители уже в первом классе выбирают школу с прицелом на будущий ВУЗ.</p>
+          <p class="s3-p">Переход в другую систему требует подготовки — и чем раньше думаешь о следующем этапе, тем больше пространства для манёвра.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Цитата Романа Ершова -->
+    <div class="s3-narrow s3-fade s3-mt-64">
+      <blockquote class="s3-blockquote">
+        <p class="s3-bq-text">«Они с CEO уже сейчас тратят 20% времени на поиск того, что компания будет делать дальше. При этом текущий пятилетний стратцикл только начался. Зачем? Потому что они видят: потолок текущей модели приближается. И если не начать думать о следующей сейчас, когда есть ресурсы, потом будет поздно.»</p>
+        <cite class="s3-bq-cite">— Роман Ершов, президент «Асконы»</cite>
+      </blockquote>
+    </div>
+
+    <!-- Стат 20% -->
+    <div class="s3-wide s3-fade">
+      <div class="s3-stat-wrap">
+        <span class="s3-stat-num" id="s3-stat-num">0%</span>
+        <span class="s3-stat-label">времени на поиск следующего витка</span>
+        <p class="s3-stat-desc">тратит руководство «Асконы» уже сейчас, пока текущая модель ещё растёт</p>
+      </div>
+    </div>
+
+    <!-- Зелёная карточка -->
+    <div class="s3-narrow s3-fade">
+      <div class="s3-green-card">
+        <h3 class="s3-gc-h3">Падающий рынок ошибок не прощает</h3>
+        <p class="s3-gc-p">Это особенно актуально сегодня. Экономика в России находится в падающем цикле. На растущем рынке даже если вы допускаете ошибки, рынок их прощает — потому что растут все.</p>
+        <p class="s3-gc-p">На падающем рынке всё наоборот. Ошибки не прощаются. Те, кто рос за счёт инерции, начинают буксовать и не понимают почему. Ведь «ничего не изменили». Верно. Не изменили.</p>
+        <p class="s3-gc-p"><strong>В этом и проблема.</strong></p>
+      </div>
+    </div>
+
+    <!-- Закрывающий текст + кнопка -->
+    <div class="s3-narrow s3-fade">
+      <p class="s3-closing">На каком бы этапе вы сейчас ни находились, вам нужно понимать, какой будет следующий виток вашей бизнес-модели. <span class="s3-closing-green">Не через пять лет, а сейчас.</span></p>
+      <div class="s3-btn-row">
+        <button class="s3-btn" onclick="mshScrollTo(4)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </section>
+  <!-- ═══ GRADIENT BRIDGE: light → dark (connects to block 04) ═══ -->
+  <div style="height:80px;background:linear-gradient(to bottom,#e8eeec,#08110E);margin:0;padding:0;display:block;"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+function initFade(){
+  var els = document.querySelectorAll('#s3-root .s3-fade');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('s3-vis'); }); return; }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('s3-vis'); obs.unobserve(e.target); } });
+  },{threshold:0.08});
+  els.forEach(function(el){ obs.observe(el); });
+}
+
+function initGauge(){
+  var needle = document.getElementById('s3-needle');
+  var svg    = document.getElementById('s3-gauge-svg');
+  if(!needle || !svg) return;
+  if(!('IntersectionObserver' in window)){ needle.classList.add('s3-animated'); return; }
+  var obs = new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    obs.disconnect();
+    setTimeout(function(){ needle.classList.add('s3-animated'); }, 400);
+  },{threshold:0.35});
+  obs.observe(svg);
+}
+
+function initStat(){
+  var el = document.getElementById('s3-stat-num');
+  if(!el) return;
+  if(!('IntersectionObserver' in window)){ el.textContent='20%'; return; }
+  var obs = new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    obs.disconnect();
+    var t0=Date.now(), dur=1600;
+    var id=setInterval(function(){
+      var p=Math.min((Date.now()-t0)/dur,1);
+      var e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(e*20)+'%';
+      if(p>=1) clearInterval(id);
+    },16);
+  },{threshold:0.3});
+  obs.observe(el);
+}
+
+function init(){ initFade(); initGauge(); initStat(); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
+})();
+</script>
+
+
+<!-- === 04-oshibki.html === -->
+<!-- BLOCK 04: Ошибки масштабирования — pixel-perfect copy of vision-quest-revamp.lovable.app -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── REMOVE TILDA RECORD GAPS ── */
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
+
+/* ── NAMESPACE ── */
+#s4-root, #s4-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s4-root p,#s4-root h2,#s4-root h3,#s4-root h4,
+#s4-root span,#s4-root div,#s4-root button {
+  margin:0; padding:0;
+}
+
+/* ── FULL-WIDTH BLEED ── */
+#s4-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #08110E !important;
+  overflow-x: hidden !important;
+}
+
+/* ── SECTION ── */
+#s4-sec {
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+}
+
+/* ── FADE ANIMATION ── */
+@keyframes s4FadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s4-fade { animation: s4FadeIn .7s ease-out both !important; animation-play-state: paused !important; }
+.s4-fade.s4-vis { animation-play-state: running !important; }
+
+/* ── LAYOUT ── */
+.s4-narrow { max-width: 720px !important; width: 100% !important; }
+.s4-mt-16  { margin-top: 16px !important; }
+.s4-mt-48  { margin-top: 48px !important; }
+
+/* ── H2 ── */
+.s4-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #EDEDED !important;
+  letter-spacing: -0.96px !important;
+  margin: 0 0 48px !important;
+  text-transform: none !important;
+}
+.s4-h2-green { color: #42BD8A !important; }
+
+/* ── INTRO PARAGRAPHS ── */
+.s4-intro {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 0 16px !important;
+  text-transform: none !important;
+}
+.s4-intro:last-of-type { margin-bottom: 0 !important; }
+
+/* ── SECTION MICRO-LABEL ── */
+.s4-section-label {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.8px !important;
+  color: rgba(129,152,144,0.5) !important;
+  margin: 0 0 24px !important;
+  display: block !important;
+}
+
+/* ── ERROR CARDS ── */
+.s4-cards-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.s4-card {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 32px !important;
+  display: flex !important;
+  gap: 24px !important;
+  align-items: flex-start !important;
+  transition: border-color .25s ease, box-shadow .25s ease !important;
+}
+.s4-card:hover {
+  border-color: rgba(192,57,43,0.25) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35) !important;
+}
+
+.s4-card-num {
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  color: rgba(239,67,67,0.3) !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+  min-width: 44px !important;
+  display: block !important;
+  padding-top: 2px !important;
+}
+.s4-card-body { flex: 1 !important; min-width: 0 !important; }
+.s4-card-h4 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 12px !important;
+  line-height: 1.33 !important;
+  text-transform: none !important;
+}
+.s4-card-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 !important;
+  text-transform: none !important;
+}
+
+/* ── SUMMARY CARD ── */
+.s4-summary-card {
+  background: #111D19 !important;
+  border: 1px solid #232F2B !important;
+  border-radius: 16px !important;
+  padding: 32px !important;
+}
+.s4-summary-h3 {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  margin: 0 0 16px !important;
+  line-height: 1.33 !important;
+  text-transform: none !important;
+}
+.s4-summary-p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 !important;
+  text-transform: none !important;
+}
+.s4-summary-p strong { color: #EDEDED !important; font-weight: 600 !important; }
+
+/* ── CLOSING PARAGRAPH ── */
+.s4-closing {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  margin: 0 !important;
+  text-transform: none !important;
+}
+.s4-closing strong { color: #EDEDED !important; font-weight: 600 !important; }
+
+/* ── CTA BUTTON ── */
+.s4-btn-row { display: flex !important; justify-content: center !important; padding: 64px 0 0 !important; }
+.s4-btn {
+  display: inline-flex !important; align-items: center !important; gap: 10px !important;
+  background: linear-gradient(135deg, #225946 0%, #35976E 50%, #3F8367 100%) !important;
+  color: #fff !important; border: none !important; outline: none !important;
+  border-radius: 9999px !important; padding: 16px 40px !important; min-height: 56px !important;
+  font-size: 18px !important; font-weight: 600 !important; cursor: pointer !important;
+  letter-spacing: .01em !important; text-transform: none !important; line-height: 1 !important;
+  transition: transform .3s, box-shadow .3s !important;
+  animation: s4-pulse 2.5s ease-in-out infinite !important;
+  box-shadow: 0 4px 24px rgba(66,189,138,0.25) !important;
+}
+.s4-btn:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 40px rgba(66,189,138,0.4) !important;
+  animation: none !important; color: #fff !important;
+}
+@keyframes s4-pulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(66,189,138,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(66,189,138,0.45), 0 0 0 8px rgba(66,189,138,0.07); }
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width: 1100px) { #s4-sec { padding: 120px 48px 120px 300px !important; } }
+@media (max-width: 900px)  { #s4-sec { padding: 100px 32px 100px 288px !important; } }
+@media (max-width: 768px) {
+  #s4-sec { padding: 80px 24px !important; }
+  .s4-h2  { font-size: clamp(26px,7vw,40px) !important; }
+  .s4-card { flex-direction: column !important; gap: 12px !important; }
+  .s4-card-num { font-size: 28px !important; }
+  .s4-card-h4 { font-size: 18px !important; }
+  .s4-card-p,.s4-intro,.s4-closing,.s4-summary-p { font-size: 16px !important; }
+  .s4-btn-row { padding: 48px 0 0 !important; }
+}
+@media (max-width: 520px) {
+  #s4-sec { padding: 60px 20px !important; }
+  .s4-card,.s4-summary-card { padding: 24px !important; }
+  .s4-btn { padding: 16px 28px !important; font-size: 16px !important; }
+}
+</style>
+
+<!-- ═══════════════════ HTML ═══════════════════ -->
+<div id="s4-root">
+  <section id="s4-sec" data-msh-sec="4">
+
+    <div class="s4-narrow s4-fade">
+      <h2 class="s4-h2">Как найти правильный виток?</h2>
+      <p class="s4-intro">Хорошо, допустим, вы согласны: искать следующий виток нужно уже сейчас. Но как?</p>
+      <p class="s4-intro">Как обычно ищут следующий виток?</p>
+    </div>
+
+    <!-- Карточки с ошибками -->
+    <div class="s4-narrow s4-fade s4-mt-48">
+      <span class="s4-section-label">Распространённые подходы</span>
+
+      <div class="s4-cards-stack">
+        <div class="s4-card">
+          <span class="s4-card-num">01</span>
+          <div class="s4-card-body">
+            <h4 class="s4-card-h4">Копирование чужой модели</h4>
+            <p class="s4-card-p">«У конкурента получилось, значит и у меня получится.» Проблема в том, что чужая модель выросла из чужих сильных сторон, чужой команды и чужого контекста. Скопировать модель можно. Скопировать причины, по которым она работает, — нельзя.</p>
+          </div>
+        </div>
+
+        <div class="s4-card">
+          <span class="s4-card-num">02</span>
+          <div class="s4-card-body">
+            <h4 class="s4-card-h4">Бегство в модную нишу</h4>
+            <p class="s4-card-p">«Все говорят про ИИ, значит надо делать что-то с ИИ.» Предприниматель берёт тренд и пытается построить на нём следующий виток. Без связи с тем, что у него уже есть. Это не эволюция модели.</p>
+          </div>
+        </div>
+
+        <div class="s4-card">
+          <span class="s4-card-num">03</span>
+          <div class="s4-card-body">
+            <h4 class="s4-card-h4">Панический разворот</h4>
+            <p class="s4-card-p">Модель начала буксовать. Собственник в стрессе принимает решение «всё менять». Обнуляется. Теряет то, что работало, и начинает с нуля на пустом месте.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Вывод -->
+    <div class="s4-narrow s4-fade s4-mt-48">
+      <div class="s4-summary-card">
+        <h3 class="s4-summary-h3">Что объединяет все три подхода?</h3>
+        <p class="s4-summary-p">Все три подхода встречаются постоянно. И редко приводят к результату. Во всех трёх случаях решение принимается <strong>без методологии</strong> выбора бизнес-модели и её эволюции.</p>
+      </div>
+    </div>
+
+    <!-- Закрывающий абзац -->
+    <div class="s4-narrow s4-fade s4-mt-48">
+      <p class="s4-closing">Чтобы найти следующий виток, нужно учесть три вещи: <strong>кто вы</strong> как предприниматель, <strong>как устроена ваша текущая бизнес-модель</strong> и <strong>что происходит на рынке</strong>. На пересечении этих трёх элементов и находится следующий виток. В школе «Горки» эта точка пересечения называется <strong>«Точка максимального потенциала»</strong>.</p>
+    </div>
+
+    <div class="s4-narrow">
+      <div class="s4-btn-row">
+        <button class="s4-btn" onclick="mshScrollTo(5)">
+          Читать дальше
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function(){
+'use strict';
+function initFade(){
+  var els = document.querySelectorAll('#s4-root .s4-fade');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('s4-vis'); }); return; }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('s4-vis'); obs.unobserve(e.target); } });
+  },{threshold:0.08});
+  els.forEach(function(el){ obs.observe(el); });
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initFade);
+else initFade();
+})();
+</script>
+
+
+<!-- === 05-tochka-potentsiala.html === -->
+<!-- BLOCK 05: Точка максимального потенциала — pixel-perfect copy of vision-quest-revamp.lovable.app -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── REMOVE TILDA RECORD GAPS ── */
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #070E0B !important; }
+
+/* ── NAMESPACE ── */
+#s5-root, #s5-root * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+#s5-root p, #s5-root h2, #s5-root h3, #s5-root h4,
+#s5-root span, #s5-root div, #s5-root button {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── FULL-WIDTH BLEED ── */
+#s5-root {
+  position: relative !important;
+  left: calc(50% - 50vw) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: #070E0B !important;
+  overflow-x: hidden !important;
+}
+
+/* ── SECTION ── */
+#s5-sec {
+  padding: 192px 64px 192px 320px !important;
+  position: relative !important;
+  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  overflow: hidden !important;
+}
+
+/* ── DOT GRID BACKGROUND ── */
+#s5-dot-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(66,189,138,0.12) 1.5px, rgba(0,0,0,0) 1.5px) !important;
+  background-size: 28px 28px !important;
+  opacity: 0.2 !important;
+  pointer-events: none !important;
+}
+
+/* ── FADE ANIMATION ── */
+.s5-fade {
+  opacity: 0 !important;
+  transform: translateY(28px) !important;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out !important;
+}
+.s5-fade.s5-vis {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ── HEADER BLOCK ── */
+#s5-header {
+  max-width: 720px !important;
+  margin: 0 auto 0 auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+  text-align: center !important;
+}
+
+/* ── H2 ── */
+#s5-h2 {
+  font-size: clamp(32px, 3.5vw, 48px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #EDEDED !important;
+  letter-spacing: -0.96px !important;
+  margin: 0 0 20px !important;
+  text-align: center !important;
+}
+
+/* ── SUBTITLE ── */
+#s5-subtitle {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  color: rgba(237,237,237,0.6) !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+
+/* ── VENN DIAGRAM OUTER WRAP ── */
+#s5-venn-wrap {
+  max-width: 800px !important;
+  margin: 48px auto !important;
+  padding: 64px 48px !important;
+  background: linear-gradient(135deg, #070E0B 0%, #0E1B16 50%, #13201C 100%) !important;
+  border-radius: 24px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 10 !important;
+}
+
+#s5-venn-dot-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: radial-gradient(circle, rgba(66,189,138,0.12) 1.5px, rgba(0,0,0,0) 1.5px) !important;
+  background-size: 28px 28px !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+
+#s5-venn-glow-1 {
+  position: absolute !important;
+  top: 25% !important;
+  left: 25% !important;
+  width: 256px !important;
+  height: 256px !important;
+  border-radius: 50% !important;
+  background: rgba(66,189,138,0.1) !important;
+  filter: blur(100px) !important;
+  pointer-events: none !important;
+}
+
+#s5-venn-glow-2 {
+  position: absolute !important;
+  bottom: 25% !important;
+  right: 25% !important;
+  width: 192px !important;
+  height: 192px !important;
+  border-radius: 50% !important;
+  background: rgba(51,102,204,0.1) !important;
+  filter: blur(80px) !important;
+  pointer-events: none !important;
+}
+
+/* ── VENN INNER (max-width limiter) ── */
+#s5-venn-inner {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 0 auto !important;
+}
+
+/* Aspect-square achieved via padding-bottom */
+#s5-venn-aspect {
+  position: relative !important;
+  width: 100% !important;
+  padding-bottom: 100% !important;
+}
+
+/* The three Venn circles */
+.s5-circle {
+  position: absolute !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  transition: border-color 0.35s ease !important;
+  /* width & height set by padding-bottom trick: width=55%, height=auto via aspect */
+  width: 55% !important;
+  padding-bottom: 55% !important;
+  height: 0 !important;
+}
+.s5-circle-top {
+  top: 5% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  border: 2px solid rgba(57,172,172,0.4) !important;
+}
+.s5-circle-bl {
+  bottom: 8% !important;
+  left: 8% !important;
+  border: 2px solid rgba(61,143,116,0.4) !important;
+}
+.s5-circle-br {
+  bottom: 8% !important;
+  right: 8% !important;
+  border: 2px solid rgba(51,102,204,0.4) !important;
+}
+#s5-venn-inner:hover .s5-circle-top { border-color: rgba(57,172,172,0.8) !important; }
+#s5-venn-inner:hover .s5-circle-bl  { border-color: rgba(61,143,116,0.8) !important; }
+#s5-venn-inner:hover .s5-circle-br  { border-color: rgba(51,102,204,0.8) !important; }
+
+/* Center pulsing dot */
+#s5-center-wrap {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+#s5-center-dot {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgb(71,209,209), rgb(52,121,98)) !important;
+  animation: s5PulseGreen 2s ease-in-out infinite !important;
+}
+@keyframes s5PulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66,189,138,0.4); }
+  50%       { box-shadow: 0 0 0 12px rgba(66,189,138,0); }
+}
+
+/* Venn labels — positioned relative to #s5-venn-inner */
+.s5-venn-label {
+  position: absolute !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  text-align: center !important;
+}
+#s5-label-top {
+  top: -6% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  white-space: nowrap !important;
+}
+#s5-label-bl {
+  bottom: -8% !important;
+  left: 4% !important;
+  white-space: nowrap !important;
+}
+#s5-label-br {
+  bottom: -8% !important;
+  right: 4% !important;
+  white-space: nowrap !important;
+}
+#s5-label-center {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.s5-lbl-kontekst {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(102,204,204) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-lichnost {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(66,189,138) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-delo {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: rgb(112,148,219) !important;
+  line-height: 1.2 !important;
+}
+.s5-lbl-tochka {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  line-height: 1.35 !important;
+  display: block !important;
+}
+
+/* ── CARDS SECTION ── */
+#s5-cards-wrap {
+  max-width: 1000px !important;
+  margin: 48px auto 0 !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+#s5-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 32px !important;
+}
+.s5-card {
+  text-align: center !important;
+  padding: 40px !important;
+  border-radius: 16px !important;
+  background: rgb(18,22,43) !important;
+  border: 1px solid rgb(36,41,66) !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease !important;
+}
+.s5-card:hover {
+  border-color: rgba(66,189,138,0.4) !important;
+  box-shadow: 0 0 30px rgba(66,189,138,0.07) !important;
+  transform: translateY(-4px) !important;
+}
+.s5-card-icon {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, rgb(34,89,70) 0%, rgb(53,151,110) 50%, rgb(63,131,103) 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 20px !important;
+}
+.s5-card-icon svg {
+  width: 24px !important;
+  height: 24px !important;
+  stroke: #fff !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+.s5-card-h4 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #EDEDED !important;
+  line-height: 1.3 !important;
+  margin-bottom: 12px !important;
+}
+.s5-card-p {
+  font-size: 14px !important;
+  line-height: 1.43 !important;
+  color: rgba(237,237,237,0.6) !important;
+}
+
+/* ── CTA BUTTON ── */
+#s5-cta-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  padding-top: 64px !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+#s5-cta-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px 40px !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(135deg, rgb(34,89,70) 0%, rgb(53,151,110) 50%, rgb(63,131,103) 100%) !important;
+  color: #fff !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 24px rgba(53,151,110,0.25) !important;
+  transition: box-shadow 0.3s ease, transform 0.2s ease, opacity 0.2s ease !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+}
+#s5-cta-btn:hover {
+  box-shadow: 0 8px 40px rgba(53,151,110,0.45) !important;
+  transform: translateY(-2px) !important;
+}
+#s5-cta-btn:active {
+  transform: translateY(0) !important;
+  opacity: 0.85 !important;
+}
+#s5-cta-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: #fff !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease !important;
+}
+#s5-cta-btn:hover svg {
+  transform: translateX(4px) !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  #s5-sec { padding: 120px 48px 120px 300px !important; }
+}
+@media (max-width: 900px) {
+  #s5-sec { padding: 100px 32px 100px 288px !important; }
+  #s5-cards-grid { gap: 20px !important; }
+  .s5-card { padding: 32px 24px !important; }
+}
+@media (max-width: 768px) {
+  #s5-sec { padding: 80px 24px !important; }
+  #s5-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+  }
+  #s5-venn-wrap { padding: 48px 24px !important; max-width: 100% !important; }
+  #s5-venn-inner { max-width: 340px !important; }
+  #s5-header { max-width: 100% !important; }
+}
+@media (max-width: 520px) {
+  #s5-sec { padding: 60px 20px !important; }
+  #s5-h2 { font-size: clamp(26px, 7vw, 36px) !important; letter-spacing: -0.5px !important; }
+  #s5-subtitle { font-size: 15px !important; }
+  #s5-venn-inner { max-width: 270px !important; }
+  #s5-center-dot { width: 56px !important; height: 56px !important; }
+  .s5-lbl-kontekst, .s5-lbl-lichnost, .s5-lbl-delo { font-size: 14px !important; }
+  #s5-cta-btn { font-size: 16px !important; padding: 14px 28px !important; }
+}
+</style>
+
+<div id="s5-root">
+  <section id="s5-sec" data-msh-sec="5">
+
+    <!-- Background dot grid -->
+    <div id="s5-dot-grid"></div>
+
+    <!-- ── HEADER ── -->
+    <div id="s5-header" class="s5-fade">
+      <h2 id="s5-h2">Точка максимального <span style="color:#42BD8A">потенциала</span></h2>
+      <p id="s5-subtitle">Метод состоит из трёх элементов: Контекст, Дело и Личность. Рамка прошла проверку на десятках компаний с оборотами от сотен миллионов до десятков миллиардов.</p>
+    </div>
+
+    <!-- ── VENN DIAGRAM ── -->
+    <div id="s5-venn-wrap" class="s5-fade">
+      <div id="s5-venn-dot-grid"></div>
+      <div id="s5-venn-glow-1"></div>
+      <div id="s5-venn-glow-2"></div>
+
+      <div id="s5-venn-inner">
+
+        <!-- Aspect-square area for the circles -->
+        <div id="s5-venn-aspect">
+          <!-- Circle: Контекст (top) -->
+          <div class="s5-circle s5-circle-top"></div>
+          <!-- Circle: Личность (bottom-left) -->
+          <div class="s5-circle s5-circle-bl"></div>
+          <!-- Circle: Дело (bottom-right) -->
+          <div class="s5-circle s5-circle-br"></div>
+          <!-- Center pulsing dot -->
+          <div id="s5-center-wrap">
+            <div id="s5-center-dot"></div>
+          </div>
+        </div>
+
+        <!-- Labels overlaid on venn-inner -->
+        <div class="s5-venn-label" id="s5-label-top">
+          <span class="s5-lbl-kontekst">Контекст</span>
+        </div>
+        <div class="s5-venn-label" id="s5-label-bl">
+          <span class="s5-lbl-lichnost">Личность</span>
+        </div>
+        <div class="s5-venn-label" id="s5-label-br">
+          <span class="s5-lbl-delo">Дело</span>
+        </div>
+        <div id="s5-label-center">
+          <span class="s5-lbl-tochka">Точка<br>потенциала</span>
+        </div>
+
+      </div><!-- /venn-inner -->
+    </div><!-- /venn-wrap -->
+
+    <!-- ── CARDS ── -->
+    <div id="s5-cards-wrap" class="s5-fade">
+      <div id="s5-cards-grid">
+
+        <!-- Контекст -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+              <path d="M2 12h20"></path>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Контекст</div>
+          <p class="s5-card-p">В каком мире вы строите стратегию. Что происходит вокруг и какие возможности это создаёт.</p>
+        </div>
+
+        <!-- Личность -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Личность</div>
+          <p class="s5-card-p">Кто вы и зачем вам этот бизнес. В чём ваша суперсила и как она становится ядром компании.</p>
+        </div>
+
+        <!-- Дело -->
+        <div class="s5-card">
+          <div class="s5-card-icon">
+            <svg viewBox="0 0 24 24">
+              <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+              <path d="M9 22v-4h6v4"></path>
+              <path d="M8 6h.01"></path><path d="M16 6h.01"></path>
+              <path d="M12 6h.01"></path><path d="M12 10h.01"></path>
+              <path d="M12 14h.01"></path><path d="M16 10h.01"></path>
+              <path d="M16 14h.01"></path><path d="M8 10h.01"></path>
+              <path d="M8 14h.01"></path>
+            </svg>
+          </div>
+          <div class="s5-card-h4">Дело</div>
+          <p class="s5-card-p">Как устроена ваша модель, где её потолок и каким должен быть следующий виток.</p>
+        </div>
+
+      </div><!-- /cards-grid -->
+    </div><!-- /cards-wrap -->
+
+    <!-- ── CTA ── -->
+    <div id="s5-cta-wrap" class="s5-fade">
+      <button id="s5-cta-btn" onclick="if(typeof mshScrollTo==='function'){mshScrollTo(6);}">
+        Читать дальше
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+
+  </section>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── IntersectionObserver fade-in ──
+  var fades = document.querySelectorAll('.s5-fade');
+  if (!fades.length) return;
+
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('s5-vis');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  fades.forEach(function(el, i) {
+    // stagger each fade element
+    el.style.setProperty('transition-delay', (i * 0.13) + 's', 'important');
+    io.observe(el);
+  });
+
+  // ── Venn diagram center glow on hover ──
+  var vennInner = document.getElementById('s5-venn-inner');
+  var centerDot = document.getElementById('s5-center-dot');
+  if (vennInner && centerDot) {
+    vennInner.addEventListener('mouseenter', function() {
+      centerDot.style.setProperty('box-shadow', '0 0 28px 6px rgba(66,189,138,0.55)', 'important');
+    });
+    vennInner.addEventListener('mouseleave', function() {
+      centerDot.style.removeProperty('box-shadow');
+    });
+  }
+})();
+</script>
+
+
+<!-- === 06-kontekst.html === -->
+<!-- BLOCK 06: Контекст (DARK) -->
+<style>
+#msh-s6{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#0a1a11;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s6 *{box-sizing:border-box}
+#msh-s6 .msh-sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2.5px;color:#3ecf6e;
+  text-transform:uppercase;margin-bottom:12px;display:block;
+}
+#msh-s6 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#fff;margin-bottom:14px;
+}
+#msh-s6 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#fff;
+}
+#msh-s6 p{
+  font-size:16px;line-height:1.8;color:rgba(255,255,255,.72);
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s6 .msh-ac{color:#3ecf6e}
+.msh-stat-highlight-dark{
+  display:flex;align-items:baseline;gap:16px;margin:28px 0 16px;
+  padding:24px 28px;background:rgba(62,207,110,.06);border-radius:12px;
+  border-left:4px solid #3ecf6e;max-width:640px;
+}
+.msh-stat-big-dark{
+  font-size:clamp(48px,7vw,72px);font-weight:800;color:#3ecf6e;line-height:1;
+  flex-shrink:0;
+}
+.msh-stat-desc-dark{font-size:15px;line-height:1.6;color:rgba(255,255,255,.7);max-width:400px}
+#msh-s6 .msh-pq{
+  border-left:3px solid #3ecf6e;padding:16px 22px;margin:24px 0;
+  font-size:16px;font-style:italic;background:rgba(62,207,110,.06);
+  border-radius:0 8px 8px 0;max-width:720px;color:rgba(255,255,255,.9);line-height:1.6;
+}
+.msh-levels-list{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:20px 0}
+.msh-level-item{
+  display:flex;align-items:flex-start;gap:16px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(62,207,110,.15);
+  border-radius:10px;padding:18px 20px;
+}
+.msh-level-num{
+  font-size:12px;font-weight:800;color:#3ecf6e;
+  background:rgba(62,207,110,.12);border-radius:6px;
+  padding:4px 8px;flex-shrink:0;line-height:1.4;
+}
+.msh-level-icon{font-size:22px;flex-shrink:0;line-height:1.3}
+.msh-level-content{}
+.msh-level-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+.msh-level-desc{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6}
+#msh-s6 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s6 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+@media(max-width:900px){
+  #msh-s6{padding:52px 20px 40px 68px}
+  .msh-stat-highlight-dark{flex-direction:column;gap:8px}
+}
+</style>
+
+<div id="msh-s6" data-msh-sec="6">
+  <span class="msh-sec-label">Элемент 1</span>
+  <h2><span class="msh-ac">Контекст:</span> в каком мире вы строите стратегию</h2>
+
+  <p>Большинство стратегий строятся внутри отрасли — «что происходит на нашем рынке». Но контекст шире. Отрасль — это только нижний уровень. Выше неё стоит страна. Выше страны — мировые циклы. И понять, куда двигаться, невозможно, не видя всей картины.</p>
+
+  <div class="msh-stat-highlight-dark">
+    <span class="msh-stat-big-dark">70%</span>
+    <span class="msh-stat-desc-dark">начального успеха компании — это удача, по признанию Владимира Горжичука, бывшего гендиректора «Магнита»</span>
+  </div>
+
+  <div class="msh-pq">«70% нашего начального успеха — это удача: мы попали в правильный контекст в 1998 году, когда импортные товары выросли в цене и открылось окно для отечественного ритейла. Оставшиеся 30% — это то, как мы этой удачей распорядились.»</div>
+
+  <h3>Три уровня <span class="msh-ac">контекста</span></h3>
+
+  <div class="msh-levels-list">
+    <div class="msh-level-item">
+      <span class="msh-level-num">1</span>
+      <span class="msh-level-icon">🌍</span>
+      <div class="msh-level-content">
+        <div class="msh-level-title">Мир</div>
+        <div class="msh-level-desc">Циклы Кондратьева, геополитические сдвиги, научно-технологический прогресс. Длинные волны, которые определяют, какие индустрии будут расти следующие 20 лет.</div>
+      </div>
+    </div>
+    <div class="msh-level-item">
+      <span class="msh-level-num">2</span>
+      <span class="msh-level-icon">🇷🇺</span>
+      <div class="msh-level-content">
+        <div class="msh-level-title">Страна</div>
+        <div class="msh-level-desc">Национальные проекты, государственная стратегия, демографические тренды, доступность капитала. Куда идут государственные деньги — туда идёт рост.</div>
+      </div>
+    </div>
+    <div class="msh-level-item">
+      <span class="msh-level-num">3</span>
+      <span class="msh-level-icon">🏭</span>
+      <div class="msh-level-content">
+        <div class="msh-level-title">Отрасль</div>
+        <div class="msh-level-desc">Конкуренты, инновации, регулирование, консолидация рынка. То, что предприниматели обычно видят хорошо — но без верхних уровней интерпретируют неправильно.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Причинно-следственная связь всегда идёт сверху вниз: мировые сдвиги → страновые изменения → отраслевые последствия. Предприниматель видит следствие в своей нише, но не видит причину, которая зародилась уровнем выше. Именно поэтому стратегии, построенные только на анализе конкурентов, так часто дают сбой.</p>
+
+  <button class="msh-btn" onclick="mshUnlock(6)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s6');
+    if(!el) return;
+    var u = getU();
+    if(u < 6){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>
+
+
+<!-- === 07-lichnost.html === -->
+<!-- BLOCK 07: Личность (LIGHT) -->
+<style>
+#msh-s7{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#e8f5ee;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s7 *{box-sizing:border-box}
+#msh-s7 .msh-sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2.5px;color:#1a8c45;
+  text-transform:uppercase;margin-bottom:12px;display:block;
+}
+#msh-s7 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#1a2e22;margin-bottom:14px;
+}
+#msh-s7 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#1a2e22;
+}
+#msh-s7 p{
+  font-size:16px;line-height:1.8;color:#2d4a35;
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s7 .msh-ac{color:#1a8c45}
+.msh-question-block{
+  font-size:clamp(20px,2.5vw,26px);font-weight:700;color:#1a2e22;
+  margin:20px 0;padding-left:16px;border-left:3px solid #1a8c45;
+}
+.msh-2x2-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  max-width:520px;margin:20px 0;
+}
+.msh-2x2-item{
+  background:#fff;border:1px solid rgba(26,140,69,.2);border-radius:10px;
+  padding:16px 18px;display:flex;align-items:flex-start;gap:10px;
+}
+.msh-2x2-emoji{font-size:20px;flex-shrink:0;line-height:1.3}
+.msh-2x2-text{font-size:14px;color:#2d4a35;line-height:1.5;font-weight:500}
+/* supersila cards */
+.msh-super-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:720px;margin:20px 0;
+}
+.msh-super-card{
+  background:#fff;border:1px solid rgba(26,140,69,.2);border-radius:12px;
+  padding:20px;position:relative;
+}
+.msh-super-card.msh-super-win{
+  border-color:#1a8c45;background:rgba(26,140,69,.05);
+}
+.msh-super-badge{
+  font-size:13px;font-weight:700;margin-bottom:8px;display:block;
+}
+.msh-super-badge.msh-cross{color:#c0392b}
+.msh-super-badge.msh-check{color:#1a8c45}
+.msh-super-title{font-size:15px;font-weight:700;color:#1a2e22;margin-bottom:6px}
+.msh-super-desc{font-size:14px;color:#3d5a47;line-height:1.6}
+#msh-s7 .msh-pq{
+  border-left:3px solid #1a8c45;padding:16px 22px;margin:24px 0;
+  font-size:16px;font-style:italic;background:rgba(26,140,69,.07);
+  border-radius:0 8px 8px 0;max-width:720px;color:#1a2e22;line-height:1.6;
+}
+#msh-s7 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#1a8c45;
+  color:#fff;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s7 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,140,69,.3)}
+@media(max-width:900px){
+  #msh-s7{padding:52px 20px 40px 68px}
+  .msh-2x2-grid{grid-template-columns:1fr}
+  .msh-super-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div id="msh-s7" data-msh-sec="7">
+  <span class="msh-sec-label">Элемент 2</span>
+  <h2><span class="msh-ac">Личность,</span> или почему стратегия начинается с вас</h2>
+
+  <h3>Бизнес служит жизни, а не жизнь бизнесу</h3>
+
+  <p>Прежде чем строить стратегию масштабирования, нужно ответить на один вопрос, который большинство предпринимателей никогда не формулировали явно.</p>
+
+  <div class="msh-question-block">Я делаю бизнес, чтобы что?</div>
+
+  <div class="msh-2x2-grid">
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">💰</span>
+      <span class="msh-2x2-text">Продать бизнес и получить капитал</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">❤️</span>
+      <span class="msh-2x2-text">Кайфовать от продукта каждый день</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">👨‍👩‍👧</span>
+      <span class="msh-2x2-text">Передать детям и создать фамильное дело</span>
+    </div>
+    <div class="msh-2x2-item">
+      <span class="msh-2x2-emoji">🏛️</span>
+      <span class="msh-2x2-text">Построить наследие и изменить отрасль</span>
+    </div>
+  </div>
+
+  <p>Каждый из этих ответов ведёт к принципиально разной стратегии. Тот, кто хочет продать, должен строить на масштаб и понятность для покупателя. Тот, кто хочет кайфовать от продукта — строит иначе. Смешивать эти цели — значит двигаться в разных направлениях одновременно.</p>
+
+  <h3>У каждого основателя есть <span class="msh-ac">суперсила</span></h3>
+
+  <p>Школа «Горки» выделяет три уровня того, что предприниматели называют «своим преимуществом». Только третий уровень работает как стратегическая основа.</p>
+
+  <div class="msh-super-grid">
+    <div class="msh-super-card">
+      <span class="msh-super-badge msh-cross">❌ Навык</span>
+      <div class="msh-super-title">Умею делать X</div>
+      <p class="msh-super-desc">Конкретное умение, которое можно скопировать, автоматизировать или нанять. Не уникально и не устойчиво.</p>
+    </div>
+    <div class="msh-super-card">
+      <span class="msh-super-badge msh-cross">❌ Инструмент</span>
+      <div class="msh-super-title">Есть технология/метод</div>
+      <p class="msh-super-desc">Проп, который работает сегодня. Инструменты устаревают. Конкуренты перенимают. Это не суперсила.</p>
+    </div>
+    <div class="msh-super-card msh-super-win">
+      <span class="msh-super-badge msh-check">✓ Суперсила</span>
+      <div class="msh-super-title">Вижу/чувствую то, чего не видят другие</div>
+      <p class="msh-super-desc">Уникальный способ восприятия, принятия решений, создания смысла. Именно здесь — источник устойчивого конкурентного преимущества.</p>
+    </div>
+  </div>
+
+  <div class="msh-pq">«Принцип «Горок»: усиливаем сильное. Не прокачиваем слабые стороны, а строим стратегию вокруг сильных.»</div>
+
+  <h3>От суперсилы к <span class="msh-ac">главгену</span></h3>
+
+  <p>Главный генератор (главген) — это то, как суперсила основателя трансформируется в конкурентное преимущество компании. Это не миссия и не ценности — это операционный механизм, который объясняет, почему у вас получается лучше, чем у других, и как это можно масштабировать на следующий виток без потери сути.</p>
+
+  <button class="msh-btn" onclick="mshUnlock(7)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s7');
+    if(!el) return;
+    var u = getU();
+    if(u < 7){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>
+
+
+<!-- === 08-delo.html === -->
+<!-- BLOCK 08: Дело (DARK) -->
+<style>
+#msh-s8{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#0a1a11;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s8 *{box-sizing:border-box}
+#msh-s8 .msh-sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2.5px;color:#3ecf6e;
+  text-transform:uppercase;margin-bottom:12px;display:block;
+}
+#msh-s8 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#fff;margin-bottom:14px;
+}
+#msh-s8 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:32px 0 12px;color:#fff;
+}
+#msh-s8 p{
+  font-size:16px;line-height:1.8;color:rgba(255,255,255,.72);
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s8 .msh-ac{color:#3ecf6e}
+.msh-criteria-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  max-width:760px;margin:20px 0;
+}
+#msh-s8 .msh-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(62,207,110,.18);
+  border-radius:12px;padding:22px;
+}
+#msh-s8 .msh-card .msh-card-emoji{font-size:26px;display:block;margin-bottom:10px}
+#msh-s8 .msh-card .msh-card-num{
+  font-size:11px;font-weight:700;color:#3ecf6e;letter-spacing:1px;
+  display:block;margin-bottom:6px;
+}
+#msh-s8 .msh-card .msh-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
+#msh-s8 .msh-card .msh-card-text{font-size:14px;line-height:1.7;color:rgba(255,255,255,.6)}
+/* timeline */
+.msh-timeline{
+  position:relative;padding-left:28px;max-width:640px;margin:20px 0;
+}
+.msh-timeline::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;
+  width:2px;background:linear-gradient(to bottom,#3ecf6e,rgba(62,207,110,.15));
+}
+.msh-tl-item{
+  position:relative;padding:0 0 28px 24px;
+}
+.msh-tl-item:last-child{padding-bottom:0}
+.msh-tl-dot{
+  position:absolute;left:-20px;top:6px;width:16px;height:16px;
+  border-radius:50%;background:#0a1a11;border:2px solid #3ecf6e;
+  display:flex;align-items:center;justify-content:center;font-size:9px;
+}
+.msh-tl-dot.msh-tl-current{background:#3ecf6e}
+.msh-tl-year{font-size:11px;font-weight:700;color:#3ecf6e;margin-bottom:3px;letter-spacing:.5px}
+.msh-tl-emoji{font-size:16px;margin-right:6px}
+.msh-tl-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+.msh-tl-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.5}
+/* formula box */
+.msh-formula-box{
+  background:rgba(62,207,110,.08);border:1px solid rgba(62,207,110,.3);
+  border-radius:12px;padding:24px 28px;max-width:720px;margin:28px 0;
+}
+.msh-formula-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;color:#3ecf6e;
+  text-transform:uppercase;margin-bottom:14px;display:block;
+}
+.msh-formula-text{
+  font-size:clamp(14px,1.8vw,17px);color:#fff;font-weight:600;
+  line-height:1.8;
+}
+.msh-formula-text .msh-formula-part{
+  display:inline-block;background:rgba(62,207,110,.15);border-radius:4px;
+  padding:2px 8px;margin:2px 0;color:#3ecf6e;
+}
+.msh-formula-text .msh-formula-eq{color:rgba(255,255,255,.5);margin:0 6px;font-weight:400}
+#msh-s8 .msh-btn{
+  display:inline-flex;align-items:center;gap:9px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:16px 32px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:inherit;margin-top:36px;
+  transition:transform .2s,box-shadow .2s;
+}
+#msh-s8 .msh-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.3)}
+@media(max-width:900px){
+  #msh-s8{padding:52px 20px 40px 68px}
+  .msh-criteria-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div id="msh-s8" data-msh-sec="8">
+  <span class="msh-sec-label">Элемент 3</span>
+  <h2><span class="msh-ac">Дело:</span> как устроена ваша модель и где её потолок</h2>
+
+  <h3>Три критерия <span class="msh-ac">правильного витка</span></h3>
+
+  <div class="msh-criteria-grid">
+    <div class="msh-card">
+      <span class="msh-card-emoji">🧬</span>
+      <span class="msh-card-num">01</span>
+      <div class="msh-card-title">Строится на главгене</div>
+      <p class="msh-card-text">Следующий виток должен опираться на ту же суперсилу основателя. Если нет — это не масштабирование, а смена бизнеса.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-emoji">🧱</span>
+      <span class="msh-card-num">02</span>
+      <div class="msh-card-title">Надстраивается, не обнуляет</div>
+      <p class="msh-card-text">Работающие активы, репутация, команда, клиентская база — всё это должно стать фундаментом, а не жертвой перехода.</p>
+    </div>
+    <div class="msh-card">
+      <span class="msh-card-emoji">⏰</span>
+      <span class="msh-card-num">03</span>
+      <div class="msh-card-title">Делается вовремя</div>
+      <p class="msh-card-text">Переход в момент кризиса — это вынужденная смена на невыгодных условиях. Переход с запасом — это выбор позиции из силы.</p>
+    </div>
+  </div>
+
+  <h3>Эволюция «Асконы»: <span class="msh-ac">6 смен</span> бизнес-модели</h3>
+
+  <div class="msh-timeline">
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">1990-е</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🛏️</span>Торговля матрасами</div>
+      <div class="msh-tl-desc">Старт в дистрибуции — перепродажа импортных и отечественных матрасов. Первая бизнес-модель, работавшая на дефиците рынка.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2000-е</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏭</span>Производство</div>
+      <div class="msh-tl-desc">Переход от торговли к собственному производству. Вертикальная интеграция первого уровня — контроль над качеством и себестоимостью.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2005+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏪</span>Ритейлер с вертикальной интеграцией</div>
+      <div class="msh-tl-desc">Открытие собственных магазинов. Производитель + продавец под одной крышей — новая экономика модели.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2010+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🌐</span>Федеральная сеть</div>
+      <div class="msh-tl-desc">Географическое масштабирование по всей стране. Трансформация в федерального игрока с унифицированными стандартами.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot"></div>
+      <div class="msh-tl-year">2015+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">🏢</span>Мульти-индустриальный холдинг</div>
+      <div class="msh-tl-desc">Расширение за рамки матрасов. Диверсификация в смежные категории товаров для дома и сна.</div>
+    </div>
+    <div class="msh-tl-item">
+      <div class="msh-tl-dot msh-tl-current"></div>
+      <div class="msh-tl-year">2020+</div>
+      <div class="msh-tl-title"><span class="msh-tl-emoji">💤</span>Экосистема здорового сна</div>
+      <div class="msh-tl-desc">Переход от продажи товаров к управлению здоровьем через сон. Экосистема сервисов, продуктов и знаний вокруг темы восстановления.</div>
+    </div>
+  </div>
+
+  <h3>Формула <span class="msh-ac">следующего витка</span></h3>
+
+  <div class="msh-formula-box">
+    <span class="msh-formula-label">Методология «Горок»</span>
+    <div class="msh-formula-text">
+      <span class="msh-formula-part">Суперсила (главген)</span>
+      <span class="msh-formula-eq">+</span>
+      <span class="msh-formula-part">Активы (что уже работает)</span>
+      <span class="msh-formula-eq">+</span>
+      <span class="msh-formula-part">Контекст (куда движется мир)</span>
+      <span class="msh-formula-eq">=</span>
+      <span class="msh-formula-part" style="background:rgba(62,207,110,.25)">Виток (направление роста)</span>
+    </div>
+  </div>
+
+  <button class="msh-btn" onclick="mshUnlock(8)">Читать дальше ▼</button>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s8');
+    if(!el) return;
+    var u = getU();
+    if(u < 8){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>
+
+
+<!-- === 09-itog.html === -->
+<!-- BLOCK 09: Итог (LIGHT) -->
+<style>
+#msh-s9{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:72px 48px 56px 296px;background:#e8f5ee;
+  transition:filter .4s,opacity .4s;
+}
+#msh-s9 *{box-sizing:border-box}
+#msh-s9 h2{
+  font-size:clamp(26px,4vw,50px);font-weight:800;line-height:1.15;
+  color:#1a2e22;margin-bottom:14px;
+}
+#msh-s9 h3{
+  font-size:clamp(18px,2.5vw,28px);font-weight:700;margin:28px 0 12px;color:#fff;
+}
+#msh-s9 p{
+  font-size:16px;line-height:1.8;color:#2d4a35;
+  max-width:720px;margin-bottom:14px;
+}
+#msh-s9 .msh-ac{color:#1a8c45}
+/* checklist */
+.msh-checklist{
+  list-style:none;padding:0;margin:24px 0;max-width:680px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.msh-checklist li{
+  display:flex;align-items:flex-start;gap:14px;
+  background:#fff;border:1px solid rgba(26,140,69,.18);border-radius:10px;
+  padding:16px 18px;
+}
+.msh-check-icon{
+  width:24px;height:24px;border-radius:50%;background:#1a8c45;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.msh-check-icon svg{width:13px;height:13px}
+.msh-check-text{font-size:15px;color:#1a2e22;line-height:1.6;font-weight:500}
+/* CTA box */
+.msh-cta-box{
+  background:#1a2e22;border-radius:16px;padding:36px 40px;
+  max-width:720px;margin:36px 0 28px;
+  box-shadow:0 8px 32px rgba(10,26,17,.18);
+}
+.msh-cta-box h3{
+  font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;margin:0 0 12px;
+}
+.msh-cta-box p{
+  font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:20px;max-width:560px;
+}
+.msh-cta-box .msh-cta-btn{
+  display:inline-flex;align-items:center;gap:8px;background:#3ecf6e;
+  color:#0a1a11;border:none;border-radius:50px;padding:15px 30px;font-size:15px;
+  font-weight:700;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  text-decoration:none;transition:transform .2s,box-shadow .2s;
+}
+.msh-cta-box .msh-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(62,207,110,.4)}
+.msh-cta-meta{
+  font-size:13px;color:rgba(255,255,255,.4);margin-top:14px;
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.msh-cta-meta span{display:flex;align-items:center;gap:5px}
+/* footer */
+.msh-footer{
+  font-size:13px;color:rgba(26,46,34,.45);margin-top:36px;
+  padding-top:20px;border-top:1px solid rgba(26,140,69,.15);
+  max-width:720px;
+}
+@media(max-width:900px){
+  #msh-s9{padding:52px 20px 40px 68px}
+  .msh-cta-box{padding:24px 20px}
+}
+</style>
+
+<div id="msh-s9" data-msh-sec="9">
+  <h2>Как всё <span class="msh-ac">собирается вместе</span></h2>
+
+  <ul class="msh-checklist">
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Масштабирование — это эволюция бизнес-модели, а не «больше того же самого»</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Любая модель конечна — вопрос только в том, когда и в каком состоянии вы встретите её потолок</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Контекст: необходимо понимать, в каком мире (страна, отрасль, глобальные циклы) вы строите стратегию</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Личность: кто вы как предприниматель, зачем вам этот бизнес, и в чём ваша суперсила (главген)</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">Дело: как устроена ваша нынешняя модель, какие активы работают, и где реальный потолок роста</span>
+    </li>
+    <li>
+      <div class="msh-check-icon">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="msh-check-text">На пересечении Контекста, Личности и Дела — Точка максимального потенциала и следующий виток</span>
+    </li>
+  </ul>
+
+  <div class="msh-cta-box">
+    <h3>Что дальше</h3>
+    <p>Интенсив «Масштаб» — три дня глубокой работы с методологией «Горок» в Доброграде. Вы пройдёте все три элемента на своём бизнесе, найдёте точку потенциала и сформируете стратегию следующего витка вместе с командой экспертов и другими собственниками.</p>
+    <a href="#" class="msh-cta-btn">Оставить заявку →</a>
+    <div class="msh-cta-meta">
+      <span>📅 17–19 апреля</span>
+      <span>📍 Доброград</span>
+      <span>👥 Ограниченное число мест</span>
+    </div>
+  </div>
+
+  <div class="msh-footer">© Школа бизнеса «Горки» · Методология масштабирования</div>
+</div>
+
+<script>
+(function(){
+  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
+  function applyState(){
+    var el = document.getElementById('msh-s9');
+    if(!el) return;
+    var u = getU();
+    if(u < 9){
+      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
+    } else {
+      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
+    }
+  }
+  applyState();
+  var _last = getU();
+  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
+  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
+})();
+</script>
+
+</body>
+</html>
