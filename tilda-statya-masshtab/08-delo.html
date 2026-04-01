@@ -175,23 +175,3 @@
 
   <button class="msh-btn" onclick="mshUnlock(8)">Читать дальше ▼</button>
 </div>
-
-<script>
-(function(){
-  function getU(){ return parseInt(localStorage.getItem('msh_unlocked')||'1',10); }
-  function applyState(){
-    var el = document.getElementById('msh-s8');
-    if(!el) return;
-    var u = getU();
-    if(u < 8){
-      el.style.filter='blur(5px)'; el.style.opacity='0.35'; el.style.pointerEvents='none'; el.style.userSelect='none';
-    } else {
-      el.style.filter=''; el.style.opacity=''; el.style.pointerEvents=''; el.style.userSelect='';
-    }
-  }
-  applyState();
-  var _last = getU();
-  setInterval(function(){ var u=getU(); if(u!==_last){_last=u; applyState();} }, 300);
-  window.addEventListener('storage', function(e){ if(e.key==='msh_unlocked') applyState(); });
-})();
-</script>
