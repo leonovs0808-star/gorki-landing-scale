@@ -4,6 +4,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+/* ── REMOVE TILDA RECORD GAPS ── */
+.t-rec { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !important; }
+
 /* ── NAMESPACE ── */
 #s3-root, #s3-root * {
   font-family: 'Inter', -apple-system, sans-serif !important;
@@ -531,6 +535,8 @@
     </div>
 
   </section>
+  <!-- Gradient transition: light (#e8eeec) → dark (#08110E) -->
+  <div style="height:80px;background:linear-gradient(to bottom,#e8eeec,#08110E);margin:0;padding:0;flex-shrink:0;display:block;"></div>
 </div>
 
 <script>
