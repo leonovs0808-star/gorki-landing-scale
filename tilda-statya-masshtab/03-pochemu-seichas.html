@@ -35,7 +35,7 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
 ══════════════════════════════════════════ */
 #s3-quote-wrap {
   background: #08110E !important;
-  padding: 80px 48px 80px 320px !important;
+  padding: 80px 48px 0 320px !important;
 }
 
 #s3-quote-card {
@@ -102,9 +102,19 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
 /* ══════════════════════════════════════════
    PART 2 — MAIN SECTION (light bg)
 ══════════════════════════════════════════ */
+/* Gradient bridge between dark quote and light section */
+.s3-transition-grad {
+  height: 160px !important;
+  background: linear-gradient(to bottom, #08110E 0%, #e8eeec 100%) !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
 #s3-sec {
   background: #e8eeec !important;
-  padding: 192px 64px 192px 320px !important;
+  padding: 80px 64px 192px 320px !important;
   position: relative !important;
 }
 
@@ -377,20 +387,23 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
 
 /* ════════════ RESPONSIVE ════════════ */
 @media (max-width: 1100px) {
-  #s3-quote-wrap { padding: 60px 48px 60px 300px !important; }
-  #s3-sec { padding: 120px 48px 120px 300px !important; }
+  #s3-quote-wrap { padding: 60px 48px 0 300px !important; }
+  #s3-sec { padding: 64px 48px 120px 300px !important; }
+  .s3-transition-grad { height: 120px !important; }
 }
 @media (max-width: 900px) {
-  #s3-quote-wrap { padding: 48px 32px 48px 288px !important; }
-  #s3-sec { padding: 100px 32px 100px 288px !important; }
+  #s3-quote-wrap { padding: 48px 32px 0 288px !important; }
+  #s3-sec { padding: 64px 32px 100px 288px !important; }
   .s3-two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .s3-transition-grad { height: 100px !important; }
 }
 @media (max-width: 768px) {
-  #s3-quote-wrap { padding: 40px 24px !important; }
+  #s3-quote-wrap { padding: 40px 24px 0 !important; }
+  .s3-transition-grad { height: 80px !important; }
   #s3-quote-card { grid-template-columns: 1fr !important; min-height: auto !important; }
   #s3-quote-left { display: none !important; }
   #s3-quote-right { padding: 48px 32px !important; }
-  #s3-sec { padding: 80px 24px !important; }
+  #s3-sec { padding: 48px 24px 80px !important; }
   .s3-h2 { font-size: clamp(26px,7vw,40px) !important; margin-bottom: 40px !important; }
   .s3-blockquote { padding: 32px 28px !important; }
   .s3-bq-text { font-size: 20px !important; }
@@ -402,7 +415,8 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
 @media (max-width: 520px) {
   #s3-quote-right { padding: 32px 24px !important; }
   .s3-cin-text { font-size: 20px !important; }
-  #s3-sec { padding: 60px 20px !important; }
+  #s3-sec { padding: 40px 20px 60px !important; }
+  .s3-transition-grad { height: 60px !important; }
   .s3-blockquote { padding: 24px 20px !important; }
   .s3-bq-text { font-size: 17px !important; }
   .s3-green-card { padding: 24px !important; }
@@ -444,6 +458,9 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
       </div>
     </div>
   </div>
+
+  <!-- ═══ GRADIENT BRIDGE: dark → light ═══ -->
+  <div class="s3-transition-grad"></div>
 
   <!-- ═══ 2. MAIN SECTION (светлый фон) ═══ -->
   <section id="s3-sec">
@@ -535,8 +552,8 @@ html, body, .t-body, .t-page, .t-rec, .t-container { background-color: #08110E !
     </div>
 
   </section>
-  <!-- Gradient transition: light (#e8eeec) → dark (#08110E) -->
-  <div style="height:80px;background:linear-gradient(to bottom,#e8eeec,#08110E);margin:0;padding:0;flex-shrink:0;display:block;"></div>
+  <!-- ═══ GRADIENT BRIDGE: light → dark (connects to block 04) ═══ -->
+  <div style="height:80px;background:linear-gradient(to bottom,#e8eeec,#08110E);margin:0;padding:0;display:block;"></div>
 </div>
 
 <script>
